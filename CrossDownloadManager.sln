@@ -1,0 +1,29 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrossDownloadManager", "CrossDownloadManager\CrossDownloadManager.csproj", "{BAB8E5F7-B21C-4A07-995D-F1918E6234A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrossDownloadManager.Ios", "CrossDownloadManager.Ios\CrossDownloadManager.Ios.csproj", "{FAF53C43-0CC6-4BA6-88BC-BD9FA617FBA1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrossDownloadManager.Android", "CrossDownloadManager.Android\CrossDownloadManager.Android.csproj", "{02CE4497-A772-495C-8C06-074DED99B397}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BAB8E5F7-B21C-4A07-995D-F1918E6234A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAB8E5F7-B21C-4A07-995D-F1918E6234A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAB8E5F7-B21C-4A07-995D-F1918E6234A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAB8E5F7-B21C-4A07-995D-F1918E6234A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FAF53C43-0CC6-4BA6-88BC-BD9FA617FBA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAF53C43-0CC6-4BA6-88BC-BD9FA617FBA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAF53C43-0CC6-4BA6-88BC-BD9FA617FBA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAF53C43-0CC6-4BA6-88BC-BD9FA617FBA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02CE4497-A772-495C-8C06-074DED99B397}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02CE4497-A772-495C-8C06-074DED99B397}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02CE4497-A772-495C-8C06-074DED99B397}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02CE4497-A772-495C-8C06-074DED99B397}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
