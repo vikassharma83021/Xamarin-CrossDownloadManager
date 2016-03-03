@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using Android.App;
+using Android.Database;
 using Android.Net;
 
 namespace CrossDownloadManager.Android
@@ -66,6 +67,15 @@ namespace CrossDownloadManager.Android
             Headers = headers;
 
             Status = DownloadStatus.PENDING;
+        }
+
+        /**
+         * Reinitializing an object after the app restarted
+         */
+        public AndroidDownloadFile (ICursor cursor)
+        {
+            Id = cursor.GetLong (cursor.GetColumnIndex (DownloadManager.ColumnBytesDownloadedSoFar));
+            Url = cursor.GetString (cursor.GetColumnIndex (DownloadManager.ColumnUri));
         }
 
         public void StartDownload (DownloadManager downloadManager, string destinationUri)

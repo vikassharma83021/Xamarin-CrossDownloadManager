@@ -25,6 +25,9 @@ namespace CrossDownloadManager.Android
 
             _downloadManager = (DownloadManager)applicationContext.GetSystemService (Context.DownloadService);
 
+            // Add all items to the Queue that are pending, paused or running
+            LoopOnDownloads (new Action<ICursor> (cursor => ReinitializeFile(cursor)));
+
             // Check sequentially if parameters for any of the registered downloads changed
             StartDownloadWatcher ();
         }
@@ -77,6 +80,14 @@ namespace CrossDownloadManager.Android
             } catch (Android.Database.Sqlite.SQLiteException) {
                 // I lately got an exception that the database was unaccessible ...
             }
+        }
+
+        void ReinitializeFile (ICursor cursor)
+        {
+            var downloadFile = new AndroidDownloadFile (cursor);
+
+            Queue.Add (downloadFile);
+            UpdateFileProperties (cursor, downloadFile);
         }
 
         void StartDownloadWatcher ()
