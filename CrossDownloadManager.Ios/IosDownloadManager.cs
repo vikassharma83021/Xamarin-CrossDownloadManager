@@ -21,6 +21,15 @@ namespace CrossDownloadManager.Ios
             Queue = new ObservableCollection<ICrossDownloadFile> ();
 
             _session = InitBackgroundSession (sessionDownloadDelegate);
+
+            // Reinitialize tasks that were started before the app was terminated or suspended
+            _session.GetAllTasks ((NSUrlSessionTask [] tasks) => {
+                foreach (var task in tasks) {
+                    if (task is NSUrlSessionDownloadTask) {
+                        Queue.Add (new IosDownloadFile (task));
+                    }
+                }
+            });
         }
 
         public ICrossDownloadFile CreateDownloadFile (string url, IDictionary<string, string> headers)
