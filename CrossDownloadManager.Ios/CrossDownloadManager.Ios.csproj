@@ -9,7 +9,6 @@
     <RootNamespace>CrossDownloadManager.Ios</RootNamespace>
     <AssemblyName>CrossDownloadManager.Ios</AssemblyName>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
-    <ReleaseVersion>1.0.3-DEV</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

@@ -4,7 +4,7 @@ The CrossDownloadManager is a plugin that helps you downloading files in the bac
 
 ### Get started
 
-At first, you have to initialize the service. You also need to write some logic, which determines where the file will be saved.
+Add the nuget package to your cross-platform project and to every platform specific project. Now, you have to initialize the service for every platform. You also need to write some logic, which determines where the file will be saved.
 
 In the follwing example, I used the MvvmCross framework to register the service system-wide by calling `Mvx.RegisterSingleton<T>()`:
 
