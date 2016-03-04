@@ -5,7 +5,7 @@ using Foundation;
 using Plugin.DownloadManager.Abstractions;
 using UIKit;
 
-namespace Plugin.DownloadManager.iOS
+namespace Plugin.DownloadManager
 {
     public class DownloadManagerImplementation : IDownloadManager
     {

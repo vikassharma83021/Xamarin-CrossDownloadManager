@@ -2,7 +2,7 @@
 using Foundation;
 using Plugin.DownloadManager.Abstractions;
 
-namespace Plugin.DownloadManager.iOS
+namespace Plugin.DownloadManager
 {
     public class UrlSessionDownloadDelegate : NSUrlSessionDownloadDelegate
     {

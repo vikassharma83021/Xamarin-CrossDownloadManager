@@ -7,7 +7,7 @@ using Android.Database;
 using Android.Content;
 using Plugin.DownloadManager.Abstractions;
 
-namespace Plugin.DownloadManager.Droid
+namespace Plugin.DownloadManager
 {
     public class DownloadManagerImplementation : IDownloadManager
     {

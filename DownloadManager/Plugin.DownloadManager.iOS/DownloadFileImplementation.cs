@@ -3,7 +3,7 @@ using System.ComponentModel;
 using Foundation;
 using Plugin.DownloadManager.Abstractions;
 
-namespace Plugin.DownloadManager.iOS
+namespace Plugin.DownloadManager
 {
     public class DownloadFileImplementation : IDownloadFile
     {

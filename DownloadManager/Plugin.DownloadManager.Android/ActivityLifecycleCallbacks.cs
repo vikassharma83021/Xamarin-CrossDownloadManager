@@ -4,7 +4,7 @@ using Android.Content;
 using Android.OS;
 using Plugin.DownloadManager.Abstractions;
 
-namespace Plugin.DownloadManager.Droid
+namespace Plugin.DownloadManager
 {
     public class ActivityLifecycleCallbacks : Java.Lang.Object, Application.IActivityLifecycleCallbacks
     {

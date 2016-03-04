@@ -3,11 +3,6 @@
 using Android.App;
 #endif
 using Plugin.DownloadManager.Abstractions;
-#if __ANDROID__
-using Plugin.DownloadManager.Droid;
-#elif __IOS__
-using Plugin.DownloadManager.iOS;
-#endif
 
 namespace Plugin.DownloadManager
 {
@@ -50,7 +45,7 @@ namespace Plugin.DownloadManager
 #elif __ANDROID__
             return new DownloadManagerImplementation(ActivityLifecycleCallbacks.CurrentTopActivity);
 #else
-            return null;
+            return new DownloadManagerImplementation();
 #endif
         }
 

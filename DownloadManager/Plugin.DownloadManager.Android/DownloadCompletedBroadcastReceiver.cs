@@ -3,7 +3,7 @@ using System.Linq;
 using Android.Content;
 using Plugin.DownloadManager.Abstractions;
 
-namespace Plugin.DownloadManager.Droid
+namespace Plugin.DownloadManager
 {
     public class DownloadCompletedBroadcastReceiver : BroadcastReceiver
     {
