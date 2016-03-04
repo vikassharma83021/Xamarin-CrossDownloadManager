@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Plugin.DownloadManager.Abstractions
 {
-    public enum DownloadStatus
+    public enum DownloadFileStatus
     {
         PENDING,
         RUNNING,
@@ -23,7 +19,7 @@ namespace Plugin.DownloadManager.Abstractions
 
         IDictionary<string, string> Headers { get; }
 
-        DownloadStatus Status { get; }
+        DownloadFileStatus Status { get; }
 
         float TotalBytesExpected { get; }
 

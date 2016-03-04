@@ -48,13 +48,10 @@
     <Compile Include="..\Plugin.DownloadManager\CrossDownloadManager.cs">
       <Link>CrossDownloadManager.cs</Link>
     </Compile>
-    <Compile Include="DownloadFile.cs" />
+    <Compile Include="DownloadFileImplementation.cs" />
     <Compile Include="DownloadManagerImplementation.cs" />
-    <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\AboutResources.txt" />
+    <Compile Include="DownloadCompletedBroadcastReceiver.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Plugin.DownloadManager.Abstractions\Plugin.DownloadManager.Abstractions.csproj">
