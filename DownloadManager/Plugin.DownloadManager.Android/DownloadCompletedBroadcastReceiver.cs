@@ -1,31 +1,32 @@
-﻿using System.Linq;
-using Android.App;
+﻿using System;
+using System.Linq;
 using Android.Content;
+using Plugin.DownloadManager.Abstractions;
 
 namespace Plugin.DownloadManager.Droid
 {
     public class DownloadCompletedBroadcastReceiver : BroadcastReceiver
     {
-        ICrossDownloadManager _downloadManager;
+        Func<IDownloadManager> _downloadManagerAction;
 
-        public DownloadCompletedBroadcastReceiver (ICrossDownloadManager downloadManager)
+        public DownloadCompletedBroadcastReceiver (Func<IDownloadManager> downloadManagerAction)
         {
-            _downloadManager = downloadManager;
+            _downloadManagerAction = downloadManagerAction;
         }
 
         public override void OnReceive (Context context, Intent intent)
         {
-            long reference = intent.GetLongExtra (DownloadManager.ExtraDownloadId, -1);
+            long reference = intent.GetLongExtra (Android.App.DownloadManager.ExtraDownloadId, -1);
 
-            var downloadFile = _downloadManager.Queue.Cast<AndroidDownloadFile> ().FirstOrDefault (f => f.Id == reference);
+            var downloadFile = _downloadManagerAction().Queue.Cast<DownloadFileImplementation> ().FirstOrDefault (f => f.Id == reference);
             if (downloadFile != null) {
-                var query = new DownloadManager.Query ();
+                var query = new Android.App.DownloadManager.Query ();
                 query.SetFilterById (downloadFile.Id);
 
                 try {
-                    using (var cursor = ((DownloadManager)context.GetSystemService (Context.DownloadService)).InvokeQuery (query)) {
+                    using (var cursor = ((Android.App.DownloadManager)context.GetSystemService (Context.DownloadService)).InvokeQuery (query)) {
                         while (cursor.MoveToNext ()) {
-                            ((AndroidDownloadManager)_downloadManager).UpdateFileProperties (cursor, downloadFile);
+                            ((DownloadManagerImplementation)_downloadManagerAction()).UpdateFileProperties (cursor, downloadFile);
                         }
                     }
                 } catch (Android.Database.Sqlite.SQLiteException) {

@@ -6,31 +6,17 @@ The CrossDownloadManager is a plugin that helps you downloading files in the bac
 
 Add the nuget package to your cross-platform project and to every platform specific project. Now, you have to initialize the service for every platform. You also need to write some logic, which determines where the file will be saved.
 
-In the follwing example, I used the MvvmCross framework to register the service system-wide by calling `Mvx.RegisterSingleton<T>()`:
-
 #### iOS
 
 _AppDelegate.cs_
 ```
-    public Action BackgroundSessionCompletionHandler { get; set; }
-
     /**
      * Save the completion-handler we get when the app starts back from the background.
      * This method informs iOS that the app has finished all internal processing and can sleep again.
      */
     public override void HandleEventsForBackgroundUrl(UIApplication application, string sessionIdentifier, Action completionHandler)
     {
-        BackgroundSessionCompletionHandler = completionHandler;
-    }
-```
-
-_Setup.cs_
-```
-    protected override void InitializePlatformServices()
-    {
-        var crossDownloadManager = new IosDownloadManager();
-        crossDownloadManager.UriForDownloadedFile = new Func<ICrossDownloadFile, string>(file => (new NSUrl (file.Url)).LastPathComponent);
-        Mvx.RegisterSingleton<ICrossDownloadManager>(crossDownloadManager);
+        CrossDownloadManager.BackgroundSessionCompletionHandler = completionHandler;
     }
 ```
 
@@ -43,49 +29,29 @@ Depending on the location you want the file to be saved, you may have to ask for
 
 _Activity.cs_
 ```
-    DownloadCompletedBroadcastReceiver _receiverDownoladCompleted;
-
-    protected override void OnResume ()
+    protected override void OnCreate ()
     {
-        base.OnResume ();
-
-        _receiverDownoladCompleted = new DownloadCompletedBroadcastReceiver (Mvx.Resolve<ICrossDownloadManager> ());
-        RegisterReceiver (
-            _receiverDownoladCompleted,
-            new IntentFilter (DownloadManager.ActionDownloadComplete)
-        );
-    }
-
-    protected override void OnPause ()
-    {
-        base.OnPause ();
-
-        UnregisterReceiver (_receiverDownoladCompleted);
+        [...]
+        CrossDownloadManager.Init (this);
     }
 ```
 
-_Setup.cs_
-```
-    protected override void InitializePlatformServices()
-    {
-        var crossDownloadManager = new AndroidDownloadManager(ApplicationContext);
-        crossDownloadManager.UriForDownloadedFile = new Func<ICrossDownloadFile, string>(file => Uri.Parse(file.Url).Path.Split('/').Last());
-        Mvx.RegisterSingleton<ICrossDownloadManager>(crossDownloadManager);
-    }
-```
+### MvvmCross
 
-### Shared code
+    Mvx.RegisterSingleton<IDownloadManager>(() => CrossDownloadManager.Instance);
+
+### Start downloading
 
 You can now start a download by adding the following code:
 ```
-    var downloadManager = Mvx.Resolve<ICrossDownloadManager> ();
+    var downloadManager = CrossDownloadManager.Instance;
     var file = downloadManager.CreateDownloadFile(url);
     downloadManager.Start(file);
 ```
 
-This will add the file to a native library, which starts the download of that file. You can watch the properties of the `ICrossDownloadFile` instance and execute some code if e.g. the status changes to `COMPLETED`, but you can also watch the `downloadManager.Queue` and execute some code if the list of files, that will be downloaded or are currently downloading changes.
+This will add the file to a native library, which starts the download of that file. You can watch the properties of the `IDownloadFile` instance and execute some code if e.g. the status changes to `COMPLETED`, but you can also watch the `IDownloadManager.Queue` and execute some code if the list of files, that will be downloaded or are currently downloading changes.
 
-After a download has completed, it is removed from `ICrossDownloadManager.Queue`.
+After a download has completed, it is removed from `IDownloadManager.Queue`.
 
 ### Contribute
 

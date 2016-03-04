@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
-using Android.App;
 using Android.Database;
 using Android.Net;
+using Plugin.DownloadManager.Abstractions;
 
 namespace Plugin.DownloadManager.Droid
 {
-    public class AndroidDownloadFile : ICrossDownloadFile
+    public class DownloadFileImplementation : IDownloadFile
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -16,9 +16,9 @@ namespace Plugin.DownloadManager.Droid
 
         public IDictionary<string, string> Headers { get; private set; }
 
-        DownloadStatus _status;
+        DownloadFileStatus _status;
 
-        public DownloadStatus Status {
+        public DownloadFileStatus Status {
             get {
                 return _status;
             }
@@ -61,27 +61,27 @@ namespace Plugin.DownloadManager.Droid
         /**
          * Initializing a new object to add it to the download-queue
          */
-        public AndroidDownloadFile (string url, IDictionary<string, string> headers)
+        public DownloadFileImplementation (string url, IDictionary<string, string> headers)
         {
             Url = url;
             Headers = headers;
 
-            Status = DownloadStatus.PENDING;
+            Status = DownloadFileStatus.PENDING;
         }
 
         /**
          * Reinitializing an object after the app restarted
          */
-        public AndroidDownloadFile (ICursor cursor)
+        public DownloadFileImplementation (ICursor cursor)
         {
-            Id = cursor.GetLong (cursor.GetColumnIndex (DownloadManager.ColumnBytesDownloadedSoFar));
-            Url = cursor.GetString (cursor.GetColumnIndex (DownloadManager.ColumnUri));
+            Id = cursor.GetLong (cursor.GetColumnIndex (Android.App.DownloadManager.ColumnBytesDownloadedSoFar));
+            Url = cursor.GetString (cursor.GetColumnIndex (Android.App.DownloadManager.ColumnUri));
         }
 
-        public void StartDownload (DownloadManager downloadManager, string destinationUri)
+        public void StartDownload (Android.App.DownloadManager downloadManager, string destinationUri)
         {
             using (var downloadUrl = Uri.Parse (Url))
-            using (var request = new DownloadManager.Request (downloadUrl)) {
+            using (var request = new Android.App.DownloadManager.Request (downloadUrl)) {
 
                 foreach (var header in Headers) {
                     request.AddRequestHeader (header.Key, header.Value);
@@ -91,7 +91,7 @@ namespace Plugin.DownloadManager.Droid
 
                 Id = downloadManager.Enqueue (request);
 
-                Status = DownloadStatus.RUNNING;
+                Status = DownloadFileStatus.RUNNING;
             }
         }
     }

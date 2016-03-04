@@ -5,25 +5,26 @@ using System.Linq;
 using Android.App;
 using Android.Database;
 using Android.Content;
+using Plugin.DownloadManager.Abstractions;
 
 namespace Plugin.DownloadManager.Droid
 {
-    public class AndroidDownloadManager : ICrossDownloadManager
+    public class DownloadManagerImplementation : IDownloadManager
     {
         Android.OS.Handler _downloadWatcherHandler;
         Java.Lang.Runnable _downloadWatcherHandlerRunnable;
 
-        DownloadManager _downloadManager;
+        Android.App.DownloadManager _downloadManager;
 
-        public ObservableCollection<ICrossDownloadFile> Queue { get; private set; }
+        public ObservableCollection<IDownloadFile> Queue { get; private set; }
 
-        public Func<ICrossDownloadFile, string> UriForDownloadedFile { get; set; }
+        public Func<IDownloadFile, string> UriForDownloadedFile { get; set; }
 
-        public AndroidDownloadManager (Context applicationContext)
+        public DownloadManagerImplementation (Context applicationContext)
         {
-            Queue = new ObservableCollection<ICrossDownloadFile> ();
+            Queue = new ObservableCollection<IDownloadFile> ();
 
-            _downloadManager = (DownloadManager)applicationContext.GetSystemService (Context.DownloadService);
+            _downloadManager = (Android.App.DownloadManager)applicationContext.GetSystemService (Context.DownloadService);
 
             // Add all items to the Queue that are pending, paused or running
             LoopOnDownloads (new Action<ICursor> (cursor => ReinitializeFile (cursor)));
@@ -32,24 +33,24 @@ namespace Plugin.DownloadManager.Droid
             StartDownloadWatcher ();
         }
 
-        public ICrossDownloadFile CreateDownloadFile (string url, IDictionary<string, string> headers)
+        public IDownloadFile CreateDownloadFile (string url, IDictionary<string, string> headers)
         {
-            return new AndroidDownloadFile (url, headers);
+            return new DownloadFileImplementation (url, headers);
         }
 
-        public void Start (ICrossDownloadFile i)
+        public void Start (IDownloadFile i)
         {
-            var file = (AndroidDownloadFile)i;
+            var file = (DownloadFileImplementation)i;
 
             file.StartDownload (_downloadManager, UriForDownloadedFile (file));
             Queue.Add (file);
         }
 
-        public void Abort (ICrossDownloadFile i)
+        public void Abort (IDownloadFile i)
         {
-            var file = (AndroidDownloadFile)i;
+            var file = (DownloadFileImplementation)i;
 
-            file.Status = DownloadStatus.CANCELED;
+            file.Status = DownloadFileStatus.CANCELED;
             _downloadManager.Remove (file.Id);
             Queue.Remove (file);
         }
@@ -64,7 +65,7 @@ namespace Plugin.DownloadManager.Droid
         void LoopOnDownloads (Action<ICursor> runnable)
         {
             // Reinitialize downloads that were started before the app was terminated or suspended
-            var query = new DownloadManager.Query ();
+            var query = new Android.App.DownloadManager.Query ();
             query.SetFilterByStatus (
                 Android.App.DownloadStatus.Paused |
                 Android.App.DownloadStatus.Pending |
@@ -84,7 +85,7 @@ namespace Plugin.DownloadManager.Droid
 
         void ReinitializeFile (ICursor cursor)
         {
-            var downloadFile = new AndroidDownloadFile (cursor);
+            var downloadFile = new DownloadFileImplementation (cursor);
 
             Queue.Add (downloadFile);
             UpdateFileProperties (cursor, downloadFile);
@@ -111,8 +112,8 @@ namespace Plugin.DownloadManager.Droid
 
         public void UpdateFileProperties (ICursor cursor)
         {
-            int id = cursor.GetInt (cursor.GetColumnIndex (DownloadManager.ColumnId));
-            var downloadFile = Queue.Cast<AndroidDownloadFile> ().FirstOrDefault (f => f.Id == id);
+            int id = cursor.GetInt (cursor.GetColumnIndex (Android.App.DownloadManager.ColumnId));
+            var downloadFile = Queue.Cast<DownloadFileImplementation> ().FirstOrDefault (f => f.Id == id);
 
             if (downloadFile != null) {
                 UpdateFileProperties (cursor, downloadFile);
@@ -123,37 +124,37 @@ namespace Plugin.DownloadManager.Droid
          * Update the properties for a file by it's cursor.
          * This method should be called in an interval and on reinitialization.
          */
-        public void UpdateFileProperties (ICursor cursor, AndroidDownloadFile downloadFile)
+        public void UpdateFileProperties (ICursor cursor, DownloadFileImplementation downloadFile)
         {
-            downloadFile.TotalBytesWritten = cursor.GetInt (cursor.GetColumnIndex (DownloadManager.ColumnBytesDownloadedSoFar));
-            downloadFile.TotalBytesExpected = cursor.GetInt (cursor.GetColumnIndex (DownloadManager.ColumnTotalSizeBytes));
+            downloadFile.TotalBytesWritten = cursor.GetInt (cursor.GetColumnIndex (Android.App.DownloadManager.ColumnBytesDownloadedSoFar));
+            downloadFile.TotalBytesExpected = cursor.GetInt (cursor.GetColumnIndex (Android.App.DownloadManager.ColumnTotalSizeBytes));
 
-            switch (cursor.GetInt (cursor.GetColumnIndex (DownloadManager.ColumnStatus))) {
+            switch (cursor.GetInt (cursor.GetColumnIndex (Android.App.DownloadManager.ColumnStatus))) {
             // Successful
             case 8:
-                downloadFile.Status = DownloadStatus.COMPLETED;
+                downloadFile.Status = DownloadFileStatus.COMPLETED;
                 Queue.Remove (downloadFile);
                 break;
 
             // Failed
             case 16:
-                downloadFile.Status = DownloadStatus.FAILED;
+                downloadFile.Status = DownloadFileStatus.FAILED;
                 Queue.Remove (downloadFile);
                 break;
 
             // Paused
             case 4:
-                downloadFile.Status = DownloadStatus.PAUSED;
+                downloadFile.Status = DownloadFileStatus.PAUSED;
                 break;
 
             // Pending
             case 1:
-                downloadFile.Status = DownloadStatus.PENDING;
+                downloadFile.Status = DownloadFileStatus.PENDING;
                 break;
 
             // Running
             case 2:
-                downloadFile.Status = DownloadStatus.RUNNING;
+                downloadFile.Status = DownloadFileStatus.RUNNING;
                 break;
             }
         }

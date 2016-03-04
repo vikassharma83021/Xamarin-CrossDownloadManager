@@ -82,5 +82,15 @@ namespace Plugin.DownloadManager.iOS
 
             Controller.Queue.Remove (file);
         }
+
+        public override void DidFinishEventsForBackgroundSession(NSUrlSession session)
+        {
+            var handler = CrossDownloadManager.BackgroundSessionCompletionHandler;
+            if (handler != null)
+            {
+                CrossDownloadManager.BackgroundSessionCompletionHandler = null;
+                handler();
+            }
+        }
     }
 }
