@@ -45,7 +45,7 @@ namespace Plugin.DownloadManager
 #elif __ANDROID__
             return new DownloadManagerImplementation(ActivityLifecycleCallbacks.CurrentTopActivity);
 #else
-            return new DownloadManagerImplementation();
+            return null;
 #endif
         }
 
