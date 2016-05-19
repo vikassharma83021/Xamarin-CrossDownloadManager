@@ -30,6 +30,20 @@ namespace Plugin.DownloadManager
             }
         }
 
+        string _statusDetails;
+
+        public string StatusDetails {
+            get {
+                return _statusDetails;
+            }
+            set {
+                if (!Equals (_statusDetails, value)) {
+                    _statusDetails = value;
+                    PropertyChanged?.Invoke (this, new PropertyChangedEventArgs ("StatusDetails"));
+                }
+            }
+        }
+
         float _totalBytesExpected = 0.0f;
 
         public float TotalBytesExpected {
@@ -78,7 +92,7 @@ namespace Plugin.DownloadManager
             Url = cursor.GetString (cursor.GetColumnIndex (Android.App.DownloadManager.ColumnUri));
         }
 
-        public void StartDownload (Android.App.DownloadManager downloadManager, string destinationUri)
+        public void StartDownload (Android.App.DownloadManager downloadManager, string destinationPathName)
         {
             using (var downloadUrl = Uri.Parse (Url))
             using (var request = new Android.App.DownloadManager.Request (downloadUrl)) {
@@ -87,7 +101,7 @@ namespace Plugin.DownloadManager
                     request.AddRequestHeader (header.Key, header.Value);
                 }
 
-                request.SetDestinationUri (Uri.FromFile (new Java.IO.File (destinationUri)));
+                request.SetDestinationUri (Uri.FromFile (new Java.IO.File (destinationPathName)));
 
                 Id = downloadManager.Enqueue (request);
 

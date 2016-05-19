@@ -18,7 +18,7 @@ namespace Plugin.DownloadManager
 
         public ObservableCollection<IDownloadFile> Queue { get; private set; }
 
-        public Func<IDownloadFile, string> UriForDownloadedFile { get; set; }
+        public Func<IDownloadFile, string> PathNameForDownloadedFile { get; set; }
 
         public DownloadManagerImplementation (Context applicationContext)
         {
@@ -42,7 +42,7 @@ namespace Plugin.DownloadManager
         {
             var file = (DownloadFileImplementation)i;
 
-            file.StartDownload (_downloadManager, UriForDownloadedFile (file));
+            file.StartDownload (_downloadManager, PathNameForDownloadedFile (file));
             Queue.Add (file);
         }
 
@@ -138,6 +138,7 @@ namespace Plugin.DownloadManager
 
             // Failed
             case 16:
+                downloadFile.StatusDetails = cursor.GetString(cursor.GetColumnIndex (Android.App.DownloadManager.ColumnReason));
                 downloadFile.Status = DownloadFileStatus.FAILED;
                 Queue.Remove (downloadFile);
                 break;

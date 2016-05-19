@@ -21,6 +21,8 @@ namespace Plugin.DownloadManager.Abstractions
 
         DownloadFileStatus Status { get; }
 
+        string StatusDetails { get; }
+
         float TotalBytesExpected { get; }
 
         float TotalBytesWritten { get; }

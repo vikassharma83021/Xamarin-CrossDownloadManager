@@ -8,7 +8,7 @@ namespace Plugin.DownloadManager.Abstractions
     {
         ObservableCollection<IDownloadFile> Queue { get; }
 
-        Func<IDownloadFile, string> UriForDownloadedFile { get; set; }
+        Func<IDownloadFile, string> PathNameForDownloadedFile { get; set; }
 
         IDownloadFile CreateDownloadFile (string url, IDictionary<string, string> headers);
 

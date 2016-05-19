@@ -32,6 +32,20 @@ namespace Plugin.DownloadManager
             }
         }
 
+        string _statusDetails;
+
+        public string StatusDetails {
+            get {
+                return _statusDetails;
+            }
+            set {
+                if (!Equals (_statusDetails, value)) {
+                    _statusDetails = value;
+                    PropertyChanged?.Invoke (this, new PropertyChangedEventArgs ("StatusDetails"));
+                }
+            }
+        }
+
         float _totalBytesExpected = 0.0f;
 
         public float TotalBytesExpected {

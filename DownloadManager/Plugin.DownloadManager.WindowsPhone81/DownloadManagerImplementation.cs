@@ -9,7 +9,7 @@ namespace Plugin.DownloadManager
     {
         public ObservableCollection<IDownloadFile> Queue { get; private set; }
 
-        public Func<IDownloadFile, string> UriForDownloadedFile { get; set; }
+        public Func<IDownloadFile, string> PathNameForDownloadedFile { get; set; }
 
         public IDownloadFile CreateDownloadFile (string url, IDictionary<string, string> headers)
         {

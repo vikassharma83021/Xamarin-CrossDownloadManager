@@ -67,7 +67,7 @@ namespace Plugin.DownloadManager
         {
             NSFileManager fileManager = NSFileManager.DefaultManager;
 
-            var destinationURL = new NSUrl (Controller.UriForDownloadedFile (file));
+            var destinationURL = new NSUrl (Controller.PathNameForDownloadedFile (file), false);
             NSError removeCopy;
             NSError errorCopy;
 
@@ -77,7 +77,8 @@ namespace Plugin.DownloadManager
             if (success) {
                 file.Status = DownloadFileStatus.COMPLETED;
             } else {
-                file.Status = DownloadFileStatus.CANCELED;
+                file.StatusDetails = errorCopy.LocalizedDescription;
+                file.Status = DownloadFileStatus.FAILED;
             }
 
             Controller.Queue.Remove (file);
