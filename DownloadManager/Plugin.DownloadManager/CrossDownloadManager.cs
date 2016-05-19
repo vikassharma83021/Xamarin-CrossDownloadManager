@@ -14,12 +14,21 @@ namespace Plugin.DownloadManager
         static Lazy<IDownloadManager> Implementation = new Lazy<IDownloadManager> (() => CreateDownloadManager (), System.Threading.LazyThreadSafetyMode.PublicationOnly);
 
 #if __IOS__
+        /// <summary>
+        /// Set the background session completion handler.
+        /// @see: https://developer.xamarin.com/guides/ios/application_fundamentals/backgrounding/part_4_ios_backgrounding_walkthroughs/background_transfer_walkthrough/#Handling_Transfer_Completion
+        /// </summary>
         public static Action BackgroundSessionCompletionHandler;
+
+        /// <summary>
+        /// The URL session download delegate.
+        /// @see https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSURLSessionDownloadDelegate_protocol/#//apple_ref/occ/intfm/NSURLSessionDownloadDelegate/URLSession:downloadTask:didResumeAtOffset:expectedTotalBytes:
+        /// </summary>
         public static UrlSessionDownloadDelegate UrlSessionDownloadDelegate;
 #endif
 
         /// <summary>
-        /// Current settings to use
+        /// The platform-implementation
         /// </summary>
         public static IDownloadManager Current {
             get {

@@ -9,6 +9,9 @@ using Plugin.DownloadManager.Abstractions;
 
 namespace Plugin.DownloadManager
 {
+    /// <summary>
+    /// The android implementation of the download manager.
+    /// </summary>
     public class DownloadManagerImplementation : IDownloadManager
     {
         Android.OS.Handler _downloadWatcherHandler;

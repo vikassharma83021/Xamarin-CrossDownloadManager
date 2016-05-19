@@ -5,6 +5,9 @@ using Plugin.DownloadManager.Abstractions;
 
 namespace Plugin.DownloadManager
 {
+    /// <summary>
+    /// The WindowsPhone8 implementation of the download manager.
+    /// </summary>
     public class DownloadManagerImplementation : IDownloadManager
     {
         public ObservableCollection<IDownloadFile> Queue { get; private set; }

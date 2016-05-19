@@ -7,6 +7,9 @@ using UIKit;
 
 namespace Plugin.DownloadManager
 {
+    /// <summary>
+    /// The iOS implementation of the download manager.
+    /// </summary>
     public class DownloadManagerImplementation : IDownloadManager
     {
         const string _identifier = "org.brunstad.bmm.BackgroundTransferSession";
