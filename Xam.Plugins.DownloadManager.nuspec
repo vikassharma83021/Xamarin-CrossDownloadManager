@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata minClientVersion="2.8.3">
 		<id>Xam.Plugins.DownloadManager</id>
-		<version>0.2.0</version>
+		<version>0.3.1</version>
 		<title>Cross-platform downloadmanager</title>
 		<authors>Simon Schick</authors>
 		<owners>Simon Schick</owners>
@@ -93,7 +93,6 @@
 
 		<!--Xamarin.iOS-->
 		<file src="DownloadManager/Plugin.DownloadManager.iOS/bin/iPhone/Release/Plugin.DownloadManager.dll" target="lib\Xamarin.iOS10\Plugin.DownloadManager.dll" />
-		<file src="DownloadManager/Plugin.DownloadManager.iOS/bin/iPhone/Release/Plugin.DownloadManager.dll.mdb" target="lib\Xamarin.iOS10\Plugin.DownloadManager.dll.mdb" />
 		<file src="DownloadManager/Plugin.DownloadManager.iOS/bin/iPhone/Release/Plugin.DownloadManager.xml" target="lib\Xamarin.iOS10\Plugin.DownloadManager.xml" />
 		<file src="DownloadManager/Plugin.DownloadManager.iOS/bin/iPhone/Release/Plugin.DownloadManager.Abstractions.dll" target="lib\Xamarin.iOS10\Plugin.DownloadManager.Abstractions.dll" />
 		<file src="DownloadManager/Plugin.DownloadManager.iOS/bin/iPhone/Release/Plugin.DownloadManager.Abstractions.dll.mdb" target="lib\Xamarin.iOS10\Plugin.DownloadManager.Abstractions.dll.mdb" />
