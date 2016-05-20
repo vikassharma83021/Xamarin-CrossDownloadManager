@@ -107,11 +107,11 @@
 		<file src="DownloadManager/Plugin.DownloadManager.UWP/bin/Release/Plugin.DownloadManager.Abstractions.pdb" target="lib\UAP10\Plugin.DownloadManager.Abstractions.pdb" />
 		<file src="DownloadManager/Plugin.DownloadManager.UWP/bin/Release/Plugin.DownloadManager.Abstractions.xml" target="lib\UAP10\Plugin.DownloadManager.Abstractions.xml" />
 
-		<!--Xamarin.Mac
+		<!--Xamarin.Mac-->
 		<file src="DownloadManager/Plugin.DownloadManager.Mac/bin/Release/Plugin.DownloadManager.dll" target="lib\Xamarin.Mac20\Plugin.DownloadManager.dll" />
 		<file src="DownloadManager/Plugin.DownloadManager.Mac/bin/Release/Plugin.DownloadManager.xml" target="lib\Xamarin.Mac20\Plugin.DownloadManager.xml" />
 		<file src="DownloadManager/Plugin.DownloadManager.Mac/bin/Release/Plugin.DownloadManager.Abstractions.dll" target="lib\Xamarin.Mac20\Plugin.DownloadManager.Abstractions.dll" />
+		<file src="DownloadManager/Plugin.DownloadManager.Mac/bin/Release/Plugin.DownloadManager.Abstractions.dll.mdb" target="lib\Xamarin.Mac20\Plugin.DownloadManager.Abstractions.dll.mdb" />
 		<file src="DownloadManager/Plugin.DownloadManager.Mac/bin/Release/Plugin.DownloadManager.Abstractions.xml" target="lib\Xamarin.Mac20\Plugin.DownloadManager.Abstractions.xml" />
-		-->
 	</files>
 </package>

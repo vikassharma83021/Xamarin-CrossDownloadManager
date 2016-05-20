@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.DownloadManager.Wind
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.DownloadManager.UWP", "DownloadManager\Plugin.DownloadManager.UWP\Plugin.DownloadManager.UWP.csproj", "{E34B516D-C0D8-450F-9DB0-BB6A5B04AEF1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.DownloadManager.Mac", "DownloadManager\Plugin.DownloadManager.Mac\Plugin.DownloadManager.Mac.csproj", "{F84732E9-2993-4637-99E0-641D12DBCDBC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		AppStore|Any CPU = AppStore|Any CPU
@@ -227,6 +229,30 @@ Global
 		{E34B516D-C0D8-450F-9DB0-BB6A5B04AEF1}.Release|x64.Build.0 = Release|x64
 		{E34B516D-C0D8-450F-9DB0-BB6A5B04AEF1}.Release|x86.ActiveCfg = Release|x86
 		{E34B516D-C0D8-450F-9DB0-BB6A5B04AEF1}.Release|x86.Build.0 = Release|x86
+		{F84732E9-2993-4637-99E0-641D12DBCDBC}.AppStore|Any CPU.ActiveCfg = Debug|Any CPU
+		{F84732E9-2993-4637-99E0-641D12DBCDBC}.AppStore|Any CPU.Build.0 = Debug|Any CPU
+		{F84732E9-2993-4637-99E0-641D12DBCDBC}.AppStore|ARM.ActiveCfg = Debug|Any CPU
+		{F84732E9-2993-4637-99E0-641D12DBCDBC}.AppStore|ARM.Build.0 = Debug|Any CPU
+		{F84732E9-2993-4637-99E0-641D12DBCDBC}.AppStore|x64.ActiveCfg = Debug|Any CPU
+		{F84732E9-2993-4637-99E0-641D12DBCDBC}.AppStore|x64.Build.0 = Debug|Any CPU
+		{F84732E9-2993-4637-99E0-641D12DBCDBC}.AppStore|x86.ActiveCfg = Debug|Any CPU
+		{F84732E9-2993-4637-99E0-641D12DBCDBC}.AppStore|x86.Build.0 = Debug|Any CPU
+		{F84732E9-2993-4637-99E0-641D12DBCDBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F84732E9-2993-4637-99E0-641D12DBCDBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F84732E9-2993-4637-99E0-641D12DBCDBC}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{F84732E9-2993-4637-99E0-641D12DBCDBC}.Debug|ARM.Build.0 = Debug|Any CPU
+		{F84732E9-2993-4637-99E0-641D12DBCDBC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F84732E9-2993-4637-99E0-641D12DBCDBC}.Debug|x64.Build.0 = Debug|Any CPU
+		{F84732E9-2993-4637-99E0-641D12DBCDBC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F84732E9-2993-4637-99E0-641D12DBCDBC}.Debug|x86.Build.0 = Debug|Any CPU
+		{F84732E9-2993-4637-99E0-641D12DBCDBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F84732E9-2993-4637-99E0-641D12DBCDBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F84732E9-2993-4637-99E0-641D12DBCDBC}.Release|ARM.ActiveCfg = Release|Any CPU
+		{F84732E9-2993-4637-99E0-641D12DBCDBC}.Release|ARM.Build.0 = Release|Any CPU
+		{F84732E9-2993-4637-99E0-641D12DBCDBC}.Release|x64.ActiveCfg = Release|Any CPU
+		{F84732E9-2993-4637-99E0-641D12DBCDBC}.Release|x64.Build.0 = Release|Any CPU
+		{F84732E9-2993-4637-99E0-641D12DBCDBC}.Release|x86.ActiveCfg = Release|Any CPU
+		{F84732E9-2993-4637-99E0-641D12DBCDBC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
