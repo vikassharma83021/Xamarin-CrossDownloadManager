@@ -32,6 +32,18 @@ namespace Plugin.DownloadManager
             file.Status = DownloadFileStatus.RUNNING;
         }
 
+        public override void DidCompleteWithError (Foundation.NSUrlSession session, Foundation.NSUrlSessionTask task, Foundation.NSError error)
+        {
+            var file = getDownloadFileByTask ((NSUrlSessionDownloadTask)task);
+            if (file == null)
+                return;
+
+            file.Status = DownloadFileStatus.FAILED;
+            file.StatusDetails = error.LocalizedDescription;
+
+            Controller.Queue.Remove (file);
+        }
+
         /**
          * The Task keeps receiving data. Keep track of the current progress ...
          */
