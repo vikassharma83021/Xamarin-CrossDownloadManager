@@ -26,6 +26,13 @@ namespace Plugin.DownloadManager.Abstractions
         /// </summary>
         /// <returns>The download file.</returns>
         /// <param name="url">URL to download.</param>
+        IDownloadFile CreateDownloadFile (string url);
+
+        /// <summary>
+        /// Creates a download file.
+        /// </summary>
+        /// <returns>The download file.</returns>
+        /// <param name="url">URL to download.</param>
         /// <param name="headers">Headers to send along when requesting the URL.</param>
         IDownloadFile CreateDownloadFile (string url, IDictionary<string, string> headers);
 

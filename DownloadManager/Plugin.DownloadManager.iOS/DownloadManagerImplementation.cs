@@ -36,6 +36,11 @@ namespace Plugin.DownloadManager
             });
         }
 
+        public IDownloadFile CreateDownloadFile (string url)
+        {
+            return CreateDownloadFile (url, new Dictionary<string, string> ());
+        }
+
         public IDownloadFile CreateDownloadFile (string url, IDictionary<string, string> headers)
         {
             return new DownloadFileImplementation (url, headers);

@@ -49,7 +49,7 @@ _Activity.cs_
 You can now start a download by adding the following code:
 ```
     var downloadManager = CrossDownloadManager.Current;
-    var file = downloadManager.CreateDownloadFile(url, new Dictionary<string, string>());
+    var file = downloadManager.CreateDownloadFile(url);
     downloadManager.Start(file);
 ```
 

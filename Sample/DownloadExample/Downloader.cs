@@ -10,9 +10,13 @@ namespace DownloadExample
 
         public void StartDownloading ()
         {
-            File = CrossDownloadManager.Current.CreateDownloadFile(
-                "http://www.speedtestx.de/testfiles/data_10mb.test",
-                new Dictionary<string, string>()
+            File = CrossDownloadManager.Current.CreateDownloadFile (
+                "http://www.speedtestx.de/testfiles/data_10mb.test"
+                // If you need, you can add a dictionary of headers you need.
+                //, new Dictionary<string, string> {
+                //    { "Cookie", "LetMeDownload=1;" },
+                //    { "Authorization", "Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==" }
+                //}
             );
 
             CrossDownloadManager.Current.Start (File);
