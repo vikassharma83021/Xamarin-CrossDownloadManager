@@ -79,6 +79,10 @@ Just register the instance in `CrossDownloadManager.Current` in the library. Her
 
     Mvx.RegisterSingleton<IDownloadManager>(() => CrossDownloadManager.Current);
 
+### Can I just have a look at a sample implementation?
+
+I've created a quite basic implementation for iOS and Android. You can find it in the folder "Sample" in this repository.
+
 ### Contribute
 
 If you want to contribute, just fork the project, write some code or just file an issue if you don't konw how to realize the change you want to see.
