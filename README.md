@@ -47,7 +47,7 @@ _Activity.cs_
 
 You can now start a download by adding the following code:
 ```
-    var downloadManager = CrossDownloadManager.Instance;
+    var downloadManager = CrossDownloadManager.Current;
     var file = downloadManager.CreateDownloadFile(url);
     downloadManager.Start(file);
 ```
@@ -75,9 +75,9 @@ Usually, you would expect to set the path to the `IDownloadFile` instance, you g
 
 ### I want to use $FAVORITE_IOC_LIBRARY
 
-Just register the instance in `CrossDownloadManager.Instance` in the library. Here's an example how to do it on MvvmCross:
+Just register the instance in `CrossDownloadManager.Current` in the library. Here's an example how to do it on MvvmCross:
 
-    Mvx.RegisterSingleton<IDownloadManager>(() => CrossDownloadManager.Instance);
+    Mvx.RegisterSingleton<IDownloadManager>(() => CrossDownloadManager.Current);
 
 ### Contribute
 
