@@ -60,7 +60,7 @@ After a download has completed, it is removed from `IDownloadManager.Queue`.
 
 Usually, you would expect to set the path to the `IDownloadFile` instance, you get when calling `downloadManager.CreateDownloadFile(url)`. But, as this background-downloader even continues when the app crashed, you have to be able to reconstruct the path in every stage of the app. The correct way is to register a method as early as possible, that, in every circumstance, can reconstruct the path the file should be saved. This code line could look like following:
 ```
-    CrossDownloadManager.Current.UriForDownloadedFile = new System.Func<IDownloadFile, string> (file => {
+    CrossDownloadManager.Current.PathNameForDownloadedFile = new System.Func<IDownloadFile, string> (file => {
 #if __IOS__
             string fileName = (new NSUrl(url, false)).LastPathComponent;
 #elif __ANDROID__
@@ -85,7 +85,7 @@ I've created a quite basic implementation for iOS and Android. You can find it i
 
 ### Contribute
 
-If you want to contribute, just fork the project, write some code or just file an issue if you don't konw how to realize the change you want to see.
+If you want to contribute, just fork the project, write some code or just file an issue if you don't know how to realize the change you want to see.
 
 ### Licensing
 
