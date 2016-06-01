@@ -27,6 +27,7 @@ _AppDelegate.cs_
     }
 ```
 
+As of iOS 9, your URL MUST be secured or you have to add the domain to the list of exceptions. See [https://developer.apple.com/library/ios/releasenotes/General/WhatsNewIniOS/Articles/iOS9.html#//apple_ref/doc/uid/TP40016198-SW14](https://developer.apple.com/library/ios/releasenotes/General/WhatsNewIniOS/Articles/iOS9.html#//apple_ref/doc/uid/TP40016198-SW14)
 ### Android
 
 Depending on the location you want the file to be saved, you may have to ask for the permission `WRITE_EXTERNAL_STORAGE`:
@@ -63,15 +64,18 @@ Usually, you would expect to set the path to the `IDownloadFile` instance, you g
     CrossDownloadManager.Current.PathNameForDownloadedFile = new System.Func<IDownloadFile, string> (file => {
 #if __IOS__
             string fileName = (new NSUrl(url, false)).LastPathComponent;
+            return Path.Combine(Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments), fileName);
 #elif __ANDROID__
             string fileName = Android.Net.Uri.Parse(file.Url).Path.Split('/').Last();
+            return Path.Combine (ApplicationContext.GetExternalFilesDir (Android.OS.Environment.DirectoryDownloads).AbsolutePath, fileName);
 #else
             string fileName = '';
-#endif
-
             return Path.Combine(Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments), fileName);
+#endif
         });
 ```
+
+Please be aware of that the destination on Android MUST be on an external storage. See [#10](https://github.com/SimonSimCity/Xamarin-CrossDownloadManager/issues/10)
 
 ### I want to use $FAVORITE_IOC_LIBRARY
 
