@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using Foundation;
 using Plugin.DownloadManager;
 using Plugin.DownloadManager.Abstractions;
 using UIKit;
@@ -7,8 +9,6 @@ namespace DownloadExample.iOS
 {
     public partial class ViewController : UIViewController
     {
-        int count = 1;
-
         public ViewController (IntPtr handle) : base (handle)
         {
             // If you want to set some extensional things - like an error-handler to see why a download failed ...
@@ -18,6 +18,11 @@ namespace DownloadExample.iOS
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
+
+            CrossDownloadManager.Current.PathNameForDownloadedFile = new Func<IDownloadFile, string> (file => {
+                string fileName = (new NSUrl (file.Url, false)).LastPathComponent;
+                return Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments), fileName);
+            });
 
             var foo = new Downloader ();
 
