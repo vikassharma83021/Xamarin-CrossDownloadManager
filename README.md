@@ -63,7 +63,7 @@ Usually, you would expect to set the path to the `IDownloadFile` instance, you g
 ```
     CrossDownloadManager.Current.PathNameForDownloadedFile = new System.Func<IDownloadFile, string> (file => {
 #if __IOS__
-            string fileName = (new NSUrl(url, false)).LastPathComponent;
+            string fileName = (new NSUrl(file.Url, false)).LastPathComponent;
             return Path.Combine(Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments), fileName);
 #elif __ANDROID__
             string fileName = Android.Net.Uri.Parse(file.Url).Path.Split('/').Last();
