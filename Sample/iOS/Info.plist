@@ -44,5 +44,11 @@
     </array>
     <key>XSAppIconAssets</key>
     <string>Assets.xcassets/AppIcons.appiconset</string>
+    <!-- Added this XML to allow non-HTTPS connections. Please read https://developer.apple.com/library/ios/releasenotes/General/WhatsNewIniOS/Articles/iOS9.html#//apple_ref/doc/uid/TP40016198-SW14 -->
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+    </dict>
 </dict>
 </plist>
