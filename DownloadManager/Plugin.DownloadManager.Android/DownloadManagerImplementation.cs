@@ -82,7 +82,7 @@ namespace Plugin.DownloadManager
 
             try {
                 using (var cursor = _downloadManager.InvokeQuery (query)) {
-                    while (cursor.MoveToNext ()) {
+                    while (cursor != null && cursor.MoveToNext ()) {
                         runnable.Invoke (cursor);
                     }
                 }
