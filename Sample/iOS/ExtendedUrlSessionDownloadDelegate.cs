@@ -1,4 +1,5 @@
-﻿using Plugin.DownloadManager;
+﻿using Foundation;
+using Plugin.DownloadManager;
 
 namespace DownloadExample.iOS
 {
@@ -16,6 +17,21 @@ namespace DownloadExample.iOS
             // If you want to notify the users, that all files are downloaded, do it here - before the base-method is called.
 
             base.DidFinishEventsForBackgroundSession (session);
+        }
+
+        public override void DidFinishDownloading (NSUrlSession session, NSUrlSessionDownloadTask downloadTask, NSUrl location)
+        {
+            // In case you need to access the IDownloadFile implementation, you have to load it before calling the base-method.
+            var file = getDownloadFileByTask (downloadTask);
+            if (file == null) {
+                return;
+            }
+
+            // This base-method sets the state to "COMPLETED" and moves the file if `PathNameForDownloadedFile` is set.
+            base.DidFinishDownloading (session, downloadTask, location);
+
+            // If you don't set `PathNameForDownloadedFile`, you can do what you want with the file now.
+            System.Diagnostics.Debug.WriteLine (location.AbsoluteString);
         }
     }
 }

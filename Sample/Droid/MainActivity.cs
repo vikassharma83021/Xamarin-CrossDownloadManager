@@ -19,10 +19,11 @@ namespace DownloadExample.Droid
             CrossDownloadManager.Init (this);
 
             // Define where the files should be stored. MUST be an external storage. (see https://github.com/SimonSimCity/Xamarin-CrossDownloadManager/issues/10)
-            CrossDownloadManager.Current.PathNameForDownloadedFile = new Func<IDownloadFile, string> (file => {
-                string fileName = Android.Net.Uri.Parse (file.Url).Path.Split ('/').Last ();
-                return Path.Combine (ApplicationContext.GetExternalFilesDir (Android.OS.Environment.DirectoryDownloads).AbsolutePath, fileName);
-            });
+            // If you skip this, you neither need the permission `WRITE_EXTERNAL_STORAGE`.
+            //CrossDownloadManager.Current.PathNameForDownloadedFile = new Func<IDownloadFile, string> (file => {
+            //    string fileName = Android.Net.Uri.Parse (file.Url).Path.Split ('/').Last ();
+            //    return Path.Combine (ApplicationContext.GetExternalFilesDir (Android.OS.Environment.DirectoryDownloads).AbsolutePath, fileName);
+            //});
         }
 
         NotificationClickedBroadcastReceiver _receiverNotificationClicked;
@@ -80,6 +81,10 @@ namespace DownloadExample.Droid
                         case DownloadFileStatus.FAILED:
                         case DownloadFileStatus.CANCELED:
                             button.Text = "Downloading finished.";
+
+                            // Get the path this file was saved to. When you didn't set a custom path, this will be some temporary directory.
+                            var nativeDownloadManager = (DownloadManager)ApplicationContext.GetSystemService (DownloadService);
+                            System.Diagnostics.Debug.WriteLine (nativeDownloadManager.GetUriForDownloadedFile (((DownloadFileImplementation)sender).Id));
                             break;
                         }
                     }

@@ -20,10 +20,11 @@ namespace DownloadExample.iOS
         {
             base.ViewDidLoad ();
 
-            CrossDownloadManager.Current.PathNameForDownloadedFile = new Func<IDownloadFile, string> (file => {
-                string fileName = (new NSUrl (file.Url, false)).LastPathComponent;
-                return Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments), fileName);
-            });
+            // If you want to take full control of the saved file, see `ExtendedUrlSessionDownloadDelegate`
+            //CrossDownloadManager.Current.PathNameForDownloadedFile = new Func<IDownloadFile, string> (file => {
+            //    string fileName = (new NSUrl (file.Url, false)).LastPathComponent;
+            //    return Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments), fileName);
+            //});
 
             var foo = new Downloader ();
 

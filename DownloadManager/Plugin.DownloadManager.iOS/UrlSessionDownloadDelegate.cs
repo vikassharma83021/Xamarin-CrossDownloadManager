@@ -69,31 +69,42 @@ namespace Plugin.DownloadManager
                 return;
             }
 
-            MoveDownloadedFile (file, location);
+            var success = true;
+            if (Controller.PathNameForDownloadedFile != null) {
+                var destinationPathName = Controller.PathNameForDownloadedFile (file);
+                if (destinationPathName != null) {
+                    success = MoveDownloadedFile (file, location, destinationPathName);
+                }
+            }
+
+            // If the file destination is unknown or was moved successfully ...
+            if (success) {
+                file.Status = DownloadFileStatus.COMPLETED;
+            }
+
+            Controller.Queue.Remove (file);
         }
 
         /**
-         * Move the downloaded file to it's destination and remove it from the download-queue.
+         * Move the downloaded file to it's destination
          */
-        public void MoveDownloadedFile (DownloadFileImplementation file, NSUrl location)
+        public bool MoveDownloadedFile (DownloadFileImplementation file, NSUrl location, string destinationPathName)
         {
             NSFileManager fileManager = NSFileManager.DefaultManager;
 
-            var destinationURL = new NSUrl (Controller.PathNameForDownloadedFile (file), false);
+            var destinationURL = new NSUrl (destinationPathName, false);
             NSError removeCopy;
             NSError errorCopy;
 
             fileManager.Remove (destinationURL, out removeCopy);
-            bool success = fileManager.Copy (location, destinationURL, out errorCopy);
+            var success = fileManager.Copy (location, destinationURL, out errorCopy);
 
-            if (success) {
-                file.Status = DownloadFileStatus.COMPLETED;
-            } else {
+            if (!success) {
                 file.StatusDetails = errorCopy.LocalizedDescription;
                 file.Status = DownloadFileStatus.FAILED;
             }
 
-            Controller.Queue.Remove (file);
+            return success;
         }
 
         public override void DidFinishEventsForBackgroundSession(NSUrlSession session)

@@ -101,7 +101,9 @@ namespace Plugin.DownloadManager
                     request.AddRequestHeader (header.Key, header.Value);
                 }
 
-                request.SetDestinationUri (Uri.FromFile (new Java.IO.File (destinationPathName)));
+                if (destinationPathName != null) {
+                    request.SetDestinationUri (Uri.FromFile (new Java.IO.File (destinationPathName)));
+                }
 
                 Id = downloadManager.Enqueue (request);
 

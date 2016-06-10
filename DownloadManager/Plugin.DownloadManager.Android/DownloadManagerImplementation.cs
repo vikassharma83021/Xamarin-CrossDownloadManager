@@ -50,7 +50,12 @@ namespace Plugin.DownloadManager
         {
             var file = (DownloadFileImplementation)i;
 
-            file.StartDownload (_downloadManager, PathNameForDownloadedFile (file));
+            string destinationPathName = null;
+            if (PathNameForDownloadedFile != null) {
+                destinationPathName = PathNameForDownloadedFile (file);
+            }
+
+            file.StartDownload (_downloadManager, destinationPathName);
             Queue.Add (file);
         }
 
