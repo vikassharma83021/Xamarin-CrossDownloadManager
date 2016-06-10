@@ -1,4 +1,5 @@
 ﻿using Android.App;
+using Android.Content;
 using Android.Widget;
 using Android.OS;
 using Plugin.DownloadManager.Abstractions;
@@ -22,6 +23,26 @@ namespace DownloadExample.Droid
                 string fileName = Android.Net.Uri.Parse (file.Url).Path.Split ('/').Last ();
                 return Path.Combine (ApplicationContext.GetExternalFilesDir (Android.OS.Environment.DirectoryDownloads).AbsolutePath, fileName);
             });
+        }
+
+        NotificationClickedBroadcastReceiver _receiverNotificationClicked;
+
+        protected override void OnResume ()
+        {
+            base.OnResume ();
+
+            _receiverNotificationClicked = new NotificationClickedBroadcastReceiver ();
+            RegisterReceiver (
+                _receiverNotificationClicked,
+                new IntentFilter (DownloadManager.ActionNotificationClicked)
+            );
+        }
+
+        protected override void OnPause ()
+        {
+            base.OnPause ();
+
+            UnregisterReceiver (_receiverNotificationClicked);
         }
 
         protected override void OnCreate (Bundle savedInstanceState)
