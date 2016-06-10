@@ -8,7 +8,7 @@ namespace Plugin.DownloadManager
     {
         public DownloadManagerImplementation Controller;
 
-        DownloadFileImplementation getDownloadFileByTask (NSUrlSessionDownloadTask downloadTask)
+        protected DownloadFileImplementation getDownloadFileByTask (NSUrlSessionDownloadTask downloadTask)
         {
             return Controller.Queue
                 .Cast<DownloadFileImplementation> ()
