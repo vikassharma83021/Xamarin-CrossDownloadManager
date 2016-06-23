@@ -12,7 +12,7 @@ The CrossDownloadManager is a plugin that helps you downloading files in the bac
 |Windows Phone Silverlight|No||
 |Windows Phone RT|No||
 |Windows Store RT|No||
-|Windows 10 UWP|No - Requested (#8)||
+|Windows 10 UWP|No - Requested ([#8](https://github.com/SimonSimCity/Xamarin-CrossDownloadManager/issues/8))||
 |Xamarin.Mac|No||
 
 ### Getting started
@@ -98,10 +98,12 @@ Usually, you would expect to set the path to the `IDownloadFile` instance, you g
 ```
 ##### Additional for Andriod
 
-On Android, the destination location must be a located outside of your Apps internal directory (see [#10](https://github.com/SimonSimCity/Xamarin-CrossDownloadManager/issues/10) for details). To allow your app to write to that location, you will need the the permission `WRITE_EXTERNAL_STORAGE` (See [Android API for DownloadManager.Request.setDestinationUri()](https://developer.android.com/reference/android/app/DownloadManager.Request.html#setDestinationUri%28android.net.Uri%29):
+On Android, the destination location must be a located outside of your Apps internal directory (see [#10](https://github.com/SimonSimCity/Xamarin-CrossDownloadManager/issues/10) for details). To allow your app to write to that location, you either have to add the permission `WRITE_EXTERNAL_STORAGE` to the mainfest.xml file to require it when installing the app
 ```
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 ``` 
+
+or to request it at runtime (See [#20](https://github.com/SimonSimCity/Xamarin-CrossDownloadManager/issues/20)).
 
 
 ### I want to use $FAVORITE_IOC_LIBRARY
