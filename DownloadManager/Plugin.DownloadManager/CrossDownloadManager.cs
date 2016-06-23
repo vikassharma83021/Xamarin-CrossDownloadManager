@@ -1,7 +1,4 @@
 ﻿using System;
-#if __ANDROID__
-using Android.App;
-#endif
 using Plugin.DownloadManager.Abstractions;
 
 namespace Plugin.DownloadManager
@@ -40,21 +37,14 @@ namespace Plugin.DownloadManager
             }
         }
 
-#if __ANDROID__
-        public static void Init (Activity activity)
-        {
-            ActivityLifecycleCallbacks.Register (activity, () => Current);
-        }
-#endif
-
         static IDownloadManager CreateDownloadManager ()
-        {
+		{
 #if __IOS__
             return new DownloadManagerImplementation (UrlSessionDownloadDelegate ?? new UrlSessionDownloadDelegate());
 #elif __ANDROID__
-            return new DownloadManagerImplementation(ActivityLifecycleCallbacks.CurrentTopActivity);
+			return new DownloadManagerImplementation();
 #else
-            return null;
+			return null;
 #endif
         }
 

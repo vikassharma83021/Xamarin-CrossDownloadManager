@@ -6,6 +6,7 @@ using Android.App;
 using Android.Database;
 using Android.Content;
 using Plugin.DownloadManager.Abstractions;
+using Plugin.CurrentActivity;
 
 namespace Plugin.DownloadManager
 {
@@ -23,11 +24,11 @@ namespace Plugin.DownloadManager
 
         public Func<IDownloadFile, string> PathNameForDownloadedFile { get; set; }
 
-        public DownloadManagerImplementation (Context applicationContext)
+        public DownloadManagerImplementation ()
         {
             Queue = new ObservableCollection<IDownloadFile> ();
 
-            _downloadManager = (Android.App.DownloadManager)applicationContext.GetSystemService (Context.DownloadService);
+            _downloadManager = (Android.App.DownloadManager)CrossCurrentActivity.Current.Activity.GetSystemService (Context.DownloadService);
 
             // Add all items to the Queue that are pending, paused or running
             LoopOnDownloads (new Action<ICursor> (cursor => ReinitializeFile (cursor)));

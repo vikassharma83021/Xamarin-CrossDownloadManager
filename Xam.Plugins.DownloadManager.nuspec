@@ -26,7 +26,8 @@
 			</group>
 			<group targetFramework="wpa">
 			</group>
-			<group targetFramework="MonoAndroid">
+			<group targetFramework="MonoAndroid10">
+				<dependency id="Plugin.CurrentActivity" version="1.0.0"/>
 			</group>
 			<group targetFramework="Xamarin.iOS10">
 			</group>

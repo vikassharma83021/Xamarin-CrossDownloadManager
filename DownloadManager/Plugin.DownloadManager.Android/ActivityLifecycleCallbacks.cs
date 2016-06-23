@@ -1,8 +1,6 @@
-﻿using System;
-using Android.App;
+﻿using Android.App;
 using Android.Content;
 using Android.OS;
-using Plugin.DownloadManager.Abstractions;
 
 namespace Plugin.DownloadManager
 {
@@ -10,25 +8,7 @@ namespace Plugin.DownloadManager
     {
         DownloadCompletedBroadcastReceiver _receiverDownoladCompleted;
 
-        Func<IDownloadManager> _downloadManagerAction;
-
-        public static Activity CurrentTopActivity { get; protected set; }
-
-        public static void Register (Activity activity, Func<IDownloadManager> downloadManagerAction)
-        {
-            activity.Application.RegisterActivityLifecycleCallbacks (new ActivityLifecycleCallbacks (downloadManagerAction));
-            CurrentTopActivity = activity;
-        }
-
-        public ActivityLifecycleCallbacks (Func<IDownloadManager> downloadManagerAction)
-        {
-            _downloadManagerAction = downloadManagerAction;
-        }
-
-        public virtual void OnActivityCreated (Activity activity, Bundle savedInstanceState)
-        {
-            CurrentTopActivity = activity;
-        }
+        public virtual void OnActivityCreated (Activity activity, Bundle savedInstanceState) { }
 
         public virtual void OnActivityDestroyed (Activity activity) { }
 
@@ -39,9 +19,7 @@ namespace Plugin.DownloadManager
 
         public virtual void OnActivityResumed (Activity activity)
         {
-            CurrentTopActivity = activity;
-
-            _receiverDownoladCompleted = new DownloadCompletedBroadcastReceiver (_downloadManagerAction);
+            _receiverDownoladCompleted = new DownloadCompletedBroadcastReceiver ();
             activity.RegisterReceiver (
                 _receiverDownoladCompleted,
                 new IntentFilter (Android.App.DownloadManager.ActionDownloadComplete)

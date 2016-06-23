@@ -2,11 +2,11 @@
 using Android.Content;
 using Android.Widget;
 using Android.OS;
+using Plugin.DownloadManager;
 using Plugin.DownloadManager.Abstractions;
 using System;
-using Plugin.DownloadManager;
-using System.IO;
 using System.Linq;
+using System.IO;
 
 namespace DownloadExample.Droid
 {
@@ -15,9 +15,6 @@ namespace DownloadExample.Droid
     {
         void InitDownloadManager ()
         {
-            // On Android you have to call this method before calling `CrossDownloadManager.Current` or you'll be greeted with an exception.
-            CrossDownloadManager.Init (this);
-
             // Define where the files should be stored. MUST be an external storage. (see https://github.com/SimonSimCity/Xamarin-CrossDownloadManager/issues/10)
             // If you skip this, you neither need the permission `WRITE_EXTERNAL_STORAGE`.
             //CrossDownloadManager.Current.PathNameForDownloadedFile = new Func<IDownloadFile, string> (file => {
