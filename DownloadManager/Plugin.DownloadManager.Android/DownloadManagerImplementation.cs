@@ -116,8 +116,7 @@ namespace Plugin.DownloadManager
                 // Loop throught all files in the system-queue and update the data in the local queue
                 LoopOnDownloads (cursor => UpdateFileProperties (cursor));
 
-                var nextExecution = (Queue.Count == 0) ? 1000 : 100;
-                _downloadWatcherHandler.PostDelayed (_downloadWatcherHandlerRunnable, nextExecution);
+                _downloadWatcherHandler.PostDelayed (_downloadWatcherHandlerRunnable, 1000);
             });
 
             // Start this playing handler immediately
