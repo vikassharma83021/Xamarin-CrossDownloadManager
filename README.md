@@ -4,10 +4,16 @@ The CrossDownloadManager is a plugin that helps you downloading files in the bac
 
 ### Where can I use it?
 
-The CrossDownloadManager is currently compatible with:
-
-* Xamarin.iOS
-* Xamarin.Android
+|Platform|Supported|Version|
+| ------------------- | :-----------: | :------------------: |
+|Xamarin.iOS|Yes|iOS 7+|
+|Xamarin.iOS Unified|Yes|iOS 7+|
+|Xamarin.Android|Yes|API 14+|
+|Windows Phone Silverlight|No||
+|Windows Phone RT|No||
+|Windows Store RT|No||
+|Windows 10 UWP|No - Requested (#8)||
+|Xamarin.Mac|No||
 
 ### Getting started
 
