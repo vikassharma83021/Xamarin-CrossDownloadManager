@@ -8,7 +8,7 @@ namespace Plugin.DownloadManager
     {
         public DownloadManagerImplementation Controller;
 
-        protected DownloadFileImplementation getDownloadFileByTask (NSUrlSessionDownloadTask downloadTask)
+        protected DownloadFileImplementation getDownloadFileByTask (NSUrlSessionTask downloadTask)
         {
             return Controller.Queue
                 .Cast<DownloadFileImplementation> ()
@@ -34,7 +34,7 @@ namespace Plugin.DownloadManager
 
         public override void DidCompleteWithError (Foundation.NSUrlSession session, Foundation.NSUrlSessionTask task, Foundation.NSError error)
         {
-            var file = getDownloadFileByTask ((NSUrlSessionDownloadTask)task);
+            var file = getDownloadFileByTask (task);
             if (file == null)
                 return;
 
