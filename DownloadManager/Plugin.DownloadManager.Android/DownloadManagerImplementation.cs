@@ -6,7 +6,6 @@ using Android.App;
 using Android.Database;
 using Android.Content;
 using Plugin.DownloadManager.Abstractions;
-using Plugin.CurrentActivity;
 
 namespace Plugin.DownloadManager
 {
@@ -28,7 +27,7 @@ namespace Plugin.DownloadManager
         {
             Queue = new ObservableCollection<IDownloadFile> ();
 
-            _downloadManager = (Android.App.DownloadManager)CrossCurrentActivity.Current.Activity.GetSystemService (Context.DownloadService);
+            _downloadManager = (Android.App.DownloadManager)Application.Context.GetSystemService (Context.DownloadService);
 
             // Add all items to the Queue that are pending, paused or running
             LoopOnDownloads (new Action<ICursor> (cursor => ReinitializeFile (cursor)));
