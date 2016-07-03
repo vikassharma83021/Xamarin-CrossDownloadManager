@@ -75,7 +75,7 @@ After a download has been completed, the instance of `IDownloadFile` is then rem
 
 ### Where are the files stored?
 
-#### Default Option - Temperory Location
+#### Default Option - Temporary Location
 
 When you choose not to provide your own path before starting the download, the downloaded files are stored at a temporary directory and may be removed by the OS e.g. when the system runs out of space. You can move this file to a decided destination by listening on whether the status of the files changes to `DownloadFileStatus.COMPLETED`. You can find an implementation in the sample: https://github.com/SimonSimCity/Xamarin-CrossDownloadManager/commit/14b67698fe8488cb95351a933590dc934f6cf4e3
 
@@ -101,7 +101,7 @@ Usually, you would expect to set the path to the `IDownloadFile` instance, you g
 On Android, the destination location must be a located outside of your Apps internal directory (see [#10](https://github.com/SimonSimCity/Xamarin-CrossDownloadManager/issues/10) for details). To allow your app to write to that location, you either have to add the permission `WRITE_EXTERNAL_STORAGE` to the mainfest.xml file to require it when installing the app
 ```
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-``` 
+```
 
 or to request it at runtime (See [#20](https://github.com/SimonSimCity/Xamarin-CrossDownloadManager/issues/20)).
 

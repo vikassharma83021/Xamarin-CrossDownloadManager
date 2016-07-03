@@ -2,13 +2,13 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata minClientVersion="2.8.3">
 		<id>Xam.Plugins.DownloadManager</id>
-		<version>0.5.0</version>
+		<version>0.6.0</version>
 		<title>Cross-platform downloadmanager</title>
 		<authors>Simon Schick</authors>
 		<owners>Simon Schick</owners>
 		<licenseUrl>https://github.com/SimonSimCity/Xamarin-CrossDownloadManager/blob/master/LICENSE.md</licenseUrl>
 		<projectUrl>https://github.com/SimonSimCity/Xamarin-CrossDownloadManager</projectUrl>
-		<!--Default Icon, a template can be found:  https://raw.githubusercontent.com/jamesmontemagno/Xamarin-Templates/master/Plugins-Templates/icons/plugin_icon.png-->  
+		<!--Default Icon, a template can be found:  https://raw.githubusercontent.com/jamesmontemagno/Xamarin-Templates/master/Plugins-Templates/icons/plugin_icon.png-->
 		<iconUrl>https://raw.githubusercontent.com/jamesmontemagno/Xamarin-Templates/master/Plugins-Templates/icons/plugin_icon_nuget.png</iconUrl>
 
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
