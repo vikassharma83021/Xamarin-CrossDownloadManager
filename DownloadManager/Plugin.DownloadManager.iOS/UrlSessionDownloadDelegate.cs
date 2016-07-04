@@ -116,18 +116,5 @@ namespace Plugin.DownloadManager
                 handler();
             }
         }
-
-
-        public override void DidReceiveChallenge (NSUrlSession session, NSUrlSessionTask task, NSUrlAuthenticationChallenge challenge, System.Action<NSUrlSessionAuthChallengeDisposition, NSUrlCredential> completionHandler) { }
-
-        public override void DidSendBodyData (NSUrlSession session, NSUrlSessionTask task, long bytesSent, long totalBytesSent, long totalBytesExpectedToSend) { }
-
-        public override void NeedNewBodyStream (NSUrlSession session, NSUrlSessionTask task, System.Action<NSInputStream> completionHandler) { }
-
-        public override void WillPerformHttpRedirection (NSUrlSession session, NSUrlSessionTask task, NSHttpUrlResponse response, NSUrlRequest newRequest, System.Action<NSUrlRequest> completionHandler) { }
-
-        public override void DidBecomeInvalid (NSUrlSession session, NSError error) { }
-
-        public override void DidReceiveChallenge (NSUrlSession session, NSUrlAuthenticationChallenge challenge, System.Action<NSUrlSessionAuthChallengeDisposition, NSUrlCredential> completionHandler) { }
     }
 }
