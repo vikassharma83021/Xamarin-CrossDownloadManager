@@ -77,7 +77,7 @@ After a download has been completed, the instance of `IDownloadFile` is then rem
 
 #### Default Option - Temporary Location
 
-When you choose not to provide your own path before starting the download, the downloaded files are stored at a temporary directory and may be removed by the OS e.g. when the system runs out of space. You can move this file to a decided destination by listening on whether the status of the files changes to `DownloadFileStatus.COMPLETED`. You can find an implementation in the sample: https://github.com/SimonSimCity/Xamarin-CrossDownloadManager/commit/14b67698fe8488cb95351a933590dc934f6cf4e3
+When you choose not to provide your own path before starting the download, the downloaded files are stored at a temporary directory and may be removed by the OS e.g. when the system runs out of space. You can move this file to a decided destination by listening on whether the status of the files changes to `DownloadFileStatus.COMPLETED`. You can find an implementation in the sample: https://github.com/SimonSimCity/Xamarin-CrossDownloadManager/issues/27
 
 #### Recommended Option - Custom Location
 
