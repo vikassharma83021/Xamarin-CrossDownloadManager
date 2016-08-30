@@ -27,11 +27,9 @@ namespace Plugin.DownloadManager
             _session = InitBackgroundSession (sessionDownloadDelegate);
 
             // Reinitialize tasks that were started before the app was terminated or suspended
-            _session.GetAllTasks ((NSUrlSessionTask [] tasks) => {
-                foreach (var task in tasks) {
-                    if (task is NSUrlSessionDownloadTask) {
-                        Queue.Add (new DownloadFileImplementation ((NSUrlSessionDownloadTask)task));
-                    }
+            _session.GetTasks2((NSUrlSessionTask[] dataTasks, NSUrlSessionTask[] uploadTasks, NSUrlSessionTask[] downloadTasks) => {
+                foreach (var task in downloadTasks) {
+                    Queue.Add(new DownloadFileImplementation((NSUrlSessionDownloadTask)task));
                 }
             });
         }
