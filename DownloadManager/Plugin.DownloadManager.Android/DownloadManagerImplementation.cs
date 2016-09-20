@@ -163,27 +163,27 @@ namespace Plugin.DownloadManager
             downloadFile.TotalBytesWritten = cursor.GetInt (cursor.GetColumnIndex (Android.App.DownloadManager.ColumnBytesDownloadedSoFar));
             downloadFile.TotalBytesExpected = cursor.GetInt (cursor.GetColumnIndex (Android.App.DownloadManager.ColumnTotalSizeBytes));
 
-			switch ((DownloadStatus)cursor.GetInt (cursor.GetColumnIndex (Android.App.DownloadManager.ColumnStatus))) {
-			case DownloadStatus.Successful:
+            switch ((DownloadStatus)cursor.GetInt (cursor.GetColumnIndex (Android.App.DownloadManager.ColumnStatus))) {
+            case DownloadStatus.Successful:
                 downloadFile.Status = DownloadFileStatus.COMPLETED;
                 Queue.Remove (downloadFile);
                 break;
-
-			case DownloadStatus.Failed:
+                    
+            case DownloadStatus.Failed:
                 downloadFile.StatusDetails = cursor.GetString(cursor.GetColumnIndex (Android.App.DownloadManager.ColumnReason));
                 downloadFile.Status = DownloadFileStatus.FAILED;
                 Queue.Remove (downloadFile);
                 break;
-
-			case DownloadStatus.Paused:
+                    
+            case DownloadStatus.Paused:
                 downloadFile.Status = DownloadFileStatus.PAUSED;
                 break;
-
-			case DownloadStatus.Pending:
+                    
+            case DownloadStatus.Pending:
                 downloadFile.Status = DownloadFileStatus.PENDING;
                 break;
-
-			case DownloadStatus.Running:
+                    
+            case DownloadStatus.Running:
                 downloadFile.Status = DownloadFileStatus.RUNNING;
                 break;
             }
