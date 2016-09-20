@@ -115,18 +115,24 @@ namespace Plugin.DownloadManager
         {
             sessionDownloadDelegate.Controller = this;
 
-			NSUrlSessionConfiguration configuration;
+            NSUrlSessionConfiguration configuration;
 
             if (UIDevice.CurrentDevice.CheckSystemVersion (8, 0)) {
-				configuration = NSUrlSessionConfiguration.CreateBackgroundSessionConfiguration (_identifier);
+                using (configuration = NSUrlSessionConfiguration.CreateBackgroundSessionConfiguration(_identifier)) {
+                    return createSession(configuration, sessionDownloadDelegate);
+                }
             } else {
-				configuration = NSUrlSessionConfiguration.BackgroundSessionConfiguration(_identifier);
+                using(configuration = NSUrlSessionConfiguration.BackgroundSessionConfiguration(_identifier)) {
+                    return createSession(configuration, sessionDownloadDelegate);
+                };
             }
+        }
 
-			configuration.HttpMaximumConnectionsPerHost = 1;
-			configuration.AllowsCellularAccess = _mobileNetworkAllowed;
+        private NSUrlSession createSession(NSUrlSessionConfiguration configuration, UrlSessionDownloadDelegate sessionDownloadDelegate) {
+            configuration.HttpMaximumConnectionsPerHost = 1;
+            configuration.AllowsCellularAccess = _mobileNetworkAllowed;
 
-			return NSUrlSession.FromConfiguration(configuration, sessionDownloadDelegate, null);
+            return NSUrlSession.FromConfiguration(configuration, sessionDownloadDelegate, null);
         }
     }
 }
