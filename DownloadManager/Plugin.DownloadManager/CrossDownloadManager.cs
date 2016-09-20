@@ -24,6 +24,8 @@ namespace Plugin.DownloadManager
         public static UrlSessionDownloadDelegate UrlSessionDownloadDelegate;
 #endif
 
+        public const bool MobileNetworkAllowedByDefault = true;
+
         /// <summary>
         /// The platform-implementation
         /// </summary>

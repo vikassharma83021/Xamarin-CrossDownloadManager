@@ -16,6 +16,8 @@ namespace Plugin.DownloadManager
 
         public IDictionary<string, string> Headers { get; private set; }
 
+        protected Android.App.DownloadManager.Request Request { get; private set; }
+
         DownloadFileStatus _status;
 
         public DownloadFileStatus Status {
@@ -92,20 +94,44 @@ namespace Plugin.DownloadManager
             Url = cursor.GetString (cursor.GetColumnIndex (Android.App.DownloadManager.ColumnUri));
         }
 
-        public void StartDownload (Android.App.DownloadManager downloadManager, string destinationPathName)
+        private bool _mobileNetworkAllowed = true;
+
+        public bool MobileNetworkAllowed
         {
-            using (var downloadUrl = Uri.Parse (Url))
-            using (var request = new Android.App.DownloadManager.Request (downloadUrl)) {
+            get
+            {
+                return _mobileNetworkAllowed;
+            }
+            set
+            {
+                _mobileNetworkAllowed = value;
+				if (Request != null && value == false) {
+                    Request.SetAllowedNetworkTypes(Android.App.DownloadNetwork.Wifi);
+                }
+            }
+        }
+
+        public void StartDownload (Android.App.DownloadManager downloadManager, string destinationPathName, bool? mobileNetworkAllowed)
+        {
+            using (var downloadUrl = Uri.Parse(Url))
+            using (Request = new Android.App.DownloadManager.Request(downloadUrl))
+            {
+
+                if (mobileNetworkAllowed != null) {
+                    MobileNetworkAllowed = (bool)mobileNetworkAllowed;
+                } else {
+                    MobileNetworkAllowed = MobileNetworkAllowed;
+                }
 
                 foreach (var header in Headers) {
-                    request.AddRequestHeader (header.Key, header.Value);
+                    Request.AddRequestHeader (header.Key, header.Value);
                 }
 
                 if (destinationPathName != null) {
-                    request.SetDestinationUri (Uri.FromFile (new Java.IO.File (destinationPathName)));
+                    Request.SetDestinationUri (Uri.FromFile (new Java.IO.File (destinationPathName)));
                 }
 
-                Id = downloadManager.Enqueue (request);
+                Id = downloadManager.Enqueue (Request);
 
                 Status = DownloadFileStatus.RUNNING;
             }
