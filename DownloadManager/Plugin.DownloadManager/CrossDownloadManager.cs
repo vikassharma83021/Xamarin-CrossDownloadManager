@@ -40,13 +40,13 @@ namespace Plugin.DownloadManager
         }
 
         static IDownloadManager CreateDownloadManager ()
-		{
+        {
 #if __IOS__
             return new DownloadManagerImplementation (UrlSessionDownloadDelegate ?? new UrlSessionDownloadDelegate());
 #elif __ANDROID__
-			return new DownloadManagerImplementation();
+            return new DownloadManagerImplementation();
 #else
-			return null;
+            return null
 #endif
         }
 

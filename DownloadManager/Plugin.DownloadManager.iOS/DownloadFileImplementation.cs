@@ -14,9 +14,9 @@ namespace Plugin.DownloadManager
          */
         public NSUrlSessionDownloadTask Task;
 
-		private NSMutableUrlRequest _request;
+        private NSMutableUrlRequest _request;
 
-		private NSUrlSession _session;
+        private NSUrlSession _session;
 
         public string Url { get; private set; }
 
@@ -29,9 +29,9 @@ namespace Plugin.DownloadManager
                 return _status;
             }
             set {
-                if (!Equals (_status, value)) {
+                if (!Equals(_status, value)) {
                     _status = value;
-                    PropertyChanged?.Invoke (this, new PropertyChangedEventArgs ("Status"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Status"));
                 }
             }
         }
@@ -43,9 +43,9 @@ namespace Plugin.DownloadManager
                 return _statusDetails;
             }
             set {
-                if (!Equals (_statusDetails, value)) {
+                if (!Equals(_statusDetails, value)) {
                     _statusDetails = value;
-                    PropertyChanged?.Invoke (this, new PropertyChangedEventArgs ("StatusDetails"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("StatusDetails"));
                 }
             }
         }
@@ -57,9 +57,9 @@ namespace Plugin.DownloadManager
                 return _totalBytesExpected;
             }
             set {
-                if (!Equals (_totalBytesExpected, value)) {
+                if (!Equals(_totalBytesExpected, value)) {
                     _totalBytesExpected = value;
-                    PropertyChanged?.Invoke (this, new PropertyChangedEventArgs ("TotalBytesExpected"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TotalBytesExpected"));
                 }
             }
         }
@@ -71,9 +71,9 @@ namespace Plugin.DownloadManager
                 return _totalBytesWritten;
             }
             set {
-                if (!Equals (_totalBytesWritten, value)) {
+                if (!Equals(_totalBytesWritten, value)) {
                     _totalBytesWritten = value;
-                    PropertyChanged?.Invoke (this, new PropertyChangedEventArgs ("TotalBytesWritten"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TotalBytesWritten"));
                 }
             }
         }
@@ -81,7 +81,7 @@ namespace Plugin.DownloadManager
         /**
          * Initializing a new object to add it to the download-queue
          */
-        public DownloadFileImplementation (string url, IDictionary<string, string> headers)
+        public DownloadFileImplementation(string url, IDictionary<string, string> headers)
         {
             Url = url;
             Headers = headers;
@@ -89,83 +89,81 @@ namespace Plugin.DownloadManager
             Status = DownloadFileStatus.PENDING;
         }
 
-		private bool _mobileNetworkAllowed = CrossDownloadManager.MobileNetworkAllowedByDefault;
-		public bool MobileNetworkAllowed
-		{
-			get
-			{
-				return _mobileNetworkAllowed;
-			}
-			set
-			{
-				if (_mobileNetworkAllowed != value) {
-					_mobileNetworkAllowed = value;
+        private bool _mobileNetworkAllowed = CrossDownloadManager.MobileNetworkAllowedByDefault;
+        public bool MobileNetworkAllowed {
+            get {
+                return _mobileNetworkAllowed;
+            }
+            set {
+                if (_mobileNetworkAllowed != value) {
+                    _mobileNetworkAllowed = value;
 
-					if (_request != null) {
-						if (Status != DownloadFileStatus.COMPLETED && Status != DownloadFileStatus.CANCELED) {
-							RestartDownload();
-						}
-					}
-				}
-			}
-		}
+                    if (_request != null) {
+                        if (Status != DownloadFileStatus.COMPLETED && Status != DownloadFileStatus.CANCELED) {
+                            RestartDownload();
+                        }
+                    }
+                }
+            }
+        }
 
         /**
          * Called when re-initializing the app after the app shut down to be able to still handle on-success calls.
          */
-        public DownloadFileImplementation (NSUrlSessionDownloadTask task)
+        public DownloadFileImplementation(NSUrlSessionDownloadTask task)
         {
             Url = task.OriginalRequest.Url.AbsoluteString;
-            Headers = new Dictionary<string, string> ();
+            Headers = new Dictionary<string, string>();
 
             foreach (var header in task.OriginalRequest.Headers) {
-                Headers.Add (new KeyValuePair<string, string> (header.Key.ToString (), header.Value.ToString ()));
+                Headers.Add(new KeyValuePair<string, string>(header.Key.ToString(), header.Value.ToString()));
             }
 
             Status = DownloadFileStatus.PENDING;
 
             switch (task.State) {
-            case NSUrlSessionTaskState.Running:
-                Status = DownloadFileStatus.RUNNING;
-                break;
-            case NSUrlSessionTaskState.Completed:
-                Status = DownloadFileStatus.COMPLETED;
-                break;
-            case NSUrlSessionTaskState.Canceling:
-                Status = DownloadFileStatus.RUNNING;
-                break;
-            case NSUrlSessionTaskState.Suspended:
-                Status = DownloadFileStatus.PAUSED;
-                break;
+                case NSUrlSessionTaskState.Running:
+                    Status = DownloadFileStatus.RUNNING;
+                    break;
+                case NSUrlSessionTaskState.Completed:
+                    Status = DownloadFileStatus.COMPLETED;
+                    break;
+                case NSUrlSessionTaskState.Canceling:
+                    Status = DownloadFileStatus.RUNNING;
+                    break;
+                case NSUrlSessionTaskState.Suspended:
+                    Status = DownloadFileStatus.PAUSED;
+                    break;
             }
 
             Task = task;
         }
 
-        public void StartDownload (NSUrlSession session)
+        public void StartDownload(NSUrlSession session)
         {
-			_session = session;
-            using (var downloadURL = NSUrl.FromString (Url))
-			using (_request = new NSMutableUrlRequest (downloadURL)) {
+            _session = session;
+            using (var downloadURL = NSUrl.FromString(Url))
+            using (_request = new NSMutableUrlRequest(downloadURL)) {
                 if (Headers != null) {
-                    var headers = new NSMutableDictionary ();
+                    var headers = new NSMutableDictionary();
                     foreach (var header in Headers) {
-                        headers.SetValueForKey (
-                            new NSString (header.Value),
-                            new NSString (header.Key)
+                        headers.SetValueForKey(
+                            new NSString(header.Value),
+                            new NSString(header.Key)
                         );
                     }
                     _request.Headers = headers;
 
-					_request.AllowsCellularAccess = MobileNetworkAllowed;
+                    _request.AllowsCellularAccess = MobileNetworkAllowed;
                 }
 
-                Task = session.CreateDownloadTask (_request);
-                Task.Resume ();
+                Task = session.CreateDownloadTask(_request);
+                Task.Resume();
             }
         }
 
-        public void RestartDownload(NSUrlSession session) {
+        public void RestartDownload(NSUrlSession session)
+        {
             _session = session;
             RestartDownload();
         }

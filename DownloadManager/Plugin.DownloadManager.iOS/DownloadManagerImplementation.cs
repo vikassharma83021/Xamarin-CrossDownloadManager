@@ -21,39 +21,38 @@ namespace Plugin.DownloadManager
 
         public Func<IDownloadFile, string> PathNameForDownloadedFile { get; set; }
 
-		private UrlSessionDownloadDelegate _delegate;
+        private UrlSessionDownloadDelegate _delegate;
 
-		private bool _mobileNetworkAllowed = CrossDownloadManager.MobileNetworkAllowedByDefault;
+        private bool _mobileNetworkAllowed = CrossDownloadManager.MobileNetworkAllowedByDefault;
 
-		public bool MobileNetworkAllowed
-		{
-			get
-			{
-				return _mobileNetworkAllowed;
-			}
+        public bool MobileNetworkAllowed
+        {
+            get
+            {
+                return _mobileNetworkAllowed;
+            }
+            set
+            {
+                if (value != _mobileNetworkAllowed) {
+                    _mobileNetworkAllowed = value;
 
-			set
-			{
-				if (value != _mobileNetworkAllowed) {
-					_mobileNetworkAllowed = value;
+                    var downloadFiles = Queue.Cast<DownloadFileImplementation>().ToList();
 
-					var downloadFiles = Queue.Cast<DownloadFileImplementation>().ToList();
+                    if (downloadFiles.Count > 0)
+                    {
+                        downloadFiles.ForEach(downloadFile => downloadFile.MobileNetworkAllowed = MobileNetworkAllowed);
+                    }
+                }
+            }
+        }
 
-					if (downloadFiles.Count > 0)
-					{
-						downloadFiles.ForEach(downloadFile => downloadFile.MobileNetworkAllowed = MobileNetworkAllowed);
-					}
-				}
-			}
-		}
-
-		public DownloadManagerImplementation (UrlSessionDownloadDelegate sessionDownloadDelegate)
+        public DownloadManagerImplementation (UrlSessionDownloadDelegate sessionDownloadDelegate)
         {
             Queue = new ObservableCollection<IDownloadFile> ();
 
-			_delegate = sessionDownloadDelegate;
+            _delegate = sessionDownloadDelegate;
 
-			_session = InitBackgroundSession (_delegate);
+            _session = InitBackgroundSession (_delegate);
 
             // Reinitialize tasks that were started before the app was terminated or suspended
             _session.GetTasks2((NSUrlSessionTask[] dataTasks, NSUrlSessionTask[] uploadTasks, NSUrlSessionTask[] downloadTasks) => {
@@ -77,7 +76,7 @@ namespace Plugin.DownloadManager
         {
             var file = (DownloadFileImplementation)i;
 
-			file.MobileNetworkAllowed = MobileNetworkAllowed;
+            file.MobileNetworkAllowed = MobileNetworkAllowed;
 
             file.StartDownload (_session);
             Queue.Add (file);
