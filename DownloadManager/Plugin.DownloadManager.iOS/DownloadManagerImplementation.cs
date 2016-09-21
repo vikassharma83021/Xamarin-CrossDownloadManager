@@ -37,17 +37,11 @@ namespace Plugin.DownloadManager
 				if (value != _mobileNetworkAllowed) {
 					_mobileNetworkAllowed = value;
 
-					//Reinitialize the BackgroundSession to apply the new configuration value
-					_session = InitBackgroundSession (_delegate);
+					var downloadFiles = Queue.Cast<DownloadFileImplementation>().ToList();
 
-					if (Queue.Count > 0) {
-						var downloadFiles = Queue.Cast<DownloadFileImplementation> ().ToList ();
-
-						AbortAll ();
-
-						downloadFiles.ForEach ((downloadFile) => {
-							Start (downloadFile);
-						});
+					if (downloadFiles.Count > 0)
+					{
+						downloadFiles.ForEach(downloadFile => downloadFile.MobileNetworkAllowed = MobileNetworkAllowed);
 					}
 				}
 			}
@@ -82,6 +76,8 @@ namespace Plugin.DownloadManager
         public void Start (IDownloadFile i)
         {
             var file = (DownloadFileImplementation)i;
+
+			file.MobileNetworkAllowed = MobileNetworkAllowed;
 
             file.StartDownload (_session);
             Queue.Add (file);
@@ -130,7 +126,6 @@ namespace Plugin.DownloadManager
 
         private NSUrlSession createSession(NSUrlSessionConfiguration configuration, UrlSessionDownloadDelegate sessionDownloadDelegate) {
             configuration.HttpMaximumConnectionsPerHost = 1;
-            configuration.AllowsCellularAccess = _mobileNetworkAllowed;
 
             return NSUrlSession.FromConfiguration(configuration, sessionDownloadDelegate, null);
         }

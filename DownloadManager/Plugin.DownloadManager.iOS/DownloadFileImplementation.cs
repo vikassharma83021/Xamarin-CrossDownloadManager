@@ -14,6 +14,10 @@ namespace Plugin.DownloadManager
          */
         public NSUrlSessionDownloadTask Task;
 
+		private NSMutableUrlRequest _request;
+
+		private NSUrlSession _session;
+
         public string Url { get; private set; }
 
         public IDictionary<string, string> Headers { get; private set; }
@@ -85,6 +89,27 @@ namespace Plugin.DownloadManager
             Status = DownloadFileStatus.PENDING;
         }
 
+		private bool _mobileNetworkAllowed = CrossDownloadManager.MobileNetworkAllowedByDefault;
+		public bool MobileNetworkAllowed
+		{
+			get
+			{
+				return _mobileNetworkAllowed;
+			}
+			set
+			{
+				if (_mobileNetworkAllowed != value) {
+					_mobileNetworkAllowed = value;
+
+					if (_request != null) {
+						if (Status != DownloadFileStatus.COMPLETED && Status != DownloadFileStatus.CANCELED) {
+							RestartDownload();
+						}
+					}
+				}
+			}
+		}
+
         /**
          * Called when re-initializing the app after the app shut down to be able to still handle on-success calls.
          */
@@ -119,8 +144,9 @@ namespace Plugin.DownloadManager
 
         public void StartDownload (NSUrlSession session)
         {
+			_session = session;
             using (var downloadURL = NSUrl.FromString (Url))
-            using (var request = new NSMutableUrlRequest (downloadURL)) {
+			using (_request = new NSMutableUrlRequest (downloadURL)) {
                 if (Headers != null) {
                     var headers = new NSMutableDictionary ();
                     foreach (var header in Headers) {
@@ -129,12 +155,29 @@ namespace Plugin.DownloadManager
                             new NSString (header.Key)
                         );
                     }
-                    request.Headers = headers;
+                    _request.Headers = headers;
+
+					_request.AllowsCellularAccess = MobileNetworkAllowed;
                 }
 
-                Task = session.CreateDownloadTask (request);
+                Task = session.CreateDownloadTask (_request);
                 Task.Resume ();
             }
+        }
+
+        public void RestartDownload(NSUrlSession session) {
+            _session = session;
+            RestartDownload();
+        }
+
+        public void RestartDownload()
+        {
+            Task.Cancel();
+            Task.Dispose();
+
+            _status = DownloadFileStatus.PENDING;
+
+            StartDownload(_session);
         }
     }
 }
