@@ -122,18 +122,18 @@ namespace Plugin.DownloadManager
             Status = DownloadFileStatus.PENDING;
 
             switch (task.State) {
-                case NSUrlSessionTaskState.Running:
-                    Status = DownloadFileStatus.RUNNING;
-                    break;
-                case NSUrlSessionTaskState.Completed:
-                    Status = DownloadFileStatus.COMPLETED;
-                    break;
-                case NSUrlSessionTaskState.Canceling:
-                    Status = DownloadFileStatus.RUNNING;
-                    break;
-                case NSUrlSessionTaskState.Suspended:
-                    Status = DownloadFileStatus.PAUSED;
-                    break;
+            case NSUrlSessionTaskState.Running:
+                Status = DownloadFileStatus.RUNNING;
+                break;
+            case NSUrlSessionTaskState.Completed:
+                Status = DownloadFileStatus.COMPLETED;
+                break;
+            case NSUrlSessionTaskState.Canceling:
+                Status = DownloadFileStatus.RUNNING;
+                break;
+            case NSUrlSessionTaskState.Suspended:
+                Status = DownloadFileStatus.PAUSED;
+                break;
             }
 
             Task = task;
