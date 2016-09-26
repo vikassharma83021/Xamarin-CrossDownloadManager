@@ -105,8 +105,8 @@ namespace Plugin.DownloadManager
             set
             {
                 _mobileNetworkAllowed = value;
-                if (Request != null && value == false) {
-                    Request.SetAllowedNetworkTypes(Android.App.DownloadNetwork.Wifi);
+                if (Request != null) {
+                    Request.SetAllowedOverMetered(_mobileNetworkAllowed);
                 }
             }
         }
