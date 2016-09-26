@@ -120,7 +120,7 @@ namespace Plugin.DownloadManager
                 if (mobileNetworkAllowed != null) {
                     MobileNetworkAllowed = (bool)mobileNetworkAllowed;
                 } else {
-                    MobileNetworkAllowed = MobileNetworkAllowed;
+                    MobileNetworkAllowed = _mobileNetworkAllowed;
                 }
 
                 foreach (var header in Headers) {
