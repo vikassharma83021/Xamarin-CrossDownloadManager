@@ -76,7 +76,9 @@ namespace Plugin.DownloadManager
         {
             var file = (DownloadFileImplementation)i;
 
-            file.MobileNetworkAllowed = MobileNetworkAllowed;
+            if (file.MobileNetworkAllowed == null) {
+                file.MobileNetworkAllowed = MobileNetworkAllowed;   
+            }
 
             file.StartDownload (_session);
             Queue.Add (file);

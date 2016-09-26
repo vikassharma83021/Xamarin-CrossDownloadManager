@@ -18,6 +18,10 @@ namespace Plugin.DownloadManager
 
         protected Android.App.DownloadManager.Request Request { get; private set; }
 
+        private Android.App.DownloadManager _downloadManager;
+
+        private string _destinationPathName;
+
         DownloadFileStatus _status;
 
         public DownloadFileStatus Status {
@@ -94,9 +98,9 @@ namespace Plugin.DownloadManager
             Url = cursor.GetString (cursor.GetColumnIndex (Android.App.DownloadManager.ColumnUri));
         }
 
-        private bool _mobileNetworkAllowed = true;
+        private bool? _mobileNetworkAllowed;
 
-        public bool MobileNetworkAllowed
+        public bool? MobileNetworkAllowed
         {
             get
             {
@@ -104,25 +108,34 @@ namespace Plugin.DownloadManager
             }
             set
             {
+                if (value == null) {
+                    throw new System.ArgumentException("Cannot set value to null");
+                }
+
                 _mobileNetworkAllowed = value;
+
                 if (Request != null) {
-                    Request.SetAllowedOverMetered(_mobileNetworkAllowed);
+                    Request.SetAllowedOverMetered((bool)_mobileNetworkAllowed);
+                }
+
+                if (_status == DownloadFileStatus.RUNNING) {
+                    RestartDownload();
                 }
             }
         }
 
-        public void StartDownload (Android.App.DownloadManager downloadManager, string destinationPathName, bool? mobileNetworkAllowed)
+        private void RestartDownload() {
+            StartDownload(_downloadManager, _destinationPathName);
+        }
+
+        public void StartDownload (Android.App.DownloadManager downloadManager, string destinationPathName)
         {
+            _downloadManager = downloadManager;
+            _destinationPathName = destinationPathName;
+
             using (var downloadUrl = Uri.Parse(Url))
             using (Request = new Android.App.DownloadManager.Request(downloadUrl))
             {
-
-                if (mobileNetworkAllowed != null) {
-                    MobileNetworkAllowed = (bool)mobileNetworkAllowed;
-                } else {
-                    MobileNetworkAllowed = _mobileNetworkAllowed;
-                }
-
                 foreach (var header in Headers) {
                     Request.AddRequestHeader (header.Key, header.Value);
                 }

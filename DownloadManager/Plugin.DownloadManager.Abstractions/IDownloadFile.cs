@@ -84,6 +84,6 @@ namespace Plugin.DownloadManager.Abstractions
         /// Gets or sets wether this file can use Mobile network to download.
         /// </summary>
         /// <value>Indicates wether this file can use Mobile network for downloading</value>
-        bool MobileNetworkAllowed { get; set; }
+        bool? MobileNetworkAllowed { get; set; }
     }
 }

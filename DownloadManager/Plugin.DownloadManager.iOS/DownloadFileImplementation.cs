@@ -89,12 +89,15 @@ namespace Plugin.DownloadManager
             Status = DownloadFileStatus.PENDING;
         }
 
-        private bool _mobileNetworkAllowed = CrossDownloadManager.MobileNetworkAllowedByDefault;
-        public bool MobileNetworkAllowed {
+        private bool? _mobileNetworkAllowed;
+        public bool? MobileNetworkAllowed {
             get {
                 return _mobileNetworkAllowed;
             }
             set {
+                if (value == null) {
+                    throw new System.ArgumentException("Cannot set value to null");
+                }
                 if (_mobileNetworkAllowed != value) {
                     _mobileNetworkAllowed = value;
 

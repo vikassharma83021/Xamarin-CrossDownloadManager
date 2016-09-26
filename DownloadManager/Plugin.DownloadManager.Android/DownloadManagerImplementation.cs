@@ -76,7 +76,11 @@ namespace Plugin.DownloadManager
                 destinationPathName = PathNameForDownloadedFile (file);
             }
 
-            file.StartDownload (_downloadManager, destinationPathName, _mobileNetworkAllowed);
+            if (file.MobileNetworkAllowed == null) {
+                file.MobileNetworkAllowed = _mobileNetworkAllowed;
+            }
+
+            file.StartDownload (_downloadManager, destinationPathName);
             Queue.Add (file);
         }
 
