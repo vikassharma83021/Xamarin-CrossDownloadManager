@@ -46,7 +46,7 @@ namespace Plugin.DownloadManager
 #elif __ANDROID__
             return new DownloadManagerImplementation();
 #else
-            return null
+            return null;
 #endif
         }
 
