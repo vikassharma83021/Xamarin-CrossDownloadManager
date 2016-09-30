@@ -106,6 +106,10 @@ On Android, the destination location must be a located outside of your Apps inte
 or to request it at runtime (See [#20](https://github.com/SimonSimCity/Xamarin-CrossDownloadManager/issues/20)).
 
 
+### What features can I use?
+
+* Allow download over cellular network, either for the whole DownloadManager or per DownloadFile (Default: `true`). Here's a quick exsample: [6670aef](https://github.com/SimonSimCity/Xamarin-CrossDownloadManager/commit/6670aef4e5b6d3395cd16bfb5bed3d83209b284f)
+
 ### I want to use $FAVORITE_IOC_LIBRARY
 
 Just register the instance in `CrossDownloadManager.Current` in the library. Here's an example how to do it on MvvmCross:
@@ -123,3 +127,9 @@ If you want to contribute, just fork the project, write some code or just file a
 ### Licensing
 
 [This plugin is licensed under the MIT License](https://opensource.org/licenses/MIT)
+
+### Contributors
+
+* [SimonSimCity](https://github.com/SimonSimCity)
+* [martijn00](https://github.com/martijn00)
+* [fela98](https://github.com/fela98)
