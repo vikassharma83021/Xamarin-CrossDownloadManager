@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Foundation;
 using Plugin.DownloadManager.Abstractions;
 using UIKit;
@@ -20,11 +21,38 @@ namespace Plugin.DownloadManager
 
         public Func<IDownloadFile, string> PathNameForDownloadedFile { get; set; }
 
+        private UrlSessionDownloadDelegate _delegate;
+
+        private bool _mobileNetworkAllowed = CrossDownloadManager.MobileNetworkAllowedByDefault;
+
+        public bool MobileNetworkAllowed
+        {
+            get
+            {
+                return _mobileNetworkAllowed;
+            }
+            set
+            {
+                if (value != _mobileNetworkAllowed) {
+                    _mobileNetworkAllowed = value;
+
+                    var downloadFiles = Queue.Cast<DownloadFileImplementation>().ToList();
+
+                    if (downloadFiles.Count > 0)
+                    {
+                        downloadFiles.ForEach(downloadFile => downloadFile.MobileNetworkAllowed = MobileNetworkAllowed);
+                    }
+                }
+            }
+        }
+
         public DownloadManagerImplementation (UrlSessionDownloadDelegate sessionDownloadDelegate)
         {
             Queue = new ObservableCollection<IDownloadFile> ();
 
-            _session = InitBackgroundSession (sessionDownloadDelegate);
+            _delegate = sessionDownloadDelegate;
+
+            _session = InitBackgroundSession (_delegate);
 
             // Reinitialize tasks that were started before the app was terminated or suspended
             _session.GetTasks2((NSUrlSessionTask[] dataTasks, NSUrlSessionTask[] uploadTasks, NSUrlSessionTask[] downloadTasks) => {
@@ -47,6 +75,10 @@ namespace Plugin.DownloadManager
         public void Start (IDownloadFile i)
         {
             var file = (DownloadFileImplementation)i;
+
+            if (file.MobileNetworkAllowed == null) {
+                file.MobileNetworkAllowed = MobileNetworkAllowed;   
+            }
 
             file.StartDownload (_session);
             Queue.Add (file);
@@ -80,17 +112,23 @@ namespace Plugin.DownloadManager
         {
             sessionDownloadDelegate.Controller = this;
 
+            NSUrlSessionConfiguration configuration;
+
             if (UIDevice.CurrentDevice.CheckSystemVersion (8, 0)) {
-                using (var configuration = NSUrlSessionConfiguration.CreateBackgroundSessionConfiguration (_identifier)) {
-                    configuration.HttpMaximumConnectionsPerHost = 1;
-                    return NSUrlSession.FromConfiguration (configuration, sessionDownloadDelegate, null);
+                using (configuration = NSUrlSessionConfiguration.CreateBackgroundSessionConfiguration(_identifier)) {
+                    return createSession(configuration, sessionDownloadDelegate);
                 }
             } else {
-                using (var configuration = NSUrlSessionConfiguration.BackgroundSessionConfiguration (_identifier)) {
-                    configuration.HttpMaximumConnectionsPerHost = 1;
-                    return NSUrlSession.FromConfiguration (configuration, sessionDownloadDelegate, null);
-                }
+                using(configuration = NSUrlSessionConfiguration.BackgroundSessionConfiguration(_identifier)) {
+                    return createSession(configuration, sessionDownloadDelegate);
+                };
             }
+        }
+
+        private NSUrlSession createSession(NSUrlSessionConfiguration configuration, UrlSessionDownloadDelegate sessionDownloadDelegate) {
+            configuration.HttpMaximumConnectionsPerHost = 1;
+
+            return NSUrlSession.FromConfiguration(configuration, sessionDownloadDelegate, null);
         }
     }
 }

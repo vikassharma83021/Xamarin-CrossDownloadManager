@@ -79,5 +79,11 @@ namespace Plugin.DownloadManager.Abstractions
         /// </summary>
         /// <value>The total bytes written.</value>
         float TotalBytesWritten { get; }
+
+        /// <summary>
+        /// Gets or sets wether this file can use Mobile network to download.
+        /// </summary>
+        /// <value>Indicates wether this file can use Mobile network for downloading</value>
+        bool? MobileNetworkAllowed { get; set; }
     }
 }

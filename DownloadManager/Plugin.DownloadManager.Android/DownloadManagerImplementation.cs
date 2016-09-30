@@ -23,6 +23,27 @@ namespace Plugin.DownloadManager
 
         public Func<IDownloadFile, string> PathNameForDownloadedFile { get; set; }
 
+        bool _mobileNetworkAllowed = CrossDownloadManager.MobileNetworkAllowedByDefault;
+
+        public bool MobileNetworkAllowed
+        {
+            get
+            {
+                return _mobileNetworkAllowed;
+            }
+            set
+            {
+                if (value != _mobileNetworkAllowed && Queue.Count > 0) {
+                    _mobileNetworkAllowed = value;
+
+                    Queue.Cast<DownloadFileImplementation>().ToList().ForEach((downloadFile) =>
+                    {
+                        downloadFile.MobileNetworkAllowed = _mobileNetworkAllowed;
+                    });
+                }
+            }
+        }
+
         public DownloadManagerImplementation ()
         {
             Queue = new ObservableCollection<IDownloadFile> ();
@@ -53,6 +74,10 @@ namespace Plugin.DownloadManager
             string destinationPathName = null;
             if (PathNameForDownloadedFile != null) {
                 destinationPathName = PathNameForDownloadedFile (file);
+            }
+
+            if (file.MobileNetworkAllowed == null) {
+                file.MobileNetworkAllowed = _mobileNetworkAllowed;
             }
 
             file.StartDownload (_downloadManager, destinationPathName);
@@ -141,32 +166,27 @@ namespace Plugin.DownloadManager
             downloadFile.TotalBytesWritten = cursor.GetInt (cursor.GetColumnIndex (Android.App.DownloadManager.ColumnBytesDownloadedSoFar));
             downloadFile.TotalBytesExpected = cursor.GetInt (cursor.GetColumnIndex (Android.App.DownloadManager.ColumnTotalSizeBytes));
 
-            switch (cursor.GetInt (cursor.GetColumnIndex (Android.App.DownloadManager.ColumnStatus))) {
-            // Successful
-            case 8:
+            switch ((DownloadStatus)cursor.GetInt (cursor.GetColumnIndex (Android.App.DownloadManager.ColumnStatus))) {
+            case DownloadStatus.Successful:
                 downloadFile.Status = DownloadFileStatus.COMPLETED;
                 Queue.Remove (downloadFile);
                 break;
-
-            // Failed
-            case 16:
+                    
+            case DownloadStatus.Failed:
                 downloadFile.StatusDetails = cursor.GetString(cursor.GetColumnIndex (Android.App.DownloadManager.ColumnReason));
                 downloadFile.Status = DownloadFileStatus.FAILED;
                 Queue.Remove (downloadFile);
                 break;
-
-            // Paused
-            case 4:
+                    
+            case DownloadStatus.Paused:
                 downloadFile.Status = DownloadFileStatus.PAUSED;
                 break;
-
-            // Pending
-            case 1:
+                    
+            case DownloadStatus.Pending:
                 downloadFile.Status = DownloadFileStatus.PENDING;
                 break;
-
-            // Running
-            case 2:
+                    
+            case DownloadStatus.Running:
                 downloadFile.Status = DownloadFileStatus.RUNNING;
                 break;
             }

@@ -442,4 +442,37 @@ Global
 		{3BFA0D23-9172-46AF-BF9A-84F1E35BB969} = {11FE7FBB-8560-4D89-90F5-F218CF18A879}
 		{FEE6A3A2-9CDD-473C-8587-6C13241BD03A} = {11FE7FBB-8560-4D89-90F5-F218CF18A879}
 	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.TextStylePolicy = $1
+		$1.FileWidth = 120
+		$1.EolMarker = Unix
+		$1.inheritsSet = VisualStudio
+		$1.inheritsScope = text/plain
+		$1.scope = text/x-csharp
+		$0.CSharpFormattingPolicy = $2
+		$2.IndentSwitchSection = True
+		$2.SpacingAfterMethodDeclarationName = False
+		$2.SpaceAfterMethodCallName = False
+		$2.SpaceBeforeOpenSquareBracket = False
+		$2.inheritsSet = Mono
+		$2.inheritsScope = text/x-csharp
+		$2.scope = text/x-csharp
+		$0.StandardHeader = $3
+		$3.Text = 
+		$3.IncludeInNewFiles = True
+		$0.NameConventionPolicy = $4
+		$4.Rules = $5
+		$5.NamingRule = $6
+		$6.Name = Type Parameters
+		$6.AffectedEntity = TypeParameter
+		$6.VisibilityMask = VisibilityMask
+		$6.NamingStyle = PascalCase
+		$6.IncludeInstanceMembers = True
+		$6.IncludeStaticEntities = True
+		$6.RequiredPrefixes = $7
+		$7.String = T
+		$6.RequiredSuffixes = $8
+		$8.String = Exception
+	EndGlobalSection
 EndGlobal

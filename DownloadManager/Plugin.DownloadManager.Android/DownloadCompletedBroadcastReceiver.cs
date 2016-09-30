@@ -11,7 +11,7 @@ namespace Plugin.DownloadManager
         {
             long reference = intent.GetLongExtra (Android.App.DownloadManager.ExtraDownloadId, -1);
 
-			var downloadFile = CrossDownloadManager.Current.Queue.Cast<DownloadFileImplementation> ().FirstOrDefault (f => f.Id == reference);
+            var downloadFile = CrossDownloadManager.Current.Queue.Cast<DownloadFileImplementation> ().FirstOrDefault (f => f.Id == reference);
             if (downloadFile != null) {
                 var query = new Android.App.DownloadManager.Query ();
                 query.SetFilterById (downloadFile.Id);

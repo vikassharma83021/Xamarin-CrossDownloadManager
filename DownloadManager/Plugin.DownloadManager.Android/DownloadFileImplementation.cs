@@ -16,6 +16,12 @@ namespace Plugin.DownloadManager
 
         public IDictionary<string, string> Headers { get; private set; }
 
+        protected Android.App.DownloadManager.Request Request { get; private set; }
+
+        private Android.App.DownloadManager _downloadManager;
+
+        private string _destinationPathName;
+
         DownloadFileStatus _status;
 
         public DownloadFileStatus Status {
@@ -92,20 +98,53 @@ namespace Plugin.DownloadManager
             Url = cursor.GetString (cursor.GetColumnIndex (Android.App.DownloadManager.ColumnUri));
         }
 
+        private bool? _mobileNetworkAllowed;
+
+        public bool? MobileNetworkAllowed
+        {
+            get
+            {
+                return _mobileNetworkAllowed;
+            }
+            set
+            {
+                if (value == null) {
+                    throw new System.ArgumentException("Cannot set value to null");
+                }
+
+                _mobileNetworkAllowed = value;
+
+                if (Request != null) {
+                    Request.SetAllowedOverMetered((bool)_mobileNetworkAllowed);
+                }
+
+                if (_status == DownloadFileStatus.RUNNING) {
+                    RestartDownload();
+                }
+            }
+        }
+
+        private void RestartDownload() {
+            StartDownload(_downloadManager, _destinationPathName);
+        }
+
         public void StartDownload (Android.App.DownloadManager downloadManager, string destinationPathName)
         {
-            using (var downloadUrl = Uri.Parse (Url))
-            using (var request = new Android.App.DownloadManager.Request (downloadUrl)) {
+            _downloadManager = downloadManager;
+            _destinationPathName = destinationPathName;
 
+            using (var downloadUrl = Uri.Parse(Url))
+            using (Request = new Android.App.DownloadManager.Request(downloadUrl))
+            {
                 foreach (var header in Headers) {
-                    request.AddRequestHeader (header.Key, header.Value);
+                    Request.AddRequestHeader (header.Key, header.Value);
                 }
 
                 if (destinationPathName != null) {
-                    request.SetDestinationUri (Uri.FromFile (new Java.IO.File (destinationPathName)));
+                    Request.SetDestinationUri (Uri.FromFile (new Java.IO.File (destinationPathName)));
                 }
 
-                Id = downloadManager.Enqueue (request);
+                Id = downloadManager.Enqueue (Request);
 
                 Status = DownloadFileStatus.RUNNING;
             }
