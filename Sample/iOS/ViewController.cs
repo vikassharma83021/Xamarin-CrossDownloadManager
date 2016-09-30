@@ -70,6 +70,9 @@ namespace DownloadExample.iOS
                     }
                 };
             };
+
+            Switch.On = CrossDownloadManager.Current.MobileNetworkAllowed;
+            Switch.ValueChanged += (sender, e) => CrossDownloadManager.Current.MobileNetworkAllowed = Switch.On;
         }
 
         public override void DidReceiveMemoryWarning ()
