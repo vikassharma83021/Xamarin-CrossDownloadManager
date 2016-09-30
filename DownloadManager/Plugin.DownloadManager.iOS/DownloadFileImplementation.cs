@@ -98,13 +98,17 @@ namespace Plugin.DownloadManager
                 if (value == null) {
                     throw new System.ArgumentException("Cannot set value to null");
                 }
+
                 if (_mobileNetworkAllowed != value) {
                     _mobileNetworkAllowed = value;
 
-                    if (_request != null) {
-                        if (Status != DownloadFileStatus.COMPLETED && Status != DownloadFileStatus.CANCELED) {
-                            RestartDownload();
-                        }
+                    if (
+                        _request != null &&
+                        Status != DownloadFileStatus.COMPLETED &&
+                        Status != DownloadFileStatus.CANCELED &&
+                        Status != DownloadFileStatus.FAILED
+                    ) {
+                        RestartDownload();
                     }
                 }
             }
@@ -156,9 +160,9 @@ namespace Plugin.DownloadManager
                         );
                     }
                     _request.Headers = headers;
-
-                    _request.AllowsCellularAccess = MobileNetworkAllowed;
                 }
+
+                _request.AllowsCellularAccess = (bool)MobileNetworkAllowed;
 
                 Task = session.CreateDownloadTask(_request);
                 Task.Resume();

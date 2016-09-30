@@ -33,13 +33,14 @@ namespace Plugin.DownloadManager
             }
             set
             {
-                if (value != _mobileNetworkAllowed && Queue.Count > 0) {
+                if (value != _mobileNetworkAllowed) {
                     _mobileNetworkAllowed = value;
 
-                    Queue.Cast<DownloadFileImplementation>().ToList().ForEach((downloadFile) =>
-                    {
-                        downloadFile.MobileNetworkAllowed = _mobileNetworkAllowed;
-                    });
+                    if (Queue.Any()) {
+                        foreach (var downloadFile in Queue) {
+                            downloadFile.MobileNetworkAllowed = _mobileNetworkAllowed;
+                        }
+                    }
                 }
             }
         }

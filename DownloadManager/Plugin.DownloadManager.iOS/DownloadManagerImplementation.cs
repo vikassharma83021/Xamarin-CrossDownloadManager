@@ -21,8 +21,6 @@ namespace Plugin.DownloadManager
 
         public Func<IDownloadFile, string> PathNameForDownloadedFile { get; set; }
 
-        private UrlSessionDownloadDelegate _delegate;
-
         private bool _mobileNetworkAllowed = CrossDownloadManager.MobileNetworkAllowedByDefault;
 
         public bool MobileNetworkAllowed
@@ -36,11 +34,10 @@ namespace Plugin.DownloadManager
                 if (value != _mobileNetworkAllowed) {
                     _mobileNetworkAllowed = value;
 
-                    var downloadFiles = Queue.Cast<DownloadFileImplementation>().ToList();
-
-                    if (downloadFiles.Count > 0)
-                    {
-                        downloadFiles.ForEach(downloadFile => downloadFile.MobileNetworkAllowed = MobileNetworkAllowed);
+                    if (Queue.Any()) {
+                        foreach (var downloadFile in Queue) {
+                            downloadFile.MobileNetworkAllowed = _mobileNetworkAllowed;
+                        }
                     }
                 }
             }
@@ -50,9 +47,7 @@ namespace Plugin.DownloadManager
         {
             Queue = new ObservableCollection<IDownloadFile> ();
 
-            _delegate = sessionDownloadDelegate;
-
-            _session = InitBackgroundSession (_delegate);
+            _session = InitBackgroundSession (sessionDownloadDelegate);
 
             // Reinitialize tasks that were started before the app was terminated or suspended
             _session.GetTasks2((NSUrlSessionTask[] dataTasks, NSUrlSessionTask[] uploadTasks, NSUrlSessionTask[] downloadTasks) => {

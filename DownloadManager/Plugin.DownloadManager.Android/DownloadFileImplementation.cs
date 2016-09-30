@@ -112,14 +112,16 @@ namespace Plugin.DownloadManager
                     throw new System.ArgumentException("Cannot set value to null");
                 }
 
-                _mobileNetworkAllowed = value;
+                if (_mobileNetworkAllowed != value) {
+                    _mobileNetworkAllowed = value;
 
-                if (Request != null) {
-                    Request.SetAllowedOverMetered((bool)_mobileNetworkAllowed);
-                }
+                    if (Request != null) {
+                        Request.SetAllowedOverMetered((bool)_mobileNetworkAllowed);
+                    }
 
-                if (_status == DownloadFileStatus.RUNNING) {
-                    RestartDownload();
+                    if (_status == DownloadFileStatus.RUNNING) {
+                        RestartDownload();
+                    }
                 }
             }
         }
