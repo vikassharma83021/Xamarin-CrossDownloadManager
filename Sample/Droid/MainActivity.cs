@@ -82,6 +82,9 @@ namespace DownloadExample.Droid
                             // Get the path this file was saved to. When you didn't set a custom path, this will be some temporary directory.
                             var nativeDownloadManager = (DownloadManager)ApplicationContext.GetSystemService (DownloadService);
                             System.Diagnostics.Debug.WriteLine (nativeDownloadManager.GetUriForDownloadedFile (((DownloadFileImplementation)sender).Id));
+
+                            // If you don't want your download to be listed in the native "Download" app after the download is finished
+                            //nativeDownloadManager.Remove(((DownloadFileImplementation)sender).Id);
                             break;
                         }
                     }
