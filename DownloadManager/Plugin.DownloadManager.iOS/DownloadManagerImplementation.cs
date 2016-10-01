@@ -13,7 +13,7 @@ namespace Plugin.DownloadManager
     /// </summary>
     public class DownloadManagerImplementation : IDownloadManager
     {
-        const string _identifier = "org.brunstad.bmm.BackgroundTransferSession";
+        private string _identifier => NSBundle.MainBundle.BundleIdentifier + ".BackgroundTransferSession";
 
         NSUrlSession _session;
 
