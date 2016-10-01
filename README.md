@@ -105,6 +105,7 @@ On Android, the destination location must be a located outside of your Apps inte
 
 or to request it at runtime (See [#20](https://github.com/SimonSimCity/Xamarin-CrossDownloadManager/issues/20)).
 
+All finished downloads are registered in a native `Downloads` application. If you want your finished download not to be listed there, see [#17](https://github.com/SimonSimCity/Xamarin-CrossDownloadManager/issues/17)
 
 ### What features can I use?
 
