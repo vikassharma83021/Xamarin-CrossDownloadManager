@@ -68,7 +68,7 @@ namespace DownloadExample.Droid
 
                 button.Text = "Start downloading ...";
 
-                foo.StartDownloading ();
+                foo.StartDownloading (FindViewById<Switch>(Resource.Id.switch1).Checked);
 
                 foo.File.PropertyChanged += (sender, e) => {
                     // Update UI if download-status changed.

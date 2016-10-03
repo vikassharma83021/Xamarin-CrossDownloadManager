@@ -40,7 +40,7 @@ namespace DownloadExample.iOS
 
                 Button.SetTitle ("Start downloading ...", UIControlState.Normal);
 
-                foo.StartDownloading ();
+                foo.StartDownloading (Switch.On);
 
                 foo.File.PropertyChanged += (sender, e) => {
                     // Update UI if download-status changed.
