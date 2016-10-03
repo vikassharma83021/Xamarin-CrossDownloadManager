@@ -40,7 +40,8 @@ namespace Plugin.DownloadManager.Abstractions
         /// Start downloading the file. Most of the systems will put this file into a queue first.
         /// </summary>
         /// <param name="file">File.</param>
-        void Start (IDownloadFile file);
+        /// <param name="mobileNetworkAllowed">If mobile network is allowed.</param>
+        void Start (IDownloadFile file, bool mobileNetworkAllowed = true);
 
         /// <summary>
         /// Abort downloading the file.

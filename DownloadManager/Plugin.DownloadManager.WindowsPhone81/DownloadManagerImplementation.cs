@@ -24,7 +24,7 @@ namespace Plugin.DownloadManager
             throw new NotImplementedException ();
         }
 
-        public void Start (IDownloadFile i)
+        public void Start (IDownloadFile i, bool mobileNetworkAllowed = true)
         {
             throw new NotImplementedException ();
         }

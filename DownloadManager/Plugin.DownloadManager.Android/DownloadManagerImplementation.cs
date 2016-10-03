@@ -46,7 +46,7 @@ namespace Plugin.DownloadManager
             return new DownloadFileImplementation (url, headers);
         }
 
-        public void Start (IDownloadFile i)
+        public void Start (IDownloadFile i, bool mobileNetworkAllowed = true)
         {
             var file = (DownloadFileImplementation)i;
 
@@ -55,7 +55,7 @@ namespace Plugin.DownloadManager
                 destinationPathName = PathNameForDownloadedFile (file);
             }
 
-            file.StartDownload (_downloadManager, destinationPathName);
+            file.StartDownload (_downloadManager, destinationPathName, mobileNetworkAllowed);
             Queue.Add (file);
         }
 

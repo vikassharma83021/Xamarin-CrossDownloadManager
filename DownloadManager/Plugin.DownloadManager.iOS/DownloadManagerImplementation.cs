@@ -45,11 +45,11 @@ namespace Plugin.DownloadManager
             return new DownloadFileImplementation (url, headers);
         }
 
-        public void Start (IDownloadFile i)
+        public void Start (IDownloadFile i, bool mobileNetworkAllowed = true)
         {
             var file = (DownloadFileImplementation)i;
 
-            file.StartDownload (_session);
+            file.StartDownload (_session, mobileNetworkAllowed);
             Queue.Add (file);
         }
 

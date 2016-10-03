@@ -73,6 +73,8 @@ This will add the file to a native library, which starts the download of that fi
 
 After a download has been completed, the instance of `IDownloadFile` is then removed from `IDownloadManager.Queue`.
 
+You can also disallow downloading via a cellular network by setting the second parameter of `CrossDownloadManager.Current.Start()`.
+
 ### Where are the files stored?
 
 #### Default Option - Temporary Location

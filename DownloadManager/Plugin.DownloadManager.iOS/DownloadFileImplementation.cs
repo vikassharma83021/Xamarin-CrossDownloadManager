@@ -117,7 +117,7 @@ namespace Plugin.DownloadManager
             Task = task;
         }
 
-        public void StartDownload(NSUrlSession session)
+        public void StartDownload(NSUrlSession session, bool allowsCellularAccess)
         {
             using (var downloadURL = NSUrl.FromString(Url))
             using (var request = new NSMutableUrlRequest(downloadURL)) {
@@ -132,6 +132,7 @@ namespace Plugin.DownloadManager
                     request.Headers = headers;
                 }
 
+                request.AllowsCellularAccess = allowsCellularAccess;
 
                 Task = session.CreateDownloadTask(request);
                 Task.Resume();

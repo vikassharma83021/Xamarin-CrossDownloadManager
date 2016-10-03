@@ -92,7 +92,7 @@ namespace Plugin.DownloadManager
             Url = cursor.GetString(cursor.GetColumnIndex(Android.App.DownloadManager.ColumnUri));
         }
 
-        public void StartDownload (Android.App.DownloadManager downloadManager, string destinationPathName)
+        public void StartDownload(Android.App.DownloadManager downloadManager, string destinationPathName, bool allowedOverMetered)
         {
             using (var downloadUrl = Uri.Parse(Url))
             using (var request = new Android.App.DownloadManager.Request(downloadUrl)) {
@@ -105,6 +105,8 @@ namespace Plugin.DownloadManager
                 if (destinationPathName != null) {
                     request.SetDestinationUri(Uri.FromFile(new Java.IO.File(destinationPathName)));
                 }
+
+                request.SetAllowedOverMetered(allowedOverMetered);
 
                 Id = downloadManager.Enqueue(request);
 
