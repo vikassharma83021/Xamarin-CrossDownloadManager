@@ -53,12 +53,5 @@ namespace Plugin.DownloadManager.Abstractions
         /// </summary>
         /// <returns>void</returns>
         void AbortAll ();
-
-        /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="T:Plugin.DownloadManager.Abstractions.IDownloadManager"/>
-        /// should be allowed to download files via a Cellular Network.
-        /// </summary>
-        /// <value><c>true</c> if cellular access allowed; otherwise, <c>false</c>.</value>
-        bool MobileNetworkAllowed { get; set; }
     }
 }

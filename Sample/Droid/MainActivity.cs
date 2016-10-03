@@ -101,11 +101,6 @@ namespace DownloadExample.Droid
                     }
                 };
             };
-
-            Switch switch1 = FindViewById<Switch>(Resource.Id.switch1);
-
-            switch1.Checked = CrossDownloadManager.Current.MobileNetworkAllowed;
-            switch1.CheckedChange += (sender, e) => CrossDownloadManager.Current.MobileNetworkAllowed = switch1.Checked;
         }
     }
 }

@@ -14,16 +14,6 @@ namespace Plugin.DownloadManager
 
         public Func<IDownloadFile, string> PathNameForDownloadedFile { get; set; }
 
-        public bool MobileNetworkAllowed {
-            get {
-                throw new NotImplementedException();
-            }
-
-            set {
-                throw new NotImplementedException();
-            }
-        }
-
         public IDownloadFile CreateDownloadFile (string url)
         {
             throw new NotImplementedException ();

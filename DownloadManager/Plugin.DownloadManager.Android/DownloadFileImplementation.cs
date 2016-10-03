@@ -16,12 +16,6 @@ namespace Plugin.DownloadManager
 
         public IDictionary<string, string> Headers { get; private set; }
 
-        protected Android.App.DownloadManager.Request Request { get; private set; }
-
-        private Android.App.DownloadManager _downloadManager;
-
-        private string _destinationPathName;
-
         DownloadFileStatus _status;
 
         public DownloadFileStatus Status {
@@ -29,9 +23,9 @@ namespace Plugin.DownloadManager
                 return _status;
             }
             set {
-                if (!Equals (_status, value)) {
+                if (!Equals(_status, value)) {
                     _status = value;
-                    PropertyChanged?.Invoke (this, new PropertyChangedEventArgs ("Status"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Status"));
                 }
             }
         }
@@ -43,9 +37,9 @@ namespace Plugin.DownloadManager
                 return _statusDetails;
             }
             set {
-                if (!Equals (_statusDetails, value)) {
+                if (!Equals(_statusDetails, value)) {
                     _statusDetails = value;
-                    PropertyChanged?.Invoke (this, new PropertyChangedEventArgs ("StatusDetails"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("StatusDetails"));
                 }
             }
         }
@@ -57,9 +51,9 @@ namespace Plugin.DownloadManager
                 return _totalBytesExpected;
             }
             set {
-                if (!Equals (_totalBytesExpected, value)) {
+                if (!Equals(_totalBytesExpected, value)) {
                     _totalBytesExpected = value;
-                    PropertyChanged?.Invoke (this, new PropertyChangedEventArgs ("TotalBytesExpected"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TotalBytesExpected"));
                 }
             }
         }
@@ -71,9 +65,9 @@ namespace Plugin.DownloadManager
                 return _totalBytesWritten;
             }
             set {
-                if (!Equals (_totalBytesWritten, value)) {
+                if (!Equals(_totalBytesWritten, value)) {
                     _totalBytesWritten = value;
-                    PropertyChanged?.Invoke (this, new PropertyChangedEventArgs ("TotalBytesWritten"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TotalBytesWritten"));
                 }
             }
         }
@@ -81,7 +75,7 @@ namespace Plugin.DownloadManager
         /**
          * Initializing a new object to add it to the download-queue
          */
-        public DownloadFileImplementation (string url, IDictionary<string, string> headers)
+        public DownloadFileImplementation(string url, IDictionary<string, string> headers)
         {
             Url = url;
             Headers = headers;
@@ -92,61 +86,27 @@ namespace Plugin.DownloadManager
         /**
          * Reinitializing an object after the app restarted
          */
-        public DownloadFileImplementation (ICursor cursor)
+        public DownloadFileImplementation(ICursor cursor)
         {
-            Id = cursor.GetLong (cursor.GetColumnIndex (Android.App.DownloadManager.ColumnBytesDownloadedSoFar));
-            Url = cursor.GetString (cursor.GetColumnIndex (Android.App.DownloadManager.ColumnUri));
-        }
-
-        private bool? _mobileNetworkAllowed;
-
-        public bool? MobileNetworkAllowed
-        {
-            get
-            {
-                return _mobileNetworkAllowed;
-            }
-            set
-            {
-                if (value == null) {
-                    throw new System.ArgumentException("Cannot set value to null");
-                }
-
-                if (_mobileNetworkAllowed != value) {
-                    _mobileNetworkAllowed = value;
-
-                    if (Request != null) {
-                        Request.SetAllowedOverMetered((bool)_mobileNetworkAllowed);
-                    }
-
-                    if (_status == DownloadFileStatus.RUNNING) {
-                        RestartDownload();
-                    }
-                }
-            }
-        }
-
-        private void RestartDownload() {
-            StartDownload(_downloadManager, _destinationPathName);
+            Id = cursor.GetLong(cursor.GetColumnIndex(Android.App.DownloadManager.ColumnBytesDownloadedSoFar));
+            Url = cursor.GetString(cursor.GetColumnIndex(Android.App.DownloadManager.ColumnUri));
         }
 
         public void StartDownload (Android.App.DownloadManager downloadManager, string destinationPathName)
         {
-            _downloadManager = downloadManager;
-            _destinationPathName = destinationPathName;
-
             using (var downloadUrl = Uri.Parse(Url))
-            using (Request = new Android.App.DownloadManager.Request(downloadUrl))
-            {
-                foreach (var header in Headers) {
-                    Request.AddRequestHeader (header.Key, header.Value);
+            using (var request = new Android.App.DownloadManager.Request(downloadUrl)) {
+                if (Headers != null) {
+                    foreach (var header in Headers) {
+                        request.AddRequestHeader(header.Key, header.Value);
+                    }
                 }
 
                 if (destinationPathName != null) {
-                    Request.SetDestinationUri (Uri.FromFile (new Java.IO.File (destinationPathName)));
+                    request.SetDestinationUri(Uri.FromFile(new Java.IO.File(destinationPathName)));
                 }
 
-                Id = downloadManager.Enqueue (Request);
+                Id = downloadManager.Enqueue(request);
 
                 Status = DownloadFileStatus.RUNNING;
             }

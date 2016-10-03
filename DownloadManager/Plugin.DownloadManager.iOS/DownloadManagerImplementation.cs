@@ -21,28 +21,6 @@ namespace Plugin.DownloadManager
 
         public Func<IDownloadFile, string> PathNameForDownloadedFile { get; set; }
 
-        private bool _mobileNetworkAllowed = CrossDownloadManager.MobileNetworkAllowedByDefault;
-
-        public bool MobileNetworkAllowed
-        {
-            get
-            {
-                return _mobileNetworkAllowed;
-            }
-            set
-            {
-                if (value != _mobileNetworkAllowed) {
-                    _mobileNetworkAllowed = value;
-
-                    if (Queue.Any()) {
-                        foreach (var downloadFile in Queue) {
-                            downloadFile.MobileNetworkAllowed = _mobileNetworkAllowed;
-                        }
-                    }
-                }
-            }
-        }
-
         public DownloadManagerImplementation (UrlSessionDownloadDelegate sessionDownloadDelegate)
         {
             Queue = new ObservableCollection<IDownloadFile> ();
@@ -70,10 +48,6 @@ namespace Plugin.DownloadManager
         public void Start (IDownloadFile i)
         {
             var file = (DownloadFileImplementation)i;
-
-            if (file.MobileNetworkAllowed == null) {
-                file.MobileNetworkAllowed = MobileNetworkAllowed;   
-            }
 
             file.StartDownload (_session);
             Queue.Add (file);

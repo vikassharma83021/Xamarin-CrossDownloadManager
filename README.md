@@ -107,10 +107,6 @@ or to request it at runtime (See [#20](https://github.com/SimonSimCity/Xamarin-C
 
 All finished downloads are registered in a native `Downloads` application. If you want your finished download not to be listed there, see [#17](https://github.com/SimonSimCity/Xamarin-CrossDownloadManager/issues/17)
 
-### What features can I use?
-
-* Allow download over cellular network, either for the whole DownloadManager or per DownloadFile (Default: `true`). Here's a quick exsample: [6670aef](https://github.com/SimonSimCity/Xamarin-CrossDownloadManager/commit/6670aef4e5b6d3395cd16bfb5bed3d83209b284f)
-
 ### I want to use $FAVORITE_IOC_LIBRARY
 
 Just register the instance in `CrossDownloadManager.Current` in the library. Here's an example how to do it on MvvmCross:

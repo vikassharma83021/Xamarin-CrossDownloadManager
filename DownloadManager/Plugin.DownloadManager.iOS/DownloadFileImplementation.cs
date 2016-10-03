@@ -14,10 +14,6 @@ namespace Plugin.DownloadManager
          */
         public NSUrlSessionDownloadTask Task;
 
-        private NSMutableUrlRequest _request;
-
-        private NSUrlSession _session;
-
         public string Url { get; private set; }
 
         public IDictionary<string, string> Headers { get; private set; }
@@ -89,31 +85,6 @@ namespace Plugin.DownloadManager
             Status = DownloadFileStatus.PENDING;
         }
 
-        private bool? _mobileNetworkAllowed;
-        public bool? MobileNetworkAllowed {
-            get {
-                return _mobileNetworkAllowed;
-            }
-            set {
-                if (value == null) {
-                    throw new System.ArgumentException("Cannot set value to null");
-                }
-
-                if (_mobileNetworkAllowed != value) {
-                    _mobileNetworkAllowed = value;
-
-                    if (
-                        _request != null &&
-                        Status != DownloadFileStatus.COMPLETED &&
-                        Status != DownloadFileStatus.CANCELED &&
-                        Status != DownloadFileStatus.FAILED
-                    ) {
-                        RestartDownload();
-                    }
-                }
-            }
-        }
-
         /**
          * Called when re-initializing the app after the app shut down to be able to still handle on-success calls.
          */
@@ -148,9 +119,8 @@ namespace Plugin.DownloadManager
 
         public void StartDownload(NSUrlSession session)
         {
-            _session = session;
             using (var downloadURL = NSUrl.FromString(Url))
-            using (_request = new NSMutableUrlRequest(downloadURL)) {
+            using (var request = new NSMutableUrlRequest(downloadURL)) {
                 if (Headers != null) {
                     var headers = new NSMutableDictionary();
                     foreach (var header in Headers) {
@@ -159,30 +129,13 @@ namespace Plugin.DownloadManager
                             new NSString(header.Key)
                         );
                     }
-                    _request.Headers = headers;
+                    request.Headers = headers;
                 }
 
-                _request.AllowsCellularAccess = (bool)MobileNetworkAllowed;
 
-                Task = session.CreateDownloadTask(_request);
+                Task = session.CreateDownloadTask(request);
                 Task.Resume();
             }
-        }
-
-        public void RestartDownload(NSUrlSession session)
-        {
-            _session = session;
-            RestartDownload();
-        }
-
-        public void RestartDownload()
-        {
-            Task.Cancel();
-            Task.Dispose();
-
-            _status = DownloadFileStatus.PENDING;
-
-            StartDownload(_session);
         }
     }
 }
