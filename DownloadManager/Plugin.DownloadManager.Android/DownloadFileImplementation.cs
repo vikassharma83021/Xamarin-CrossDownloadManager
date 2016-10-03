@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using Android.App;
+using Android.Content;
 using Android.Database;
 using Android.Net;
 using Plugin.DownloadManager.Abstractions;
@@ -88,8 +90,30 @@ namespace Plugin.DownloadManager
          */
         public DownloadFileImplementation(ICursor cursor)
         {
-            Id = cursor.GetLong(cursor.GetColumnIndex(Android.App.DownloadManager.ColumnBytesDownloadedSoFar));
+            Id = cursor.GetLong(cursor.GetColumnIndex(Android.App.DownloadManager.ColumnId));
             Url = cursor.GetString(cursor.GetColumnIndex(Android.App.DownloadManager.ColumnUri));
+
+            switch ((DownloadStatus)cursor.GetInt(cursor.GetColumnIndex(Android.App.DownloadManager.ColumnStatus))) {
+                case DownloadStatus.Failed:
+                    Status = DownloadFileStatus.FAILED;
+                    break;
+                    
+                case DownloadStatus.Paused:
+                    Status = DownloadFileStatus.PAUSED;
+                    break;
+
+                case DownloadStatus.Pending:
+                    Status = DownloadFileStatus.PENDING;
+                    break;
+
+                case DownloadStatus.Running:
+                    Status = DownloadFileStatus.RUNNING;
+                    break;
+
+                case DownloadStatus.Successful:
+                    Status = DownloadFileStatus.COMPLETED;
+                    break;
+            }
         }
 
         public void StartDownload(Android.App.DownloadManager downloadManager, string destinationPathName, bool allowedOverMetered)
