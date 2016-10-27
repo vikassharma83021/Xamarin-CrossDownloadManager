@@ -12,7 +12,7 @@ namespace Plugin.DownloadManager
         /**
          * The task, running in the background
          */
-        public NSUrlSessionDownloadTask Task;
+        public NSUrlSessionTask Task;
 
         public string Url { get; private set; }
 
@@ -88,7 +88,7 @@ namespace Plugin.DownloadManager
         /**
          * Called when re-initializing the app after the app shut down to be able to still handle on-success calls.
          */
-        public DownloadFileImplementation(NSUrlSessionDownloadTask task)
+        public DownloadFileImplementation(NSUrlSessionTask task)
         {
             Url = task.OriginalRequest.Url.AbsoluteString;
             Headers = new Dictionary<string, string>();

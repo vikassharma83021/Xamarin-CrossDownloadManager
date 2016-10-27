@@ -30,7 +30,7 @@ namespace Plugin.DownloadManager
             // Reinitialize tasks that were started before the app was terminated or suspended
             _session.GetTasks2((NSUrlSessionTask[] dataTasks, NSUrlSessionTask[] uploadTasks, NSUrlSessionTask[] downloadTasks) => {
                 foreach (var task in downloadTasks) {
-                    Queue.Add(new DownloadFileImplementation((NSUrlSessionDownloadTask)task));
+                    Queue.Add(new DownloadFileImplementation(task));
                 }
             });
         }
