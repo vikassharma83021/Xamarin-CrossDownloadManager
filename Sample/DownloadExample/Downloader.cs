@@ -8,7 +8,7 @@ namespace DownloadExample
     {
         public IDownloadFile File;
 
-        public void StartDownloading (bool mobileNetworkAllowed)
+        public void InitializeDownload()
         {
             File = CrossDownloadManager.Current.CreateDownloadFile (
                 "http://www.speedtestx.de/testfiles/data_10mb.test"
@@ -18,7 +18,10 @@ namespace DownloadExample
                 //    { "Authorization", "Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==" }
                 //}
             );
+        }
 
+        public void StartDownloading (bool mobileNetworkAllowed)
+        {
             CrossDownloadManager.Current.Start (File, mobileNetworkAllowed);
         }
 

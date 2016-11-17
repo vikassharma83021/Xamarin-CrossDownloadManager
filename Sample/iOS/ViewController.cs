@@ -40,9 +40,34 @@ namespace DownloadExample.iOS
 
                 Button.SetTitle ("Start downloading ...", UIControlState.Normal);
 
-                foo.StartDownloading (Switch.On);
+                foo.InitializeDownload();
 
                 foo.File.PropertyChanged += (sender, e) => {
+                    // Update UI text-fields
+                    var downloadFile = ((IDownloadFile)sender);
+                    switch (e.PropertyName) {
+                    case nameof(IDownloadFile.Status):
+                        InvokeOnMainThread(() => {
+                            StatusTextField.Text = downloadFile.Status.ToString();
+                        });
+                        break;
+                    case nameof(IDownloadFile.StatusDetails):
+                        InvokeOnMainThread(() => {
+                            StatusDetailsTextField.Text = downloadFile.StatusDetails;
+                        });
+                        break;
+                    case nameof(IDownloadFile.TotalBytesExpected):
+                        InvokeOnMainThread(() => {
+                            TotalBytesExpectedTextField.Text = downloadFile.TotalBytesExpected.ToString();
+                        });
+                        break;
+                    case nameof(IDownloadFile.TotalBytesWritten):
+                        InvokeOnMainThread(() => {
+                            TotalBytesWrittenTextField.Text = downloadFile.TotalBytesWritten.ToString();
+                        });
+                        break;
+                    }
+
                     // Update UI if download-status changed.
                     if (e.PropertyName == "Status") {
                         switch (((IDownloadFile)sender).Status) {
@@ -69,6 +94,8 @@ namespace DownloadExample.iOS
                         }
                     }
                 };
+            
+                foo.StartDownloading(Switch.On);
             };
         }
 

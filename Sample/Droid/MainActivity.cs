@@ -68,9 +68,26 @@ namespace DownloadExample.Droid
 
                 button.Text = "Start downloading ...";
 
-                foo.StartDownloading (FindViewById<Switch>(Resource.Id.switch1).Checked);
+                foo.InitializeDownload();
 
                 foo.File.PropertyChanged += (sender, e) => {
+                    // Update UI text-fields
+                    var downloadFile = ((IDownloadFile)sender);
+                    switch (e.PropertyName) {
+                        case nameof(IDownloadFile.Status):
+                            FindViewById<TextView>(Resource.Id.value_status).Text = downloadFile.Status.ToString();
+                            break;
+                        case nameof(IDownloadFile.StatusDetails):
+                            FindViewById<TextView>(Resource.Id.value_statusdetails).Text = downloadFile.StatusDetails;
+                            break;
+                        case nameof(IDownloadFile.TotalBytesExpected):
+                            FindViewById<TextView>(Resource.Id.value_totalbytesexpected).Text = downloadFile.TotalBytesExpected.ToString();
+                            break;
+                        case nameof(IDownloadFile.TotalBytesWritten):
+                            FindViewById<TextView>(Resource.Id.value_totalbyteswritten).Text = downloadFile.TotalBytesWritten.ToString();
+                            break;
+                    }
+
                     // Update UI if download-status changed.
                     if (e.PropertyName == "Status") {
                         switch (((IDownloadFile)sender).Status) {
@@ -100,6 +117,8 @@ namespace DownloadExample.Droid
                         }
                     }
                 };
+
+                foo.StartDownloading(FindViewById<Switch>(Resource.Id.switch1).Checked);
             };
         }
     }
