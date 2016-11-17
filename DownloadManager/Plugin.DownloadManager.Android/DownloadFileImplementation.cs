@@ -82,7 +82,7 @@ namespace Plugin.DownloadManager
             Url = url;
             Headers = headers;
 
-            Status = DownloadFileStatus.PENDING;
+            Status = DownloadFileStatus.INITIALIZED;
         }
 
         /**
@@ -133,8 +133,6 @@ namespace Plugin.DownloadManager
                 request.SetAllowedOverMetered(allowedOverMetered);
 
                 Id = downloadManager.Enqueue(request);
-
-                Status = DownloadFileStatus.RUNNING;
             }
         }
     }

@@ -82,7 +82,7 @@ namespace Plugin.DownloadManager
             Url = url;
             Headers = headers;
 
-            Status = DownloadFileStatus.PENDING;
+            Status = DownloadFileStatus.INITIALIZED;
         }
 
         /**
@@ -96,8 +96,6 @@ namespace Plugin.DownloadManager
             foreach (var header in task.OriginalRequest.Headers) {
                 Headers.Add(new KeyValuePair<string, string>(header.Key.ToString(), header.Value.ToString()));
             }
-
-            Status = DownloadFileStatus.PENDING;
 
             switch (task.State) {
             case NSUrlSessionTaskState.Running:

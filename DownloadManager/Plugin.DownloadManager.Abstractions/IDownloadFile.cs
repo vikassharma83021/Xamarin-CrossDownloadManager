@@ -9,7 +9,12 @@ namespace Plugin.DownloadManager.Abstractions
     public enum DownloadFileStatus
     {
         /// <summary>
-        /// The download is pending.
+        /// The download is intitalized.
+        /// </summary>
+        INITIALIZED,
+
+        /// <summary>
+        /// The download is pending (Android only)
         /// </summary>
         PENDING,
 
