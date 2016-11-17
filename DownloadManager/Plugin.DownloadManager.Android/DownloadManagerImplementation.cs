@@ -143,25 +143,80 @@ namespace Plugin.DownloadManager
 
             switch ((DownloadStatus)cursor.GetInt (cursor.GetColumnIndex (Android.App.DownloadManager.ColumnStatus))) {
             case DownloadStatus.Successful:
+                downloadFile.StatusDetails = default(string);
                 downloadFile.Status = DownloadFileStatus.COMPLETED;
                 Queue.Remove (downloadFile);
                 break;
                     
             case DownloadStatus.Failed:
-                downloadFile.StatusDetails = cursor.GetString(cursor.GetColumnIndex (Android.App.DownloadManager.ColumnReason));
                 downloadFile.Status = DownloadFileStatus.FAILED;
                 Queue.Remove (downloadFile);
+
+                var reasonFailed = cursor.GetInt(cursor.GetColumnIndex(Android.App.DownloadManager.ColumnReason));
+                switch ((DownloadError)reasonFailed) {
+                case DownloadError.CannotResume:
+                    downloadFile.StatusDetails = "Error.CannotResume";
+                    break;
+                case DownloadError.DeviceNotFound:
+                    downloadFile.StatusDetails = "Error.DeviceNotFound";
+                    break;
+                case DownloadError.FileAlreadyExists:
+                    downloadFile.StatusDetails = "Error.FileAlreadyExists";
+                    break;
+                case DownloadError.FileError:
+                    downloadFile.StatusDetails = "Error.FileError";
+                    break;
+                case DownloadError.HttpDataError:
+                    downloadFile.StatusDetails = "Error.HttpDataError";
+                    break;
+                case DownloadError.InsufficientSpace:
+                    downloadFile.StatusDetails = "Error.InsufficientSpace";
+                    break;
+                case DownloadError.TooManyRedirects:
+                    downloadFile.StatusDetails = "Error.TooManyRedirects";
+                    break;
+                case DownloadError.UnhandledHttpCode:
+                    downloadFile.StatusDetails = "Error.UnhandledHttpCode";
+                    break;
+                case DownloadError.Unknown:
+                    downloadFile.StatusDetails = "Error.Unknown";
+                    break;
+                default:
+                    downloadFile.StatusDetails = "Error.Unregistered: " + reasonFailed;
+                    break;
+                }
                 break;
                     
             case DownloadStatus.Paused:
                 downloadFile.Status = DownloadFileStatus.PAUSED;
+                
+                var reasonPaused = cursor.GetInt(cursor.GetColumnIndex(Android.App.DownloadManager.ColumnReason));
+                switch ((DownloadPausedReason)reasonPaused) {
+                case DownloadPausedReason.QueuedForWifi:
+                    downloadFile.StatusDetails = "Paused.QueuedForWifi";
+                    break;
+                case DownloadPausedReason.WaitingToRetry:
+                    downloadFile.StatusDetails = "Paused.WaitingToRetry";
+                    break;
+                case DownloadPausedReason.WaitingForNetwork:
+                    downloadFile.StatusDetails = "Paused.WaitingForNetwork";
+                    break;
+                case DownloadPausedReason.Unknown:
+                    downloadFile.StatusDetails = "Paused.Unknown";
+                    break;
+                default:
+                    downloadFile.StatusDetails = "Paused.Unregistered: " + reasonPaused;
+                    break;
+                }
                 break;
                     
             case DownloadStatus.Pending:
+                downloadFile.StatusDetails = default(string);
                 downloadFile.Status = DownloadFileStatus.PENDING;
                 break;
                     
             case DownloadStatus.Running:
+                downloadFile.StatusDetails = default(string);
                 downloadFile.Status = DownloadFileStatus.RUNNING;
                 break;
             }

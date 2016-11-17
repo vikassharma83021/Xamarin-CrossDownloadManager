@@ -69,6 +69,12 @@ namespace Plugin.DownloadManager.Abstractions
 
         /// <summary>
         /// Gets the status details. F.e. to get the reason why the download failed.
+        /// On iOS it's a localized string.
+        /// On Android it's the name of the Enum values (Android.App.DownloadError or Android.App.DownloadPausedReason)
+        /// as string, prefixed by either `Error` or `Paused` e.g. `Error.HttpDataError` or `Paused.QueuedForWifi`.
+        /// If (in any case) you encounter the property `Unregistered:` followed by an integer, please report it.
+        /// These are new values for either enumeration. You can find the reason in the official documentation:
+        /// https://developer.android.com/reference/android/app/DownloadManager.html
         /// </summary>
         /// <value>The status details.</value>
         string StatusDetails { get; }
