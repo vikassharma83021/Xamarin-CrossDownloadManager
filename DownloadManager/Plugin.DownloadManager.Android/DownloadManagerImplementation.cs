@@ -153,37 +153,41 @@ namespace Plugin.DownloadManager
                 Queue.Remove (downloadFile);
 
                 var reasonFailed = cursor.GetInt(cursor.GetColumnIndex(Android.App.DownloadManager.ColumnReason));
-                switch ((DownloadError)reasonFailed) {
-                case DownloadError.CannotResume:
-                    downloadFile.StatusDetails = "Error.CannotResume";
-                    break;
-                case DownloadError.DeviceNotFound:
-                    downloadFile.StatusDetails = "Error.DeviceNotFound";
-                    break;
-                case DownloadError.FileAlreadyExists:
-                    downloadFile.StatusDetails = "Error.FileAlreadyExists";
-                    break;
-                case DownloadError.FileError:
-                    downloadFile.StatusDetails = "Error.FileError";
-                    break;
-                case DownloadError.HttpDataError:
-                    downloadFile.StatusDetails = "Error.HttpDataError";
-                    break;
-                case DownloadError.InsufficientSpace:
-                    downloadFile.StatusDetails = "Error.InsufficientSpace";
-                    break;
-                case DownloadError.TooManyRedirects:
-                    downloadFile.StatusDetails = "Error.TooManyRedirects";
-                    break;
-                case DownloadError.UnhandledHttpCode:
-                    downloadFile.StatusDetails = "Error.UnhandledHttpCode";
-                    break;
-                case DownloadError.Unknown:
-                    downloadFile.StatusDetails = "Error.Unknown";
-                    break;
-                default:
-                    downloadFile.StatusDetails = "Error.Unregistered: " + reasonFailed;
-                    break;
+                if (reasonFailed < 600) {
+                    downloadFile.StatusDetails = "Error.HttpCode: " + reasonFailed;
+                } else {
+                    switch ((DownloadError)reasonFailed) {
+                    case DownloadError.CannotResume:
+                        downloadFile.StatusDetails = "Error.CannotResume";
+                        break;
+                    case DownloadError.DeviceNotFound:
+                        downloadFile.StatusDetails = "Error.DeviceNotFound";
+                        break;
+                    case DownloadError.FileAlreadyExists:
+                        downloadFile.StatusDetails = "Error.FileAlreadyExists";
+                        break;
+                    case DownloadError.FileError:
+                        downloadFile.StatusDetails = "Error.FileError";
+                        break;
+                    case DownloadError.HttpDataError:
+                        downloadFile.StatusDetails = "Error.HttpDataError";
+                        break;
+                    case DownloadError.InsufficientSpace:
+                        downloadFile.StatusDetails = "Error.InsufficientSpace";
+                        break;
+                    case DownloadError.TooManyRedirects:
+                        downloadFile.StatusDetails = "Error.TooManyRedirects";
+                        break;
+                    case DownloadError.UnhandledHttpCode:
+                        downloadFile.StatusDetails = "Error.UnhandledHttpCode";
+                        break;
+                    case DownloadError.Unknown:
+                        downloadFile.StatusDetails = "Error.Unknown";
+                        break;
+                    default:
+                        downloadFile.StatusDetails = "Error.Unregistered: " + reasonFailed;
+                        break;
+                    }
                 }
                 break;
                     
