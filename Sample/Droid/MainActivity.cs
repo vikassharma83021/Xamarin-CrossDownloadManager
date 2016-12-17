@@ -71,6 +71,8 @@ namespace DownloadExample.Droid
                 foo.InitializeDownload();
 
                 foo.File.PropertyChanged += (sender, e) => {
+                    System.Diagnostics.Debug.WriteLine("[Property changed] " + e.PropertyName + " -> " + sender.GetType().GetProperty(e.PropertyName).GetValue(sender, null).ToString());
+
                     // Update UI text-fields
                     var downloadFile = ((IDownloadFile)sender);
                     switch (e.PropertyName) {

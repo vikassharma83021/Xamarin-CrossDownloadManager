@@ -1,7 +1,5 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Android.Content;
-using Plugin.DownloadManager.Abstractions;
 
 namespace Plugin.DownloadManager
 {
