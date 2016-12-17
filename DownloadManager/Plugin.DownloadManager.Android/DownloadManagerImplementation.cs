@@ -90,6 +90,7 @@ namespace Plugin.DownloadManager
                     while (cursor != null && cursor.MoveToNext ()) {
                         runnable.Invoke (cursor);
                     }
+                    cursor.Close();
                 }
             } catch (Android.Database.Sqlite.SQLiteException) {
                 // I lately got an exception that the database was unaccessible ...
