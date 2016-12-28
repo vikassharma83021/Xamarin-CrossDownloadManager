@@ -34,6 +34,7 @@ namespace DownloadExample
         {
             if (File != null) {
                 switch (File.Status) {
+                case DownloadFileStatus.INITIALIZED:
                 case DownloadFileStatus.PAUSED:
                 case DownloadFileStatus.PENDING:
                 case DownloadFileStatus.RUNNING:
