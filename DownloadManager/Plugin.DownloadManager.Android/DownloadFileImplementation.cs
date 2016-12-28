@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using Android.App;
-using Android.Content;
 using Android.Database;
 using Android.Net;
 using Plugin.DownloadManager.Abstractions;

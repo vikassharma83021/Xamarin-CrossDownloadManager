@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System;
+using System.Collections.Specialized;
 
 namespace Plugin.DownloadManager.Abstractions
 {
@@ -13,7 +13,12 @@ namespace Plugin.DownloadManager.Abstractions
         /// Gets the queue holding all the pending and downloading files.
         /// </summary>
         /// <value>The queue.</value>
-        ObservableCollection<IDownloadFile> Queue { get; }
+        IEnumerable<IDownloadFile> Queue { get; }
+
+        /// <summary>
+        /// Occurs when the queue changed.
+        /// </summary>
+        event NotifyCollectionChangedEventHandler CollectionChanged;
 
         /// <summary>
         /// A function, returning the name of the path, where the download-file, given as argument, should be saved.

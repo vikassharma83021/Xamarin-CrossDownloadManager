@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using Foundation;
 using Plugin.DownloadManager.Abstractions;
@@ -17,20 +17,30 @@ namespace Plugin.DownloadManager
 
         NSUrlSession _session;
 
-        public ObservableCollection<IDownloadFile> Queue { get; private set; }
+        public event NotifyCollectionChangedEventHandler CollectionChanged;
+
+        private IList<IDownloadFile> _queue;
+
+        public IEnumerable<IDownloadFile> Queue {
+            get {
+                lock(_queue) {
+                    return _queue.ToList();
+                }
+            }
+        }
 
         public Func<IDownloadFile, string> PathNameForDownloadedFile { get; set; }
 
         public DownloadManagerImplementation (UrlSessionDownloadDelegate sessionDownloadDelegate)
         {
-            Queue = new ObservableCollection<IDownloadFile> ();
+            _queue = new List<IDownloadFile> ();
 
             _session = InitBackgroundSession (sessionDownloadDelegate);
 
             // Reinitialize tasks that were started before the app was terminated or suspended
             _session.GetTasks2((NSUrlSessionTask[] dataTasks, NSUrlSessionTask[] uploadTasks, NSUrlSessionTask[] downloadTasks) => {
                 foreach (var task in downloadTasks) {
-                    Queue.Add(new DownloadFileImplementation(task));
+                    AddFile(new DownloadFileImplementation(task));
                 }
             });
         }
@@ -50,7 +60,7 @@ namespace Plugin.DownloadManager
             var file = (DownloadFileImplementation)i;
 
             file.StartDownload (_session, mobileNetworkAllowed);
-            Queue.Add (file);
+            AddFile(file);
         }
 
         public void Abort (IDownloadFile i)
@@ -62,7 +72,7 @@ namespace Plugin.DownloadManager
                 file.Task.Cancel ();
             }
 
-            Queue.Remove (file);
+            RemoveFile(file);
         }
 
         public void AbortAll ()
@@ -98,6 +108,28 @@ namespace Plugin.DownloadManager
             configuration.HttpMaximumConnectionsPerHost = 1;
 
             return NSUrlSession.FromConfiguration(configuration, sessionDownloadDelegate, null);
+        }
+
+        protected internal void AddFile(IDownloadFile file)
+        {
+            lock (_queue) {
+                _queue.Add(file);
+            }
+
+            if (CollectionChanged != null) {
+                CollectionChanged.Invoke(Queue, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, file, null));
+            }
+        }
+
+        protected internal void RemoveFile(IDownloadFile file)
+        {
+            lock (_queue) {
+                _queue.Remove(file);
+            }
+
+            if (CollectionChanged != null) {
+                CollectionChanged.Invoke(Queue, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, null, file));
+            }
         }
     }
 }

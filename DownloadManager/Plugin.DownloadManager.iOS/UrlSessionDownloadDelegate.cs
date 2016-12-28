@@ -32,7 +32,7 @@ namespace Plugin.DownloadManager
             file.Status = DownloadFileStatus.RUNNING;
         }
 
-        public override void DidCompleteWithError (Foundation.NSUrlSession session, Foundation.NSUrlSessionTask task, Foundation.NSError error)
+        public override void DidCompleteWithError (NSUrlSession session, NSUrlSessionTask task, NSError error)
         {
             var file = getDownloadFileByTask (task);
             if (file == null)
@@ -41,7 +41,7 @@ namespace Plugin.DownloadManager
             file.Status = DownloadFileStatus.FAILED;
             file.StatusDetails = error.LocalizedDescription;
 
-            Controller.Queue.Remove (file);
+            Controller.RemoveFile (file);
         }
 
         /**
@@ -82,7 +82,7 @@ namespace Plugin.DownloadManager
                 file.Status = DownloadFileStatus.COMPLETED;
             }
 
-            Controller.Queue.Remove (file);
+            Controller.RemoveFile (file);
         }
 
         /**

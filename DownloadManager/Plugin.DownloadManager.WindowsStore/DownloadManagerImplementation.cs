@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using Plugin.DownloadManager.Abstractions;
 
 namespace Plugin.DownloadManager
@@ -10,7 +10,13 @@ namespace Plugin.DownloadManager
     /// </summary>
     public class DownloadManagerImplementation : IDownloadManager
     {
-        public ObservableCollection<IDownloadFile> Queue { get; private set; }
+        public IEnumerable<IDownloadFile> Queue {
+            get {
+                throw new NotImplementedException();
+            }
+        }
+
+        public event NotifyCollectionChangedEventHandler CollectionChanged;
 
         public Func<IDownloadFile, string> PathNameForDownloadedFile { get; set; }
 

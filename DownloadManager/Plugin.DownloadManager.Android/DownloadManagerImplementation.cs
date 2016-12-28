@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using Android.App;
 using Android.Database;
@@ -19,13 +19,23 @@ namespace Plugin.DownloadManager
 
         Android.App.DownloadManager _downloadManager;
 
-        public ObservableCollection<IDownloadFile> Queue { get; private set; }
+        private IList<IDownloadFile> _queue;
+
+        public IEnumerable<IDownloadFile> Queue {
+            get {
+                lock (_queue) {
+                    return _queue.ToList();
+                }
+            }
+        }
+
+        public event NotifyCollectionChangedEventHandler CollectionChanged;
 
         public Func<IDownloadFile, string> PathNameForDownloadedFile { get; set; }
 
         public DownloadManagerImplementation ()
         {
-            Queue = new ObservableCollection<IDownloadFile> ();
+            _queue = new List<IDownloadFile> ();
 
             _downloadManager = (Android.App.DownloadManager)Application.Context.GetSystemService (Context.DownloadService);
 
@@ -56,7 +66,7 @@ namespace Plugin.DownloadManager
             }
 
             file.StartDownload (_downloadManager, destinationPathName, mobileNetworkAllowed);
-            Queue.Add (file);
+            AddFile (file);
         }
 
         public void Abort (IDownloadFile i)
@@ -65,12 +75,12 @@ namespace Plugin.DownloadManager
 
             file.Status = DownloadFileStatus.CANCELED;
             _downloadManager.Remove (file.Id);
-            Queue.Remove (file);
+            RemoveFile (file);
         }
 
         public void AbortAll ()
         {
-            foreach (var file in Queue.ToList ()) {
+            foreach (var file in Queue) {
                 Abort (file);
             }
         }
@@ -80,9 +90,9 @@ namespace Plugin.DownloadManager
             // Reinitialize downloads that were started before the app was terminated or suspended
             var query = new Android.App.DownloadManager.Query ();
             query.SetFilterByStatus (
-                Android.App.DownloadStatus.Paused |
-                Android.App.DownloadStatus.Pending |
-                Android.App.DownloadStatus.Running
+                DownloadStatus.Paused |
+                DownloadStatus.Pending |
+                DownloadStatus.Running
             );
 
             try {
@@ -101,7 +111,7 @@ namespace Plugin.DownloadManager
         {
             var downloadFile = new DownloadFileImplementation (cursor);
 
-            Queue.Add (downloadFile);
+            AddFile (downloadFile);
             UpdateFileProperties (cursor, downloadFile);
         }
 
@@ -146,12 +156,12 @@ namespace Plugin.DownloadManager
             case DownloadStatus.Successful:
                 downloadFile.StatusDetails = default(string);
                 downloadFile.Status = DownloadFileStatus.COMPLETED;
-                Queue.Remove (downloadFile);
+                RemoveFile (downloadFile);
                 break;
                     
             case DownloadStatus.Failed:
                 downloadFile.Status = DownloadFileStatus.FAILED;
-                Queue.Remove (downloadFile);
+                RemoveFile (downloadFile);
 
                 var reasonFailed = cursor.GetInt(cursor.GetColumnIndex(Android.App.DownloadManager.ColumnReason));
                 if (reasonFailed < 600) {
@@ -224,6 +234,28 @@ namespace Plugin.DownloadManager
                 downloadFile.StatusDetails = default(string);
                 downloadFile.Status = DownloadFileStatus.RUNNING;
                 break;
+            }
+        }
+
+        protected internal void AddFile(IDownloadFile file)
+        {
+            lock (_queue) {
+                _queue.Add(file);
+            }
+
+            if (CollectionChanged != null) {
+                CollectionChanged.Invoke(Queue, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, file, null));
+            }
+        }
+
+        protected internal void RemoveFile(IDownloadFile file)
+        {
+            lock (_queue) {
+                _queue.Remove(file);
+            }
+
+            if (CollectionChanged != null) {
+                CollectionChanged.Invoke(Queue, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, null, file));
             }
         }
     }
