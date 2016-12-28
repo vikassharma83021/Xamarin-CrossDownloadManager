@@ -9,7 +9,7 @@ namespace Plugin.DownloadManager.Abstractions
     public enum DownloadFileStatus
     {
         /// <summary>
-        /// The download is intitalized.
+        /// The download is intitalized. It may is already registered in the native download manager.
         /// </summary>
         INITIALIZED,
 
