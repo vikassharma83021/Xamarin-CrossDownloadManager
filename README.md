@@ -132,3 +132,20 @@ If you want to contribute, just fork the project, write some code or just file a
 * [SimonSimCity](https://github.com/SimonSimCity)
 * [martijn00](https://github.com/martijn00)
 * [fela98](https://github.com/fela98)
+
+### Changes
+
+#### 0.10.0
+
+  * [BC] Introduced new status in DownloadFileStatus enum. Please check your switch-case statements on `DownloadFileStatus`. Be aware of that items can also be in the `Queue` while still having the status `DownloadFileStatus.INITIALIZED`.
+  * [BC] Refactored queue to be threadsafe. `Queue` is implemented as `IEnumerable<T>` and the `CollectionChanged` listener is implemented on the `CrossDownloadManager` itself.
+
+#### 0.9.1
+
+  * Small fixes
+
+#### 0.9.0
+
+  * [Bug] Updated session-identifier on iOS. (If another app is running, using the same extension, you don't have accesss to their downloads anymore)
+  * [Feature] Option to disallow downloading via mobile network
+  * [Bug] Fixed bug on iOS when reestablishing the queue after the app was shut down
