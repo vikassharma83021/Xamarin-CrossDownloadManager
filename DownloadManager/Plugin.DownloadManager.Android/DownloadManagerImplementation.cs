@@ -244,7 +244,7 @@ namespace Plugin.DownloadManager
             }
 
             if (CollectionChanged != null) {
-                CollectionChanged.Invoke(Queue, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, file, null));
+                CollectionChanged.Invoke(Queue, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, file));
             }
         }
 
@@ -255,7 +255,7 @@ namespace Plugin.DownloadManager
             }
 
             if (CollectionChanged != null) {
-                CollectionChanged.Invoke(Queue, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, null, file));
+                CollectionChanged.Invoke(Queue, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, file));
             }
         }
     }

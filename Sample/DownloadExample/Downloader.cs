@@ -8,6 +8,18 @@ namespace DownloadExample
     {
         public IDownloadFile File;
 
+        public Downloader()
+        {
+            CrossDownloadManager.Current.CollectionChanged += (sender, e) => 
+                System.Diagnostics.Debug.WriteLine(
+                    "[DownloadManager] " + e.Action +
+                    " -> New items: " + (e.NewItems?.Count ?? 0) +
+                    " at " + e.NewStartingIndex +
+                    " || Old items: " + (e.OldItems?.Count ?? 0) +
+                    " at " + e.OldStartingIndex
+                );
+        }
+
         public void InitializeDownload()
         {
             File = CrossDownloadManager.Current.CreateDownloadFile (
