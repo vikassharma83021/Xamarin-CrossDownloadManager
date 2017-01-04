@@ -135,6 +135,10 @@ If you want to contribute, just fork the project, write some code or just file a
 
 ### Changes
 
+#### 0.10.1
+
+  * Small fixes
+
 #### 0.10.0
 
   * [BC] Introduced new status in DownloadFileStatus enum. Please check your switch-case statements on `DownloadFileStatus`. Be aware of that items can also be in the `Queue` while still having the status `DownloadFileStatus.INITIALIZED`.
