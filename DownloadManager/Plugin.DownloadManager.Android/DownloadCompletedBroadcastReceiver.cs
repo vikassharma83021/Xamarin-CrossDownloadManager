@@ -19,7 +19,7 @@ namespace Plugin.DownloadManager
                         while (cursor.MoveToNext ()) {
                             ((DownloadManagerImplementation)CrossDownloadManager.Current).UpdateFileProperties (cursor, downloadFile);
                         }
-                        cursor.Close();
+                        cursor?.Close();
                     }
                 } catch (Android.Database.Sqlite.SQLiteException) {
                     // I lately got an exception that the database was unaccessible ...
