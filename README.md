@@ -135,6 +135,10 @@ If you want to contribute, just fork the project, write some code or just file a
 
 ### Changes
 
+#### 0.10.2
+
+  * Fixed NullReferenceException
+
 #### 0.10.1
 
   * Small fixes
