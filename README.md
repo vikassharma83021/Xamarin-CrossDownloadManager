@@ -9,9 +9,6 @@ The CrossDownloadManager is a plugin that helps you downloading files in the bac
 |Xamarin.iOS|Yes|iOS 7+|
 |Xamarin.iOS Unified|Yes|iOS 7+|
 |Xamarin.Android|Yes|API 16+|
-|Windows Phone Silverlight|No||
-|Windows Phone RT|No||
-|Windows Store RT|No||
 |Windows 10 UWP|No - Requested ([#8](https://github.com/SimonSimCity/Xamarin-CrossDownloadManager/issues/8))||
 |Xamarin.Mac|No||
 
