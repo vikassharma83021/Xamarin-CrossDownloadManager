@@ -36,7 +36,7 @@
     ANDROID_HOME: "C:\\android-sdk-windows"
     NUGET_SOURCE: https://www.myget.org/F/SimonSimCity/api/v2/package
     NUGET_APIKEY:
-      secure: TO FILL HERE
+      secure: D3bW8NyZIPpdPjo4QxvsDK7YbGXS0bNWs7/YKc0UBdzFIIEMMDduy3hGzAmDsFh4
   init:
   - cd \
   - appveyor DownloadFile http://dl.google.com/android/android-sdk_r24.4.1-windows.zip
