@@ -21,50 +21,38 @@
 	<files>
 		<!--Core-->
 		<file src="..\DownloadManager\Plugin.DownloadManager\bin\Release\Plugin.DownloadManager.dll" target="lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10+UAP10\Plugin.DownloadManager.dll" />
-		<file src="..\DownloadManager\Plugin.DownloadManager\bin\Release\Plugin.DownloadManager.dll.mdb" target="lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10+UAP10\Plugin.DownloadManager.dll.mdb" />
-		<file src="..\DownloadManager\Plugin.DownloadManager\bin\Release\Plugin.DownloadManager.pdb" target="lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10+UAP10\Plugin.DownloadManager.pdb" />
 		<file src="..\DownloadManager\Plugin.DownloadManager\bin\Release\Plugin.DownloadManager.XML" target="lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10+UAP10\Plugin.DownloadManager.XML" />
 		<file src="..\DownloadManager\Plugin.DownloadManager\bin\Release\Plugin.DownloadManager.Abstractions.dll" target="lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10+UAP10\Plugin.DownloadManager.Abstractions.dll" />
-		<file src="..\DownloadManager\Plugin.DownloadManager\bin\Release\Plugin.DownloadManager.Abstractions.dll.mdb" target="lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10+UAP10\Plugin.DownloadManager.Abstractions.dll.mdb" />
-		<file src="..\DownloadManager\Plugin.DownloadManager\bin\Release\Plugin.DownloadManager.Abstractions.pdb" target="lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10+UAP10\Plugin.DownloadManager.Abstractions.pdb" />
 		<file src="..\DownloadManager\Plugin.DownloadManager\bin\Release\Plugin.DownloadManager.Abstractions.xml" target="lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10+UAP10\Plugin.DownloadManager.Abstractions.xml" />
 
 		<!--dotnet-->
 		<file src="..\DownloadManager\Plugin.DownloadManager\bin\Release\Plugin.DownloadManager.dll" target="lib\dotnet\Plugin.DownloadManager.dll" />
-		<file src="..\DownloadManager\Plugin.DownloadManager\bin\Release\Plugin.DownloadManager.pdb" target="lib\dotnet\Plugin.DownloadManager.pdb" />
 		<file src="..\DownloadManager\Plugin.DownloadManager\bin\Release\Plugin.DownloadManager.XML" target="lib\dotnet\Plugin.DownloadManager.XML" />
 		<file src="..\DownloadManager\Plugin.DownloadManager\bin\Release\Plugin.DownloadManager.Abstractions.dll" target="lib\dotnet\Plugin.DownloadManager.Abstractions.dll" />
-		<file src="..\DownloadManager\Plugin.DownloadManager\bin\Release\Plugin.DownloadManager.Abstractions.pdb" target="lib\dotnet\Plugin.DownloadManager.Abstractions.pdb" />
 		<file src="..\DownloadManager\Plugin.DownloadManager\bin\Release\Plugin.DownloadManager.Abstractions.xml" target="lib\dotnet\Plugin.DownloadManager.Abstractions.xml" />
 
 		<!--Xamarin.Android-->
 		<file src="..\DownloadManager\Plugin.DownloadManager.Android\bin\Release\Plugin.DownloadManager.dll" target="lib\MonoAndroid10\Plugin.DownloadManager.dll" />
-		<file src="..\DownloadManager\Plugin.DownloadManager.Android\bin\Release\Plugin.DownloadManager.dll.mdb" target="lib\MonoAndroid10\Plugin.DownloadManager.dll.mdb" />
 		<file src="..\DownloadManager\Plugin.DownloadManager.Android\bin\Release\Plugin.DownloadManager.xml" target="lib\MonoAndroid10\Plugin.DownloadManager.xml" />
 		<file src="..\DownloadManager\Plugin.DownloadManager.Android\bin\Release\Plugin.DownloadManager.Abstractions.dll" target="lib\MonoAndroid10\Plugin.DownloadManager.Abstractions.dll" />
-		<file src="..\DownloadManager\Plugin.DownloadManager.Android\bin\Release\Plugin.DownloadManager.Abstractions.dll.mdb" target="lib\MonoAndroid10\Plugin.DownloadManager.Abstractions.dll.mdb" />
 		<file src="..\DownloadManager\Plugin.DownloadManager.Android\bin\Release\Plugin.DownloadManager.Abstractions.xml" target="lib\MonoAndroid10\Plugin.DownloadManager.Abstractions.xml" />
 
 		<!--Xamarin.iOS-->
 		<file src="..\DownloadManager\Plugin.DownloadManager.iOS\bin\iPhone\Release\Plugin.DownloadManager.dll" target="lib\Xamarin.iOS10\Plugin.DownloadManager.dll" />
 		<file src="..\DownloadManager\Plugin.DownloadManager.iOS\bin\iPhone\Release\Plugin.DownloadManager.xml" target="lib\Xamarin.iOS10\Plugin.DownloadManager.xml" />
 		<file src="..\DownloadManager\Plugin.DownloadManager.iOS\bin\iPhone\Release\Plugin.DownloadManager.Abstractions.dll" target="lib\Xamarin.iOS10\Plugin.DownloadManager.Abstractions.dll" />
-		<file src="..\DownloadManager\Plugin.DownloadManager.iOS\bin\iPhone\Release\Plugin.DownloadManager.Abstractions.dll.mdb" target="lib\Xamarin.iOS10\Plugin.DownloadManager.Abstractions.dll.mdb" />
 		<file src="..\DownloadManager\Plugin.DownloadManager.iOS\bin\iPhone\Release\Plugin.DownloadManager.Abstractions.xml" target="lib\Xamarin.iOS10\Plugin.DownloadManager.Abstractions.xml" />
 
 		<!--uap-->
 		<file src="..\DownloadManager\Plugin.DownloadManager.UWP\bin\Release\Plugin.DownloadManager.dll" target="lib\uap10.0\Plugin.DownloadManager.dll" />
-		<file src="..\DownloadManager\Plugin.DownloadManager.UWP\bin\Release\Plugin.DownloadManager.pdb" target="lib\uap10.0\Plugin.DownloadManager.pdb" />
 		<file src="..\DownloadManager\Plugin.DownloadManager.UWP\bin\Release\Plugin.DownloadManager.xml" target="lib\uap10.0\Plugin.DownloadManager.xml" />
 		<file src="..\DownloadManager\Plugin.DownloadManager.UWP\bin\Release\Plugin.DownloadManager.Abstractions.dll" target="lib\uap10.0\Plugin.DownloadManager.Abstractions.dll" />
-		<file src="..\DownloadManager\Plugin.DownloadManager.UWP\bin\Release\Plugin.DownloadManager.Abstractions.pdb" target="lib\uap10.0\Plugin.DownloadManager.Abstractions.pdb" />
 		<file src="..\DownloadManager\Plugin.DownloadManager.UWP\bin\Release\Plugin.DownloadManager.Abstractions.xml" target="lib\uap10.0\Plugin.DownloadManager.Abstractions.xml" />
 
 		<!--Xamarin.Mac-->
 		<file src="..\DownloadManager\Plugin.DownloadManager.Mac\bin\Release\Plugin.DownloadManager.dll" target="lib\Xamarin.Mac20\Plugin.DownloadManager.dll" />
 		<file src="..\DownloadManager\Plugin.DownloadManager.Mac\bin\Release\Plugin.DownloadManager.xml" target="lib\Xamarin.Mac20\Plugin.DownloadManager.xml" />
 		<file src="..\DownloadManager\Plugin.DownloadManager.Mac\bin\Release\Plugin.DownloadManager.Abstractions.dll" target="lib\Xamarin.Mac20\Plugin.DownloadManager.Abstractions.dll" />
-		<file src="..\DownloadManager\Plugin.DownloadManager.Mac\bin\Release\Plugin.DownloadManager.Abstractions.dll.mdb" target="lib\Xamarin.Mac20\Plugin.DownloadManager.Abstractions.dll.mdb" />
 		<file src="..\DownloadManager\Plugin.DownloadManager.Mac\bin\Release\Plugin.DownloadManager.Abstractions.xml" target="lib\Xamarin.Mac20\Plugin.DownloadManager.Abstractions.xml" />
 	</files>
 </package>
