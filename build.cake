@@ -78,6 +78,7 @@ Task("Package")
 	var nugetSettings = new NuGetPackSettings {
 		Authors = new [] { "SimonSimCity" },
 		Owners = new [] { "SimonSimCity" },
+		IconUrl = new Uri("https://raw.githubusercontent.com/jamesmontemagno/Xamarin-Templates/master/Plugins-Templates/icons/plugin_icon_nuget.png"),
 		ProjectUrl = new Uri("https://github.com/SimonSimCity/Xamarin-CrossDownloadManager"),
 		LicenseUrl = new Uri("https://github.com/SimonSimCity/Xamarin-CrossDownloadManager/blob/master/LICENSE.md"),
 		Copyright = "Copyright (c) SimonSimCity",
