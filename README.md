@@ -6,7 +6,7 @@ The CrossDownloadManager is a plugin that helps you downloading files in the bac
 [![Build status](https://ci.appveyor.com/api/projects/status/c9c6recwcu7k0s15?svg=true)](https://ci.appveyor.com/project/SimonSimCity/xamarin-crossdownloadmanager)
 ![GitHub tag](https://img.shields.io/github/tag/SimonSimCity/xamarin-crossdownloadmanager.svg)
 [![NuGet](https://img.shields.io/nuget/v/Xam.Plugins.DownloadManager.svg?label=NuGet)](https://www.nuget.org/packages/Xam.Plugins.DownloadManager/)
-[![MyGet](https://img.shields.io/myget/simonsimcity/v/Xam.Plugins.DownloadManager.svg)](https://www.myget.org/F/simonsimcity/api/v2)
+[![MyGet](https://img.shields.io/myget/simonsimcity/vpre/Xam.Plugins.DownloadManager.svg)](https://www.myget.org/F/simonsimcity/api/v2)
 
 ### Where can I use it?
 
