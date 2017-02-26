@@ -34,7 +34,7 @@
   image: Visual Studio 2017 RC
   environment:
     ANDROID_HOME: "C:\\android-sdk-windows"
-    NUGET_SOURCE: https://www.myget.org/F/SimonSimCity/api/v2/package
+    NUGET_SOURCE: https://www.myget.org/F/simonsimcity/api/v2/package
     NUGET_APIKEY:
       secure: RnJPCNw3MFXAN9Ro8pEiMj5517Zi+3QW2zMkr2AnsF9I0rI8OdM77N9Db3c070J0
   init:
