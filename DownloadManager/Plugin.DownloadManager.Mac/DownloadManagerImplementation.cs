@@ -10,11 +10,7 @@ namespace Plugin.DownloadManager
     /// </summary>
     public class DownloadManagerImplementation : IDownloadManager
     {
-        public IEnumerable<IDownloadFile> Queue {
-            get {
-                throw new NotImplementedException();
-            }
-        }
+        public IEnumerable<IDownloadFile> Queue => throw new NotImplementedException();
 
         public event NotifyCollectionChangedEventHandler CollectionChanged;
 

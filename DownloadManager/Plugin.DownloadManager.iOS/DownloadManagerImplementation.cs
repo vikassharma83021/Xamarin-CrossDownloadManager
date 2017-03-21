@@ -15,11 +15,11 @@ namespace Plugin.DownloadManager
     {
         private string _identifier => NSBundle.MainBundle.BundleIdentifier + ".BackgroundTransferSession";
 
-        NSUrlSession _session;
+        private readonly NSUrlSession _session;
 
         public event NotifyCollectionChangedEventHandler CollectionChanged;
 
-        private IList<IDownloadFile> _queue;
+        private readonly IList<IDownloadFile> _queue;
 
         public IEnumerable<IDownloadFile> Queue {
             get {
@@ -68,9 +68,7 @@ namespace Plugin.DownloadManager
             var file = (DownloadFileImplementation)i;
 
             file.Status = DownloadFileStatus.CANCELED;
-            if (file.Task != null) {
-                file.Task.Cancel ();
-            }
+            file.Task?.Cancel ();
 
             RemoveFile(file);
         }
@@ -116,9 +114,7 @@ namespace Plugin.DownloadManager
                 _queue.Add(file);
             }
 
-            if (CollectionChanged != null) {
-                CollectionChanged.Invoke(Queue, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, file));
-            }
+            CollectionChanged?.Invoke(Queue, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, file));
         }
 
         protected internal void RemoveFile(IDownloadFile file)
@@ -127,9 +123,7 @@ namespace Plugin.DownloadManager
                 _queue.Remove(file);
             }
 
-            if (CollectionChanged != null) {
-                CollectionChanged.Invoke(Queue, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, file));
-            }
+            CollectionChanged?.Invoke(Queue, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, file));
         }
     }
 }

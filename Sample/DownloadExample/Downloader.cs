@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Plugin.DownloadManager;
 using Plugin.DownloadManager.Abstractions;
 
@@ -44,17 +45,22 @@ namespace DownloadExample
 
         public bool IsDownloading ()
         {
-            if (File != null) {
-                switch (File.Status) {
+            if (File == null) return false;
+
+            switch (File.Status) {
                 case DownloadFileStatus.INITIALIZED:
                 case DownloadFileStatus.PAUSED:
                 case DownloadFileStatus.PENDING:
                 case DownloadFileStatus.RUNNING:
                     return true;
-                }
-            }
 
-            return false;
+                case DownloadFileStatus.COMPLETED:
+                case DownloadFileStatus.CANCELED:
+                case DownloadFileStatus.FAILED:
+                    return false;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
    }
 }

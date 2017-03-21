@@ -22,7 +22,7 @@ namespace DownloadExample.iOS
         public override void DidFinishDownloading (NSUrlSession session, NSUrlSessionDownloadTask downloadTask, NSUrl location)
         {
             // In case you need to access the IDownloadFile implementation, you have to load it before calling the base-method.
-            var file = getDownloadFileByTask (downloadTask);
+            var file = GetDownloadFileByTask (downloadTask);
             if (file == null) {
                 return;
             }
