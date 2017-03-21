@@ -6,7 +6,7 @@ The CrossDownloadManager is a plugin that helps you downloading files in the bac
 [![Build status](https://ci.appveyor.com/api/projects/status/c9c6recwcu7k0s15?svg=true)](https://ci.appveyor.com/project/SimonSimCity/xamarin-crossdownloadmanager)
 ![GitHub tag](https://img.shields.io/github/tag/SimonSimCity/xamarin-crossdownloadmanager.svg)
 [![NuGet](https://img.shields.io/nuget/v/Xam.Plugins.DownloadManager.svg?label=NuGet)](https://www.nuget.org/packages/Xam.Plugins.DownloadManager/)
-[![MyGet](https://img.shields.io/myget/SimonSimCity/v/Xam.Plugins.DownloadManager.svg)](https://www.myget.org/F/Xam.Plugins.DownloadManager/api/v2)
+[![MyGet](https://img.shields.io/myget/simonsimcity/vpre/Xam.Plugins.DownloadManager.svg)](https://www.myget.org/F/simonsimcity/api/v2)
 
 ### Where can I use it?
 
@@ -15,7 +15,7 @@ The CrossDownloadManager is a plugin that helps you downloading files in the bac
 |Xamarin.iOS|Yes|iOS 7+|
 |Xamarin.iOS Unified|Yes|iOS 7+|
 |Xamarin.Android|Yes|API 16+|
-|Windows 10 UWP|No - Requested ([#8](https://github.com/SimonSimCity/Xamarin-CrossDownloadManager/issues/8))||
+|Windows 10 UWP|Yes - but not fully implemented. See [#8](https://github.com/SimonSimCity/Xamarin-CrossDownloadManager/issues/8)|10.0.10240.0|
 |Xamarin.Mac|No||
 
 ### Getting started
@@ -101,6 +101,10 @@ Usually, you would expect to set the path to the `IDownloadFile` instance, you g
 #endif
         });
 ```
+##### Additional for UWP
+
+Whatever I tried, i got a `Permission denied` exception when setting a custom path. Needs some testing, time and ideas ...
+
 ##### Additional for Andriod
 
 On Android, the destination location must be a located outside of your Apps internal directory (see [#10](https://github.com/SimonSimCity/Xamarin-CrossDownloadManager/issues/10) for details). To allow your app to write to that location, you either have to add the permission `WRITE_EXTERNAL_STORAGE` to the mainfest.xml file to require it when installing the app
@@ -137,6 +141,14 @@ If you want to contribute, just fork the project, write some code or just file a
 * [fela98](https://github.com/fela98)
 
 ### Changes
+
+#### 1.1.0
+
+  * Added first implementation for UWP
+
+#### 1.0.0
+
+  * Allowed implementation of Mac (without crashing at once)
 
 #### 0.10.2
 

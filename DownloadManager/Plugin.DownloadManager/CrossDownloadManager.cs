@@ -8,7 +8,7 @@ namespace Plugin.DownloadManager
     /// </summary>
     public class CrossDownloadManager
     {
-        static Lazy<IDownloadManager> Implementation = new Lazy<IDownloadManager> (() => CreateDownloadManager (), System.Threading.LazyThreadSafetyMode.PublicationOnly);
+        private static readonly Lazy<IDownloadManager> Implementation = new Lazy<IDownloadManager> (CreateDownloadManager, System.Threading.LazyThreadSafetyMode.PublicationOnly);
 
 #if __IOS__
         /// <summary>
@@ -37,11 +37,11 @@ namespace Plugin.DownloadManager
             }
         }
 
-        static IDownloadManager CreateDownloadManager ()
+        private static IDownloadManager CreateDownloadManager ()
         {
 #if __IOS__
             return new DownloadManagerImplementation (UrlSessionDownloadDelegate ?? new UrlSessionDownloadDelegate());
-#elif __ANDROID__ || __UNIFIED__
+#elif __ANDROID__ || __UNIFIED__ || WINDOWS_UWP
             return new DownloadManagerImplementation();
 #else
             return null;

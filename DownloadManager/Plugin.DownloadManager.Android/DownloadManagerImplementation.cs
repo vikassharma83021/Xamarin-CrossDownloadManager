@@ -14,12 +14,12 @@ namespace Plugin.DownloadManager
     /// </summary>
     public class DownloadManagerImplementation : IDownloadManager
     {
-        Android.OS.Handler _downloadWatcherHandler;
-        Java.Lang.Runnable _downloadWatcherHandlerRunnable;
+        private Android.OS.Handler _downloadWatcherHandler;
+        private Java.Lang.Runnable _downloadWatcherHandlerRunnable;
 
-        Android.App.DownloadManager _downloadManager;
+        private readonly Android.App.DownloadManager _downloadManager;
 
-        private IList<IDownloadFile> _queue;
+        private readonly IList<IDownloadFile> _queue;
 
         public IEnumerable<IDownloadFile> Queue {
             get {
@@ -40,7 +40,7 @@ namespace Plugin.DownloadManager
             _downloadManager = (Android.App.DownloadManager)Application.Context.GetSystemService (Context.DownloadService);
 
             // Add all items to the Queue that are pending, paused or running
-            LoopOnDownloads (new Action<ICursor> (cursor => ReinitializeFile (cursor)));
+            LoopOnDownloads (ReinitializeFile);
 
             // Check sequentially if parameters for any of the registered downloads changed
             StartDownloadWatcher ();
@@ -124,7 +124,7 @@ namespace Plugin.DownloadManager
             _downloadWatcherHandlerRunnable = new Java.Lang.Runnable (() => {
 
                 // Loop throught all files in the system-queue and update the data in the local queue
-                LoopOnDownloads (cursor => UpdateFileProperties (cursor));
+                LoopOnDownloads (UpdateFileProperties);
 
                 _downloadWatcherHandler.PostDelayed (_downloadWatcherHandlerRunnable, 1000);
             });
@@ -243,9 +243,7 @@ namespace Plugin.DownloadManager
                 _queue.Add(file);
             }
 
-            if (CollectionChanged != null) {
-                CollectionChanged.Invoke(Queue, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, file));
-            }
+            CollectionChanged?.Invoke(Queue, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, file));
         }
 
         protected internal void RemoveFile(IDownloadFile file)
@@ -254,9 +252,7 @@ namespace Plugin.DownloadManager
                 _queue.Remove(file);
             }
 
-            if (CollectionChanged != null) {
-                CollectionChanged.Invoke(Queue, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, file));
-            }
+            CollectionChanged?.Invoke(Queue, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, file));
         }
     }
 }

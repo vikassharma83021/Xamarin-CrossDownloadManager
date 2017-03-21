@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using Android.App;
 using Android.Database;
-using Android.Net;
 using Plugin.DownloadManager.Abstractions;
+using Uri = Android.Net.Uri;
 
 namespace Plugin.DownloadManager
 {
@@ -15,61 +16,57 @@ namespace Plugin.DownloadManager
 
         public string Url { get; set; }
 
-        public IDictionary<string, string> Headers { get; private set; }
+        public IDictionary<string, string> Headers { get; }
 
         DownloadFileStatus _status;
 
-        public DownloadFileStatus Status {
-            get {
-                return _status;
-            }
-            set {
-                if (!Equals(_status, value)) {
-                    _status = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Status"));
-                }
-            }
-        }
-
-        string _statusDetails;
-
-        public string StatusDetails {
-            get {
-                return _statusDetails;
-            }
-            set {
-                if (!Equals(_statusDetails, value)) {
-                    _statusDetails = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("StatusDetails"));
-                }
+        public DownloadFileStatus Status
+        {
+            get => _status;
+            set
+            {
+                if (Equals(_status, value)) return;
+                _status = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Status)));
             }
         }
 
-        float _totalBytesExpected = 0.0f;
+        private string _statusDetails;
 
-        public float TotalBytesExpected {
-            get {
-                return _totalBytesExpected;
-            }
-            set {
-                if (!Equals(_totalBytesExpected, value)) {
-                    _totalBytesExpected = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TotalBytesExpected"));
-                }
+        public string StatusDetails
+        {
+            get => _statusDetails;
+            set
+            {
+                if (Equals(_statusDetails, value)) return;
+                _statusDetails = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(StatusDetails)));
             }
         }
 
-        float _totalBytesWritten = 0.0f;
+        private float _totalBytesExpected;
 
-        public float TotalBytesWritten {
-            get {
-                return _totalBytesWritten;
+        public float TotalBytesExpected
+        {
+            get => _totalBytesExpected;
+            set
+            {
+                if (Equals(_totalBytesExpected, value)) return;
+                _totalBytesExpected = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TotalBytesExpected)));
             }
-            set {
-                if (!Equals(_totalBytesWritten, value)) {
-                    _totalBytesWritten = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TotalBytesWritten"));
-                }
+        }
+
+        private float _totalBytesWritten;
+
+        public float TotalBytesWritten
+        {
+            get => _totalBytesWritten;
+            set
+            {
+                if (Equals(_totalBytesWritten, value)) return;
+                _totalBytesWritten = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TotalBytesWritten)));
             }
         }
 
@@ -92,11 +89,12 @@ namespace Plugin.DownloadManager
             Id = cursor.GetLong(cursor.GetColumnIndex(Android.App.DownloadManager.ColumnId));
             Url = cursor.GetString(cursor.GetColumnIndex(Android.App.DownloadManager.ColumnUri));
 
-            switch ((DownloadStatus)cursor.GetInt(cursor.GetColumnIndex(Android.App.DownloadManager.ColumnStatus))) {
+            switch ((DownloadStatus) cursor.GetInt(cursor.GetColumnIndex(Android.App.DownloadManager.ColumnStatus)))
+            {
                 case DownloadStatus.Failed:
                     Status = DownloadFileStatus.FAILED;
                     break;
-                    
+
                 case DownloadStatus.Paused:
                     Status = DownloadFileStatus.PAUSED;
                     break;
@@ -112,20 +110,28 @@ namespace Plugin.DownloadManager
                 case DownloadStatus.Successful:
                     Status = DownloadFileStatus.COMPLETED;
                     break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
-        public void StartDownload(Android.App.DownloadManager downloadManager, string destinationPathName, bool allowedOverMetered)
+        public void StartDownload(Android.App.DownloadManager downloadManager, string destinationPathName,
+            bool allowedOverMetered)
         {
             using (var downloadUrl = Uri.Parse(Url))
-            using (var request = new Android.App.DownloadManager.Request(downloadUrl)) {
-                if (Headers != null) {
-                    foreach (var header in Headers) {
+            using (var request = new Android.App.DownloadManager.Request(downloadUrl))
+            {
+                if (Headers != null)
+                {
+                    foreach (var header in Headers)
+                    {
                         request.AddRequestHeader(header.Key, header.Value);
                     }
                 }
 
-                if (destinationPathName != null) {
+                if (destinationPathName != null)
+                {
                     request.SetDestinationUri(Uri.FromFile(new Java.IO.File(destinationPathName)));
                 }
 

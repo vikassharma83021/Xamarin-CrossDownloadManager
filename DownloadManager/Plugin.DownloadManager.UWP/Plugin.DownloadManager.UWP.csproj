@@ -113,6 +113,7 @@
     <Compile Include="..\Plugin.DownloadManager\CrossDownloadManager.cs">
       <Link>CrossDownloadManager.cs</Link>
     </Compile>
+    <Compile Include="DownloadFileImplementation.cs" />
     <Compile Include="DownloadManagerImplementation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Plugin.DownloadManager.UWP.rd.xml" />

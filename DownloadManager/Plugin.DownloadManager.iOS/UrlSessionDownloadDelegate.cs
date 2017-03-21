@@ -8,7 +8,7 @@ namespace Plugin.DownloadManager
     {
         public DownloadManagerImplementation Controller;
 
-        protected DownloadFileImplementation getDownloadFileByTask (NSUrlSessionTask downloadTask)
+        protected DownloadFileImplementation GetDownloadFileByTask (NSUrlSessionTask downloadTask)
         {
             return Controller.Queue
                 .Cast<DownloadFileImplementation> ()
@@ -23,7 +23,7 @@ namespace Plugin.DownloadManager
          */
         public override void DidResume (NSUrlSession session, NSUrlSessionDownloadTask downloadTask, long resumeFileOffset, long expectedTotalBytes)
         {
-            var file = getDownloadFileByTask (downloadTask);
+            var file = GetDownloadFileByTask (downloadTask);
             if (file == null) {
                 downloadTask.Cancel ();
                 return;
@@ -34,7 +34,7 @@ namespace Plugin.DownloadManager
 
         public override void DidCompleteWithError (NSUrlSession session, NSUrlSessionTask task, NSError error)
         {
-            var file = getDownloadFileByTask (task);
+            var file = GetDownloadFileByTask (task);
             if (file == null)
                 return;
 
@@ -49,7 +49,7 @@ namespace Plugin.DownloadManager
          */
         public override void DidWriteData (NSUrlSession session, NSUrlSessionDownloadTask downloadTask, long bytesWritten, long totalBytesWritten, long totalBytesExpectedToWrite)
         {
-            var file = getDownloadFileByTask (downloadTask);
+            var file = GetDownloadFileByTask (downloadTask);
             if (file == null) {
                 downloadTask.Cancel ();
                 return;
@@ -63,18 +63,26 @@ namespace Plugin.DownloadManager
 
         public override void DidFinishDownloading (NSUrlSession session, NSUrlSessionDownloadTask downloadTask, NSUrl location)
         {
-            var file = getDownloadFileByTask (downloadTask);
+            var file = GetDownloadFileByTask (downloadTask);
             if (file == null) {
                 downloadTask.Cancel ();
                 return;
             }
 
+            // On iOS 9 and later, this method is called even so the response-code is 400 or higher. See https://github.com/cocos2d/cocos2d-x/pull/14683
+            var response = downloadTask.Response as NSHttpUrlResponse;
+            if (response != null && response.StatusCode >= 400) {
+                file.Status = DownloadFileStatus.FAILED;
+                file.StatusDetails = "Error.HttpCode: " + response.StatusCode;
+            
+                Controller.RemoveFile (file);
+                return;
+            }
+
             var success = true;
-            if (Controller.PathNameForDownloadedFile != null) {
-                var destinationPathName = Controller.PathNameForDownloadedFile (file);
-                if (destinationPathName != null) {
-                    success = MoveDownloadedFile (file, location, destinationPathName);
-                }
+            var destinationPathName = Controller.PathNameForDownloadedFile?.Invoke (file);
+            if (destinationPathName != null) {
+                success = MoveDownloadedFile (file, location, destinationPathName);
             }
 
             // If the file destination is unknown or was moved successfully ...
@@ -90,14 +98,14 @@ namespace Plugin.DownloadManager
          */
         public bool MoveDownloadedFile (DownloadFileImplementation file, NSUrl location, string destinationPathName)
         {
-            NSFileManager fileManager = NSFileManager.DefaultManager;
+            var fileManager = NSFileManager.DefaultManager;
 
-            var destinationURL = new NSUrl (destinationPathName, false);
+            var destinationUrl = new NSUrl (destinationPathName, false);
             NSError removeCopy;
             NSError errorCopy;
 
-            fileManager.Remove (destinationURL, out removeCopy);
-            var success = fileManager.Copy (location, destinationURL, out errorCopy);
+            fileManager.Remove (destinationUrl, out removeCopy);
+            var success = fileManager.Copy (location, destinationUrl, out errorCopy);
 
             if (!success) {
                 file.StatusDetails = errorCopy.LocalizedDescription;
