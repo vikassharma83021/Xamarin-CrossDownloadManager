@@ -23,7 +23,7 @@ namespace DownloadExample
         public void InitializeDownload()
         {
             File = CrossDownloadManager.Current.CreateDownloadFile (
-                "http://www.speedtestx.de/testfiles/data_10mb.test"
+                "http://ipv4.download.thinkbroadband.com/10MB.zip"
                 // If you need, you can add a dictionary of headers you need.
                 //, new Dictionary<string, string> {
                 //    { "Cookie", "LetMeDownload=1;" },
