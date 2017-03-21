@@ -41,7 +41,7 @@ namespace Plugin.DownloadManager
         {
 #if __IOS__
             return new DownloadManagerImplementation (UrlSessionDownloadDelegate ?? new UrlSessionDownloadDelegate());
-#elif __ANDROID__ || __UNIFIED__
+#elif __ANDROID__ || __UNIFIED__ || WINDOWS_UWP
             return new DownloadManagerImplementation();
 #else
             return null;

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using Plugin.DownloadManager.Abstractions;
+using Windows.Networking.BackgroundTransfer;
+using System.Linq;
 
 namespace Plugin.DownloadManager
 {
@@ -10,9 +12,16 @@ namespace Plugin.DownloadManager
     /// </summary>
     public class DownloadManagerImplementation : IDownloadManager
     {
-        public IEnumerable<IDownloadFile> Queue {
-            get {
-                throw new NotImplementedException();
+        private readonly IList<IDownloadFile> _queue;
+
+        public IEnumerable<IDownloadFile> Queue
+        {
+            get
+            {
+                lock (_queue)
+                {
+                    return _queue.ToList();
+                }
             }
         }
 
@@ -20,29 +29,78 @@ namespace Plugin.DownloadManager
 
         public Func<IDownloadFile, string> PathNameForDownloadedFile { get; set; }
 
-        public IDownloadFile CreateDownloadFile (string url)
+        public DownloadManagerImplementation()
         {
-            throw new NotImplementedException ();
+            _queue = new List<IDownloadFile>();
+
+            // Enumerate outstanding downloads.
+            BackgroundDownloader.GetCurrentDownloadsAsync().AsTask().ContinueWith((downloadOperationsTask) => {
+                foreach (var downloadOperation in downloadOperationsTask.Result)
+                {
+                    var downloadFile = new DownloadFileImplementation(downloadOperation);
+                    _queue.Add(downloadFile);
+                }
+            });
         }
 
-        public IDownloadFile CreateDownloadFile (string url, IDictionary<string, string> headers)
+        public IDownloadFile CreateDownloadFile(string url)
         {
-            throw new NotImplementedException ();
+            return CreateDownloadFile(url, new Dictionary<string, string>());
         }
 
-        public void Start (IDownloadFile i, bool mobileNetworkAllowed = true)
+        public IDownloadFile CreateDownloadFile(string url, IDictionary<string, string> headers)
         {
-            throw new NotImplementedException ();
+            return new DownloadFileImplementation(url, headers);
         }
 
-        public void Abort (IDownloadFile i)
+        public void Start(IDownloadFile i, bool mobileNetworkAllowed = true)
         {
-            throw new NotImplementedException ();
+            var file = (DownloadFileImplementation)i;
+
+            string destinationPathName = null;
+            if (PathNameForDownloadedFile != null)
+            {
+                destinationPathName = PathNameForDownloadedFile(file);
+            }
+            
+            file.StartDownloadAsync(destinationPathName, mobileNetworkAllowed);
         }
 
-        public void AbortAll ()
+        public void Abort(IDownloadFile i)
         {
-            throw new NotImplementedException ();
+            var file = (DownloadFileImplementation)i;
+
+            file.Cancel();
+
+            RemoveFile(file);
+        }
+
+        public void AbortAll()
+        {
+            foreach (var file in Queue)
+            {
+                Abort(file);
+            }
+        }
+
+        protected internal void AddFile(IDownloadFile file)
+        {
+            lock (_queue)
+            {
+                _queue.Add(file);
+            }
+
+            CollectionChanged?.Invoke(Queue, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, file));
+        }
+
+        protected internal void RemoveFile(IDownloadFile file)
+        {
+            lock (_queue)
+            {
+                _queue.Remove(file);
+            }
+
+            CollectionChanged?.Invoke(Queue, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, file));
         }
     }
 }
