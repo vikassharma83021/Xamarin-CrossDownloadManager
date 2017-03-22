@@ -142,9 +142,14 @@ If you want to contribute, just fork the project, write some code or just file a
 
 ### Changes
 
+#### 1.1.1
+
+  * Fixed automated build-process - nothing functional to this plugin ...
+
 #### 1.1.0
 
   * Added first implementation for UWP
+  * [BC] Updated naming of methods to follow C# guidelines
 
 #### 1.0.0
 
