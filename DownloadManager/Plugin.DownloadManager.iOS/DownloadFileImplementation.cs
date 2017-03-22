@@ -22,7 +22,9 @@ namespace Plugin.DownloadManager
         DownloadFileStatus _status;
 
         public DownloadFileStatus Status {
-            get => _status;
+            get {
+                return _status;
+            }
             set {
                 if (Equals(_status, value)) return;
                 _status = value;
@@ -33,7 +35,9 @@ namespace Plugin.DownloadManager
         string _statusDetails;
 
         public string StatusDetails {
-            get => _statusDetails;
+            get {
+                return _statusDetails;
+            }
             set {
                 if (Equals(_statusDetails, value)) return;
                 _statusDetails = value;
@@ -44,7 +48,9 @@ namespace Plugin.DownloadManager
         private float _totalBytesExpected;
 
         public float TotalBytesExpected {
-            get => _totalBytesExpected;
+            get {
+                return _totalBytesExpected;
+            }
             set {
                 if (Equals(_totalBytesExpected, value)) return;
                 _totalBytesExpected = value;
@@ -55,7 +61,9 @@ namespace Plugin.DownloadManager
         private float _totalBytesWritten;
 
         public float TotalBytesWritten {
-            get => _totalBytesWritten;
+            get {
+                return _totalBytesWritten;
+            }
             set {
                 if (Equals(_totalBytesWritten, value)) return;
                 _totalBytesWritten = value;

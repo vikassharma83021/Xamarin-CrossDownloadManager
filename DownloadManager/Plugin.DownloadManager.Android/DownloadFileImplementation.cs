@@ -18,13 +18,13 @@ namespace Plugin.DownloadManager
 
         public IDictionary<string, string> Headers { get; }
 
-        DownloadFileStatus _status;
+        private DownloadFileStatus _status;
 
-        public DownloadFileStatus Status
-        {
-            get => _status;
-            set
-            {
+        public DownloadFileStatus Status {
+            get {
+                return _status;
+            }
+            set {
                 if (Equals(_status, value)) return;
                 _status = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Status)));
@@ -33,11 +33,11 @@ namespace Plugin.DownloadManager
 
         private string _statusDetails;
 
-        public string StatusDetails
-        {
-            get => _statusDetails;
-            set
-            {
+        public string StatusDetails {
+            get {
+                return _statusDetails;
+            }
+            set {
                 if (Equals(_statusDetails, value)) return;
                 _statusDetails = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(StatusDetails)));
@@ -46,11 +46,11 @@ namespace Plugin.DownloadManager
 
         private float _totalBytesExpected;
 
-        public float TotalBytesExpected
-        {
-            get => _totalBytesExpected;
-            set
-            {
+        public float TotalBytesExpected {
+            get {
+                return _totalBytesExpected;
+            }
+            set {
                 if (Equals(_totalBytesExpected, value)) return;
                 _totalBytesExpected = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TotalBytesExpected)));
@@ -59,11 +59,11 @@ namespace Plugin.DownloadManager
 
         private float _totalBytesWritten;
 
-        public float TotalBytesWritten
-        {
-            get => _totalBytesWritten;
-            set
-            {
+        public float TotalBytesWritten {
+            get {
+                return _totalBytesWritten;
+            }
+            set {
                 if (Equals(_totalBytesWritten, value)) return;
                 _totalBytesWritten = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TotalBytesWritten)));
