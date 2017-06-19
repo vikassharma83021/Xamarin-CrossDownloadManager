@@ -15,6 +15,10 @@ namespace Plugin.DownloadManager
     {
         private string _identifier => NSBundle.MainBundle.BundleIdentifier + ".BackgroundTransferSession";
 
+        private readonly bool _avoidDiscretionaryDownloadInBackground;
+
+        private readonly NSUrlSession _backgroundSession;
+        
         private readonly NSUrlSession _session;
 
         public event NotifyCollectionChangedEventHandler CollectionChanged;
@@ -31,14 +35,21 @@ namespace Plugin.DownloadManager
 
         public Func<IDownloadFile, string> PathNameForDownloadedFile { get; set; }
 
-        public DownloadManagerImplementation (UrlSessionDownloadDelegate sessionDownloadDelegate)
+        public DownloadManagerImplementation (UrlSessionDownloadDelegate sessionDownloadDelegate,
+            bool avoidDiscretionaryDownloadInBackground)
         {
+            _avoidDiscretionaryDownloadInBackground = avoidDiscretionaryDownloadInBackground;
             _queue = new List<IDownloadFile> ();
 
-            _session = InitBackgroundSession (sessionDownloadDelegate);
+            if (avoidDiscretionaryDownloadInBackground)
+            {
+                _session = InitDefaultSession(sessionDownloadDelegate);
+            }
+
+            _backgroundSession = InitBackgroundSession(sessionDownloadDelegate);
 
             // Reinitialize tasks that were started before the app was terminated or suspended
-            _session.GetTasks2((NSUrlSessionTask[] dataTasks, NSUrlSessionTask[] uploadTasks, NSUrlSessionTask[] downloadTasks) => {
+            _backgroundSession.GetTasks2((dataTasks, uploadTasks, downloadTasks) => {
                 foreach (var task in downloadTasks) {
                     AddFile(new DownloadFileImplementation(task));
                 }
@@ -55,12 +66,29 @@ namespace Plugin.DownloadManager
             return new DownloadFileImplementation (url, headers);
         }
 
-        public void Start (IDownloadFile i, bool mobileNetworkAllowed = true)
+        public void Start(IDownloadFile i, bool mobileNetworkAllowed = true)
         {
             var file = (DownloadFileImplementation)i;
 
-            file.StartDownload (_session, mobileNetworkAllowed);
             AddFile(file);
+            
+            NSOperationQueue.MainQueue.BeginInvokeOnMainThread(() =>
+            {
+                NSUrlSession session;
+
+                var inBackground = UIApplication.SharedApplication.ApplicationState == UIApplicationState.Background;
+                
+                if (_avoidDiscretionaryDownloadInBackground && inBackground)
+                {
+                    session = _session;
+                }
+                else
+                {
+                    session = _backgroundSession;
+                }
+
+                file.StartDownload(session, mobileNetworkAllowed);
+            });
         }
 
         public void Abort (IDownloadFile i)
@@ -85,20 +113,38 @@ namespace Plugin.DownloadManager
          * - nil as queue: The method, called on events could end up on any thread
          * - Only one connection per host
          */
-        NSUrlSession InitBackgroundSession (UrlSessionDownloadDelegate sessionDownloadDelegate)
+        NSUrlSession InitBackgroundSession(UrlSessionDownloadDelegate sessionDownloadDelegate)
         {
             sessionDownloadDelegate.Controller = this;
 
             NSUrlSessionConfiguration configuration;
 
-            if (UIDevice.CurrentDevice.CheckSystemVersion (8, 0)) {
-                using (configuration = NSUrlSessionConfiguration.CreateBackgroundSessionConfiguration(_identifier)) {
-                    return createSession(configuration, sessionDownloadDelegate);
-                }
-            } else {
-                using(configuration = NSUrlSessionConfiguration.BackgroundSessionConfiguration(_identifier)) {
-                    return createSession(configuration, sessionDownloadDelegate);
-                };
+            if (UIDevice.CurrentDevice.CheckSystemVersion(8, 0))
+            {
+                configuration = NSUrlSessionConfiguration.CreateBackgroundSessionConfiguration(_identifier);
+            }
+            else
+            {
+                configuration = NSUrlSessionConfiguration.BackgroundSessionConfiguration(_identifier);
+            }
+
+            return InitSession(sessionDownloadDelegate, configuration);
+        }
+
+
+        NSUrlSession InitDefaultSession(UrlSessionDownloadDelegate sessionDownloadDelegate)
+        {
+            return InitSession(sessionDownloadDelegate, NSUrlSessionConfiguration.DefaultSessionConfiguration);
+        }
+
+        NSUrlSession InitSession(UrlSessionDownloadDelegate sessionDownloadDelegate,
+            NSUrlSessionConfiguration configuration)
+        {
+            sessionDownloadDelegate.Controller = this;
+
+            using (configuration)
+            {
+                return createSession(configuration, sessionDownloadDelegate);
             }
         }
 
