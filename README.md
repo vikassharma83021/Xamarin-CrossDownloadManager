@@ -37,31 +37,6 @@ _AppDelegate.cs_
 ```
 
 As of iOS 9, your URL must be secured or you have to add the domain to the list of exceptions. See [https://developer.apple.com/library/ios/releasenotes/General/WhatsNewIniOS/Articles/iOS9.html#//apple_ref/doc/uid/TP40016198-SW14](https://developer.apple.com/library/ios/releasenotes/General/WhatsNewIniOS/Articles/iOS9.html#//apple_ref/doc/uid/TP40016198-SW14)
-#### Android
-
-_MainApplication.cs_
-```
-    Plugin.DownloadManager.ActivityLifecycleCallbacks _downloadManagerLifecycleCallbacks;
-
-    public MainApplication(IntPtr handle, JniHandleOwnership transer)
-      :base(handle, transer)
-    {
-        [...]
-        _downloadManagerLifecycleCallbacks = new Plugin.DownloadManager.ActivityLifecycleCallbacks();
-    }
-
-    public override void OnCreate()
-    {
-        [...]
-        RegisterActivityLifecycleCallbacks(_downloadManagerLifecycleCallbacks);
-    }
-
-    public override void OnTerminate()
-    {
-        [...]
-        UnregisterActivityLifecycleCallbacks(_downloadManagerLifecycleCallbacks);
-    }
-```
 
 ### Start downloading
 
