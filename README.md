@@ -37,31 +37,6 @@ _AppDelegate.cs_
 ```
 
 As of iOS 9, your URL must be secured or you have to add the domain to the list of exceptions. See [https://developer.apple.com/library/ios/releasenotes/General/WhatsNewIniOS/Articles/iOS9.html#//apple_ref/doc/uid/TP40016198-SW14](https://developer.apple.com/library/ios/releasenotes/General/WhatsNewIniOS/Articles/iOS9.html#//apple_ref/doc/uid/TP40016198-SW14)
-#### Android
-
-_MainApplication.cs_
-```
-    Plugin.DownloadManager.ActivityLifecycleCallbacks _downloadManagerLifecycleCallbacks;
-
-    public MainApplication(IntPtr handle, JniHandleOwnership transer)
-      :base(handle, transer)
-    {
-        [...]
-        _downloadManagerLifecycleCallbacks = new Plugin.DownloadManager.ActivityLifecycleCallbacks();
-    }
-
-    public override void OnCreate()
-    {
-        [...]
-        RegisterActivityLifecycleCallbacks(_downloadManagerLifecycleCallbacks);
-    }
-
-    public override void OnTerminate()
-    {
-        [...]
-        UnregisterActivityLifecycleCallbacks(_downloadManagerLifecycleCallbacks);
-    }
-```
 
 ### Start downloading
 
@@ -142,9 +117,19 @@ If you want to contribute, just fork the project, write some code or just file a
 
 ### Changes
 
+#### 1.2.0
+
+  * Added property `CrossDownloadManager.AvoidDiscretionaryDownloadInBackground` to avoid setting `discretionary` to `true` if download starts while app is in background (see https://github.com/SimonSimCity/Xamarin-CrossDownloadManager/pull/50/commits/bd94398623043cd3e29f743201302103d9d48ba1#diff-a606a1aeb07f8c9297bce51968abc4c6R32 for details)
+  * Fixed calling of DownloadCompletedBroadcastReceiver in background by adding an annotation (and thereby dropped requirement to register class ActivityLifecycleCallbacks)
+
+#### 1.1.1
+
+  * Fixed automated build-process - nothing functional to this plugin ...
+
 #### 1.1.0
 
   * Added first implementation for UWP
+  * [BC] Updated naming of methods to follow C# guidelines
 
 #### 1.0.0
 

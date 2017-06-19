@@ -22,6 +22,14 @@ namespace Plugin.DownloadManager
         /// @see https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSURLSessionDownloadDelegate_protocol/#//apple_ref/occ/intfm/NSURLSessionDownloadDelegate/URLSession:downloadTask:didResumeAtOffset:expectedTotalBytes:
         /// </summary>
         public static UrlSessionDownloadDelegate UrlSessionDownloadDelegate;
+
+        /// <summary>
+        /// Wether you should use a normal download session configuration instead of as background download session configuration when the app is in the background to avoid the discretionary.
+        /// This makes the app download in the same process to be able to download immediately instead of waiting for the systems scheduling algorithm.
+        /// The download will however not continue if the app is suspended while downloading.
+        /// @see https://developer.apple.com/documentation/foundation/nsurlsessionconfiguration/1411552-discretionary?language=objc
+        /// </summary>
+        public static bool AvoidDiscretionaryDownloadInBackground;
 #endif
 
         /// <summary>
@@ -40,7 +48,7 @@ namespace Plugin.DownloadManager
         private static IDownloadManager CreateDownloadManager ()
         {
 #if __IOS__
-            return new DownloadManagerImplementation (UrlSessionDownloadDelegate ?? new UrlSessionDownloadDelegate());
+            return new DownloadManagerImplementation (UrlSessionDownloadDelegate ?? new UrlSessionDownloadDelegate(), AvoidDiscretionaryDownloadInBacgkround);
 #elif __ANDROID__ || __UNIFIED__ || WINDOWS_UWP
             return new DownloadManagerImplementation();
 #else

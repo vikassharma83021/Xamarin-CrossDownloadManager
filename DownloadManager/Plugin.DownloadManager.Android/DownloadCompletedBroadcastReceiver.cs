@@ -1,8 +1,10 @@
 ﻿using System.Linq;
+using Android.App;
 using Android.Content;
 
 namespace Plugin.DownloadManager
 {
+    [BroadcastReceiver(Enabled = true, Exported = true), IntentFilter(new[] { Android.App.DownloadManager.ActionDownloadComplete })]
     public class DownloadCompletedBroadcastReceiver : BroadcastReceiver
     {
         public override void OnReceive (Context context, Intent intent)
