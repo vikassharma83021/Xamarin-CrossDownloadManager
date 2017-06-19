@@ -15,6 +15,8 @@ namespace Plugin.DownloadManager
     {
         private string _identifier => NSBundle.MainBundle.BundleIdentifier + ".BackgroundTransferSession";
 
+        private readonly bool _avoidDiscretionaryDownloadInBackground;
+
         private readonly NSUrlSession _backgroundSession;
         
         private readonly NSUrlSession _session;
@@ -33,11 +35,16 @@ namespace Plugin.DownloadManager
 
         public Func<IDownloadFile, string> PathNameForDownloadedFile { get; set; }
 
-        public DownloadManagerImplementation (UrlSessionDownloadDelegate sessionDownloadDelegate)
+        public DownloadManagerImplementation (UrlSessionDownloadDelegate sessionDownloadDelegate,
+            bool avoidDiscretionaryDownloadInBackground)
         {
+            _avoidDiscretionaryDownloadInBackground = avoidDiscretionaryDownloadInBackground;
             _queue = new List<IDownloadFile> ();
 
-            _session = InitDefaultSession(sessionDownloadDelegate);
+            if (avoidDiscretionaryDownloadInBackground)
+            {
+                _session = InitDefaultSession(sessionDownloadDelegate);
+            }
 
             _backgroundSession = InitBackgroundSession(sessionDownloadDelegate);
 
@@ -68,8 +75,10 @@ namespace Plugin.DownloadManager
             NSOperationQueue.MainQueue.BeginInvokeOnMainThread(() =>
             {
                 NSUrlSession session;
+
+                var inBackground = UIApplication.SharedApplication.ApplicationState == UIApplicationState.Background;
                 
-                if (UIApplication.SharedApplication.ApplicationState == UIApplicationState.Background)
+                if (_avoidDiscretionaryDownloadInBackground && inBackground)
                 {
                     session = _session;
                 }
