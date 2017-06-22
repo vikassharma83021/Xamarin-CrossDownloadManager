@@ -54,7 +54,6 @@
     <Compile Include="DownloadManagerImplementation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DownloadCompletedBroadcastReceiver.cs" />
-    <Compile Include="ActivityLifecycleCallbacks.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Plugin.DownloadManager.Abstractions\Plugin.DownloadManager.Abstractions.csproj">
