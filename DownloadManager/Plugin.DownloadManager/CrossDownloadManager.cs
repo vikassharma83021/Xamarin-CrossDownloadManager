@@ -48,7 +48,7 @@ namespace Plugin.DownloadManager
         private static IDownloadManager CreateDownloadManager ()
         {
 #if __IOS__
-            return new DownloadManagerImplementation (UrlSessionDownloadDelegate ?? new UrlSessionDownloadDelegate(), AvoidDiscretionaryDownloadInBacgkround);
+            return new DownloadManagerImplementation (UrlSessionDownloadDelegate ?? new UrlSessionDownloadDelegate(), AvoidDiscretionaryDownloadInBackground);
 #elif __ANDROID__ || __UNIFIED__ || WINDOWS_UWP
             return new DownloadManagerImplementation();
 #else
