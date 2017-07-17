@@ -44,12 +44,12 @@ namespace UWP
             path = Path.Combine(folder.Path, "data_10mb.test");
 
             // If already downloading, abort it.
-            if (foo.IsDownloading())
-            {
-                foo.AbortDownloading();
-                downloadBtn.Content = "Download aborted.";
-                return;
-            }
+            //if (foo.IsDownloading())
+            //{
+            //    foo.AbortDownloading();
+            //    downloadBtn.Content = "Download aborted.";
+            //    return;
+            //}
 
             downloadBtn.Content = "Start downloading ...";
 

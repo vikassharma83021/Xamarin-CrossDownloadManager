@@ -38,7 +38,7 @@ namespace Plugin.DownloadManager
                 foreach (var downloadOperation in downloadOperationsTask.Result)
                 {
                     var downloadFile = new DownloadFileImplementation(downloadOperation);
-                    _queue.Add(downloadFile);
+                    AddFile(downloadFile);
                 }
             });
         }
@@ -57,12 +57,16 @@ namespace Plugin.DownloadManager
         {
             var file = (DownloadFileImplementation)i;
 
+            file.DeleteFileRequested += FileOnDeleteFileRequested;
+            AddFile(file);
+
             string destinationPathName = null;
             if (PathNameForDownloadedFile != null)
             {
                 destinationPathName = PathNameForDownloadedFile(file);
             }
             
+            //Do not await here otherwise it will never return
             file.StartDownloadAsync(destinationPathName, mobileNetworkAllowed);
         }
 
@@ -70,6 +74,7 @@ namespace Plugin.DownloadManager
         {
             var file = (DownloadFileImplementation)i;
 
+            file.DeleteFileRequested -= FileOnDeleteFileRequested;
             file.Cancel();
 
             RemoveFile(file);
@@ -101,6 +106,14 @@ namespace Plugin.DownloadManager
             }
 
             CollectionChanged?.Invoke(Queue, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, file));
+        }
+
+        private void FileOnDeleteFileRequested(object sender, EventArgs eventArgs)
+        {
+            var downloadedFile = sender as IDownloadFile;
+            if (downloadedFile == null) return;
+
+            Abort(downloadedFile);
         }
     }
 }
