@@ -115,6 +115,7 @@
     </Compile>
     <Compile Include="DownloadFileImplementation.cs" />
     <Compile Include="DownloadManagerImplementation.cs" />
+    <Compile Include="Helper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Plugin.DownloadManager.UWP.rd.xml" />
   </ItemGroup>

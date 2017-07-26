@@ -38,7 +38,8 @@ namespace Plugin.DownloadManager
                 foreach (var downloadOperation in downloadOperationsTask.Result)
                 {
                     var downloadFile = new DownloadFileImplementation(downloadOperation);
-                    _queue.Add(downloadFile);
+                    downloadFile.PropertyChanged += UpdateFileProperty;
+                    AddFile(downloadFile);
                 }
             });
         }
@@ -57,12 +58,16 @@ namespace Plugin.DownloadManager
         {
             var file = (DownloadFileImplementation)i;
 
+            file.PropertyChanged += UpdateFileProperty;
+            AddFile(file);
+
             string destinationPathName = null;
             if (PathNameForDownloadedFile != null)
             {
                 destinationPathName = PathNameForDownloadedFile(file);
             }
             
+            //Do not await here otherwise it will never return
             file.StartDownloadAsync(destinationPathName, mobileNetworkAllowed);
         }
 
@@ -70,6 +75,7 @@ namespace Plugin.DownloadManager
         {
             var file = (DownloadFileImplementation)i;
 
+            file.PropertyChanged -= UpdateFileProperty;
             file.Cancel();
 
             RemoveFile(file);
@@ -101,6 +107,21 @@ namespace Plugin.DownloadManager
             }
 
             CollectionChanged?.Invoke(Queue, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, file));
+        }
+
+        private void UpdateFileProperty(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(IDownloadFile.Status))
+            {
+                var downloadFile = (IDownloadFile)sender;
+
+                if (downloadFile.Status == DownloadFileStatus.COMPLETED ||
+                    downloadFile.Status == DownloadFileStatus.FAILED ||
+                    downloadFile.Status == DownloadFileStatus.CANCELED)
+                {
+                    RemoveFile(downloadFile);
+                }
+            }
         }
     }
 }

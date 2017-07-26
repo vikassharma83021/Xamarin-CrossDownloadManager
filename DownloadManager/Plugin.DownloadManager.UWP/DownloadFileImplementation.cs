@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Windows.Networking.BackgroundTransfer;
 using Windows.Storage;
 
@@ -99,7 +100,7 @@ namespace Plugin.DownloadManager
             DownloadOperation.AttachAsync().AsTask(_cancellationToken.Token, progress);
         }
 
-        internal void StartDownloadAsync(string destinationPathName, bool mobileNetworkAllowed)
+        internal async void StartDownloadAsync(string destinationPathName, bool mobileNetworkAllowed)
         {
             var downloader = new BackgroundDownloader();
 
@@ -121,13 +122,13 @@ namespace Plugin.DownloadManager
             StorageFile file;
             if (destinationPathName != null)
             {
-                var folder = StorageFolder.GetFolderFromPathAsync(Path.GetDirectoryName(destinationPathName)).AsTask().Result;
-                file = folder.CreateFileAsync(Path.GetFileName(destinationPathName), CreationCollisionOption.ReplaceExisting).AsTask().Result;
+                var folder = await StorageFolder.GetFolderFromPathAsync(Path.GetDirectoryName(destinationPathName));
+                file = await folder.CreateFileAsync(Path.GetFileName(destinationPathName), CreationCollisionOption.ReplaceExisting);
             }
             else
             {
                 var folder = Windows.ApplicationModel.Package.Current.InstalledLocation;
-                file = folder.CreateFileAsync(downloadUrl.Segments.Last(), CreationCollisionOption.GenerateUniqueName).AsTask().Result;
+                file = await folder.CreateFileAsync(downloadUrl.Segments.Last(), CreationCollisionOption.GenerateUniqueName);
             }
 
             DownloadOperation = downloader.CreateDownload(downloadUrl, file);
@@ -135,7 +136,13 @@ namespace Plugin.DownloadManager
             var progress = new Progress<DownloadOperation>(ProgressChanged);
             _cancellationToken = new CancellationTokenSource();
 
-            DownloadOperation.StartAsync().AsTask(_cancellationToken.Token, progress);
+            try
+            {
+                var downloadOperation = await DownloadOperation.StartAsync().AsTask(_cancellationToken.Token, progress);
+                ProgressChanged(downloadOperation);
+            } catch (TaskCanceledException)
+            {
+            }
         }
 
         private void ProgressChanged(DownloadOperation downloadOperation)
@@ -143,47 +150,14 @@ namespace Plugin.DownloadManager
             TotalBytesExpected = downloadOperation.Progress.TotalBytesToReceive;
             TotalBytesWritten = downloadOperation.Progress.BytesReceived;
 
-            switch (downloadOperation.Progress.Status)
+            Status = downloadOperation.Progress.Status.ToDownloadFileStatus();
+
+            if (Status == DownloadFileStatus.FAILED)
             {
-                case BackgroundTransferStatus.Running:
-                    Status = DownloadFileStatus.RUNNING;
-                    break;
-
-                case BackgroundTransferStatus.PausedByApplication:
-                    Status = DownloadFileStatus.PAUSED;
-                    break;
-
-                case BackgroundTransferStatus.PausedCostedNetwork:
-                    Status = DownloadFileStatus.PAUSED;
-                    break;
-
-                case BackgroundTransferStatus.PausedNoNetwork:
-                    Status = DownloadFileStatus.PAUSED;
-                    break;
-
-                case BackgroundTransferStatus.Error:
-                    Status = DownloadFileStatus.FAILED;
-                    break;
-
-                case BackgroundTransferStatus.Completed:
-                    Status = DownloadFileStatus.COMPLETED;
-                    break;
-
-                case BackgroundTransferStatus.Canceled:
-                    Status = DownloadFileStatus.CANCELED;
-                    break;
-
-                case BackgroundTransferStatus.Idle:
-                    break;
-
-                case BackgroundTransferStatus.PausedSystemPolicy:
-                    break;
-
-                default:
-                    throw new ArgumentOutOfRangeException();
+                // TODO: How can we add some error-description here?
             }
         }
-        
+
         internal void Cancel()
         {
             Status = DownloadFileStatus.CANCELED;
