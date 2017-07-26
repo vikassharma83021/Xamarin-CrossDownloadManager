@@ -38,6 +38,7 @@ namespace Plugin.DownloadManager
                 foreach (var downloadOperation in downloadOperationsTask.Result)
                 {
                     var downloadFile = new DownloadFileImplementation(downloadOperation);
+                    downloadFile.PropertyChanged += UpdateFileProperty;
                     AddFile(downloadFile);
                 }
             });
@@ -57,7 +58,7 @@ namespace Plugin.DownloadManager
         {
             var file = (DownloadFileImplementation)i;
 
-            file.DeleteFileRequested += FileOnDeleteFileRequested;
+            file.PropertyChanged += UpdateFileProperty;
             AddFile(file);
 
             string destinationPathName = null;
@@ -74,7 +75,7 @@ namespace Plugin.DownloadManager
         {
             var file = (DownloadFileImplementation)i;
 
-            file.DeleteFileRequested -= FileOnDeleteFileRequested;
+            file.PropertyChanged -= UpdateFileProperty;
             file.Cancel();
 
             RemoveFile(file);
@@ -108,12 +109,19 @@ namespace Plugin.DownloadManager
             CollectionChanged?.Invoke(Queue, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, file));
         }
 
-        private void FileOnDeleteFileRequested(object sender, EventArgs eventArgs)
+        private void UpdateFileProperty(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            var downloadedFile = sender as IDownloadFile;
-            if (downloadedFile == null) return;
+            if (e.PropertyName == nameof(IDownloadFile.Status))
+            {
+                var downloadFile = (IDownloadFile)sender;
 
-            Abort(downloadedFile);
+                if (downloadFile.Status == DownloadFileStatus.COMPLETED ||
+                    downloadFile.Status == DownloadFileStatus.FAILED ||
+                    downloadFile.Status == DownloadFileStatus.CANCELED)
+                {
+                    RemoveFile(downloadFile);
+                }
+            }
         }
     }
 }

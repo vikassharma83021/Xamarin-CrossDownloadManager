@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Windows.Networking.BackgroundTransfer;
 using Windows.Storage;
 
@@ -13,8 +14,6 @@ namespace Plugin.DownloadManager
     public class DownloadFileImplementation : IDownloadFile
     {
         public event PropertyChangedEventHandler PropertyChanged;
-
-        public event EventHandler DeleteFileRequested;
 
         public DownloadOperation DownloadOperation;
 
@@ -137,9 +136,13 @@ namespace Plugin.DownloadManager
             var progress = new Progress<DownloadOperation>(ProgressChanged);
             _cancellationToken = new CancellationTokenSource();
 
-            var completed = await DownloadOperation.StartAsync().AsTask(_cancellationToken.Token, progress);
-            Status = completed.Progress.Status.ToDownloadFileStatus();
-            RaiseDownloadCompletionEvent(Status);
+            try
+            {
+                var downloadOperation = await DownloadOperation.StartAsync().AsTask(_cancellationToken.Token, progress);
+                ProgressChanged(downloadOperation);
+            } catch (TaskCanceledException)
+            {
+            }
         }
 
         private void ProgressChanged(DownloadOperation downloadOperation)
@@ -148,19 +151,13 @@ namespace Plugin.DownloadManager
             TotalBytesWritten = downloadOperation.Progress.BytesReceived;
 
             Status = downloadOperation.Progress.Status.ToDownloadFileStatus();
-            RaiseDownloadCompletionEvent(Status);
-        }
 
-        private void RaiseDownloadCompletionEvent(DownloadFileStatus status)
-        {
-            if (status == DownloadFileStatus.COMPLETED || 
-                status == DownloadFileStatus.FAILED || 
-                status == DownloadFileStatus.CANCELED)
+            if (Status == DownloadFileStatus.FAILED)
             {
-                DeleteFileRequested?.Invoke(this, null);
+                // TODO: How can we add some error-description here?
             }
         }
-        
+
         internal void Cancel()
         {
             Status = DownloadFileStatus.CANCELED;
