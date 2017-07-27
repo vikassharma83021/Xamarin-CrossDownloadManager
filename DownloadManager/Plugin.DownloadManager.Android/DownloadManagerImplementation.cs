@@ -33,6 +33,8 @@ namespace Plugin.DownloadManager
 
         public Func<IDownloadFile, string> PathNameForDownloadedFile { get; set; }
 
+        public DownloadVisibility NotificationVisibility;
+
         public DownloadManagerImplementation ()
         {
             _queue = new List<IDownloadFile> ();
@@ -65,7 +67,7 @@ namespace Plugin.DownloadManager
                 destinationPathName = PathNameForDownloadedFile (file);
             }
 
-            file.StartDownload (_downloadManager, destinationPathName, mobileNetworkAllowed);
+            file.StartDownload (_downloadManager, destinationPathName, mobileNetworkAllowed, NotificationVisibility);
             AddFile (file);
         }
 

@@ -21,6 +21,9 @@ namespace DownloadExample.Droid
             //    string fileName = Android.Net.Uri.Parse (file.Url).Path.Split ('/').Last ();
             //    return Path.Combine (ApplicationContext.GetExternalFilesDir (Android.OS.Environment.DirectoryDownloads).AbsolutePath, fileName);
             //});
+
+            // In case you want to create your own notification :)
+            //(CrossDownloadManager.Current as DownloadManagerImplementation).NotificationVisibility = DownloadVisibility.Hidden;
         }
 
         NotificationClickedBroadcastReceiver _receiverNotificationClicked;
