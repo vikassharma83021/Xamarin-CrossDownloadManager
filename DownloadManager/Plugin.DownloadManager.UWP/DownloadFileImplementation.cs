@@ -142,6 +142,10 @@ namespace Plugin.DownloadManager
                 ProgressChanged(downloadOperation);
             } catch (TaskCanceledException)
             {
+            } catch (Exception e)
+            {
+                Status = DownloadFileStatus.FAILED;
+                StatusDetails = e.Message;
             }
         }
 
@@ -151,11 +155,6 @@ namespace Plugin.DownloadManager
             TotalBytesWritten = downloadOperation.Progress.BytesReceived;
 
             Status = downloadOperation.Progress.Status.ToDownloadFileStatus();
-
-            if (Status == DownloadFileStatus.FAILED)
-            {
-                // TODO: How can we add some error-description here?
-            }
         }
 
         internal void Cancel()
