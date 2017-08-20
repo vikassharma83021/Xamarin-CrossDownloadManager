@@ -117,7 +117,7 @@ namespace Plugin.DownloadManager
         }
 
         public void StartDownload(Android.App.DownloadManager downloadManager, string destinationPathName,
-            bool allowedOverMetered)
+            bool allowedOverMetered, DownloadVisibility notificationVisibility)
         {
             using (var downloadUrl = Uri.Parse(Url))
             using (var request = new Android.App.DownloadManager.Request(downloadUrl))
@@ -136,6 +136,8 @@ namespace Plugin.DownloadManager
                 }
 
                 request.SetAllowedOverMetered(allowedOverMetered);
+
+                request.SetNotificationVisibility(notificationVisibility);
 
                 Id = downloadManager.Enqueue(request);
             }
