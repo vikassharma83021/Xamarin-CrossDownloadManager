@@ -15,7 +15,7 @@ The CrossDownloadManager is a plugin that helps you downloading files in the bac
 |Xamarin.iOS|Yes|iOS 7+|
 |Xamarin.iOS Unified|Yes|iOS 7+|
 |Xamarin.Android|Yes|API 16+|
-|Windows 10 UWP|Yes - but not fully implemented. See [#8](https://github.com/SimonSimCity/Xamarin-CrossDownloadManager/issues/8)|10.0.10240.0|
+|Windows 10 UWP|Yes|10.0.10240.0|
 |Xamarin.Mac|No||
 
 ### Getting started
@@ -76,9 +76,6 @@ Usually, you would expect to set the path to the `IDownloadFile` instance, you g
 #endif
         });
 ```
-##### Additional for UWP
-
-Whatever I tried, i got a `Permission denied` exception when setting a custom path. Needs some testing, time and ideas ...
 
 ##### Additional for Andriod
 
@@ -99,7 +96,7 @@ Just register the instance in `CrossDownloadManager.Current` in the library. Her
 
 ### Can I just have a look at a sample implementation?
 
-I've created a quite basic implementation for iOS and Android. You can find it in the folder "Sample" in this repository.
+I've created a quite basic implementation for UWP, iOS and Android. You can find it in the folder "Sample" in this repository.
 
 ### Contribute
 
@@ -114,8 +111,14 @@ If you want to contribute, just fork the project, write some code or just file a
 * [SimonSimCity](https://github.com/SimonSimCity)
 * [martijn00](https://github.com/martijn00)
 * [fela98](https://github.com/fela98)
+* [BtrJay](https://github.com/BtrJay)
 
 ### Changes
+
+#### 1.3.0
+
+  * Fixed download-queue on UWP
+  * Added option for Android to disable notification
 
 #### 1.2.0
 
