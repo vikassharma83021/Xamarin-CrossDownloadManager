@@ -124,25 +124,30 @@ namespace Plugin.DownloadManager
 
             // Create a runnable, restarting itself to update every file in the queue
             _downloadWatcherHandlerRunnable = new Java.Lang.Runnable (() => {
+                System.Diagnostics.Debug.WriteLine("Runnable called");
 
                 // Loop throught all files in the system-queue and update the data in the local queue
-                LoopOnDownloads (cursor => UpdateFileProperties (cursor));
+                IList<DownloadFileImplementation> stillListedDownloads = new List<DownloadFileImplementation>();
+                LoopOnDownloads (cursor => {
+                    int id = cursor.GetInt(cursor.GetColumnIndex(Android.App.DownloadManager.ColumnId));
+                    var downloadFile = Queue.Cast<DownloadFileImplementation>().FirstOrDefault(f => f.Id == id);
+
+                    if (downloadFile != null) {
+                        stillListedDownloads.Add(downloadFile);
+                        UpdateFileProperties(cursor, downloadFile);
+                    }
+                });
+
+                var filesNotDownloading = Queue.Cast<DownloadFileImplementation>().Where(f => stillListedDownloads.FirstOrDefault(f1 => f.Id == f1.Id) == null);
+                foreach (var file in filesNotDownloading) {
+                    Abort(file);
+                }
 
                 _downloadWatcherHandler.PostDelayed (_downloadWatcherHandlerRunnable, 1000);
             });
 
             // Start this playing handler immediately
             _downloadWatcherHandler.PostDelayed (_downloadWatcherHandlerRunnable, 0);
-        }
-
-        public void UpdateFileProperties (ICursor cursor)
-        {
-            int id = cursor.GetInt (cursor.GetColumnIndex (Android.App.DownloadManager.ColumnId));
-            var downloadFile = Queue.Cast<DownloadFileImplementation> ().FirstOrDefault (f => f.Id == id);
-
-            if (downloadFile != null) {
-                UpdateFileProperties (cursor, downloadFile);
-            }
         }
 
         /**
