@@ -124,25 +124,27 @@ namespace Plugin.DownloadManager
 
             // Create a runnable, restarting itself to update every file in the queue
             _downloadWatcherHandlerRunnable = new Java.Lang.Runnable (() => {
+                var downloads = Queue.Cast<DownloadFileImplementation>().ToList();
+                LoopOnDownloads (cursor => {
+                    int id = cursor.GetInt(cursor.GetColumnIndex(Android.App.DownloadManager.ColumnId));
+                    var downloadFile = downloads.FirstOrDefault(f => f.Id == id);
 
-                // Loop throught all files in the system-queue and update the data in the local queue
-                LoopOnDownloads (cursor => UpdateFileProperties (cursor));
+                    if (downloadFile != null) {
+                        downloads.Remove(downloadFile);
+                        UpdateFileProperties(cursor, downloadFile);
+                    }
+                });
+
+                // All downloads still in this list are not listed in the native donload-manager of Android. Mark them as canceled.
+                foreach (var file in downloads) {
+                    Abort(file);
+                }
 
                 _downloadWatcherHandler.PostDelayed (_downloadWatcherHandlerRunnable, 1000);
             });
 
             // Start this playing handler immediately
             _downloadWatcherHandler.PostDelayed (_downloadWatcherHandlerRunnable, 0);
-        }
-
-        public void UpdateFileProperties (ICursor cursor)
-        {
-            int id = cursor.GetInt (cursor.GetColumnIndex (Android.App.DownloadManager.ColumnId));
-            var downloadFile = Queue.Cast<DownloadFileImplementation> ().FirstOrDefault (f => f.Id == id);
-
-            if (downloadFile != null) {
-                UpdateFileProperties (cursor, downloadFile);
-            }
         }
 
         /**
