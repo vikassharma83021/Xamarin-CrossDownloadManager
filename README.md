@@ -115,6 +115,10 @@ If you want to contribute, just fork the project, write some code or just file a
 
 ### Changes
 
+#### 1.3.1
+
+  * Fixed bug [#64](https://github.com/SimonSimCity/Xamarin-CrossDownloadManager/issues/64): Cancel button on Notification does not change file status to `DownloadFileStatus.CANCELED`
+
 #### 1.3.0
 
   * Fixed download-queue on UWP
