@@ -1,5 +1,9 @@
 ## Changes
 
+### 1.3.2
+
+  * Fixed bug [#69](https://github.com/SimonSimCity/Xamarin-CrossDownloadManager/issues/69): Using PathNameForDownloadedFile: Android suffixes filename by '-1' if file already exists
+
 ### 1.3.1
 
   * Fixed bug [#64](https://github.com/SimonSimCity/Xamarin-CrossDownloadManager/issues/64): Cancel button on Notification does not change file status to `DownloadFileStatus.CANCELED`
