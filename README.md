@@ -104,7 +104,7 @@ If you want to contribute, just fork the project, write some code or just file a
 
 ### Licensing
 
-[This plugin is licensed under the MIT License](https://opensource.org/licenses/MIT)
+[This plugin is licensed under the MIT License](https://github.com/SimonSimCity/Xamarin-CrossDownloadManager/blob/develop/LICENSE.md)
 
 ### Contributors
 
