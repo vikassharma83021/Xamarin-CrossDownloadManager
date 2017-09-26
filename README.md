@@ -77,7 +77,7 @@ Usually, you would expect to set the path to the `IDownloadFile` instance, you g
         });
 ```
 
-**Warning:** Please check if the files exist. This DownloadManager will overwrite the file if it already exists.
+**Warning:** Please check if the files exist. The CrossDownloadManager will overwrite the file if it already exists.
 
 ##### Additional for Andriod
 
