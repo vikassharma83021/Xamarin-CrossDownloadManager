@@ -132,7 +132,13 @@ namespace Plugin.DownloadManager
 
                 if (destinationPathName != null)
                 {
-                    request.SetDestinationUri(Uri.FromFile(new Java.IO.File(destinationPathName)));
+                    var file = new Java.IO.File(destinationPathName);
+                    request.SetDestinationUri(Uri.FromFile(file));
+
+                    if (file.Exists())
+                    {
+                        file.Delete();
+                    }
                 }
 
                 request.SetAllowedOverMetered(allowedOverMetered);
