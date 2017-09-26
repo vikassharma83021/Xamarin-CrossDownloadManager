@@ -94,13 +94,13 @@ Just register the instance in `CrossDownloadManager.Current` in the library. Her
 
     Mvx.RegisterSingleton<IDownloadManager>(() => CrossDownloadManager.Current);
 
-### Can I just have a look at a sample implementation?
+### Can I have a look at a sample implementation?
 
-I've created a quite basic implementation for UWP, iOS and Android. You can find it in the folder "Sample" in this repository.
+I've created a quite basic implementation for UWP, iOS and Android which you can find [here](https://github.com/SimonSimCity/Xamarin-CrossDownloadManager/tree/develop/Sample). Feel free to fork this repository and play around with it. It's right within the `Sample` folder.
 
-### Contribute
+### Contribute / Bugs / Features
 
-If you want to contribute, just fork the project, write some code or just file an issue if you don't know how to realize the change you want to see.
+Everything you tell me is contributing to this project and helps me improving it. If you found a bug or want a feature, please file an issue to let me know. For bugs, please include as much information as you know. If you can, please fork this repository, reproduce the bug in the sample projects and include a link in the issue. For features, feel free to start developing them. I'm always willing to contribute, help and give advice.
 
 ### Licensing
 
