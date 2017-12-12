@@ -1,5 +1,9 @@
 ## Changes
 
+### 1.3.3
+
+  * Add possibility to prevent files from showing up in download manager
+
 ### 1.3.2
 
   * Fixed bug [#69](https://github.com/SimonSimCity/Xamarin-CrossDownloadManager/issues/69): Using PathNameForDownloadedFile: Android suffixes filename by '-1' if file already exists

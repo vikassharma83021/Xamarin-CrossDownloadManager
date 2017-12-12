@@ -35,6 +35,8 @@ namespace Plugin.DownloadManager
 
         public DownloadVisibility NotificationVisibility;
 
+        public bool IsVisibleInDownloadsUi { get; set; } = true; // true is the default behavior from Android DownloadManagerApi
+
         public DownloadManagerImplementation ()
         {
             _queue = new List<IDownloadFile> ();
@@ -67,7 +69,7 @@ namespace Plugin.DownloadManager
                 destinationPathName = PathNameForDownloadedFile (file);
             }
 
-            file.StartDownload (_downloadManager, destinationPathName, mobileNetworkAllowed, NotificationVisibility);
+            file.StartDownload (_downloadManager, destinationPathName, mobileNetworkAllowed, NotificationVisibility, IsVisibleInDownloadsUi);
             AddFile (file);
         }
 
