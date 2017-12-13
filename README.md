@@ -103,7 +103,7 @@ I've created a quite basic implementation for UWP, iOS and Android which you can
 That is the default behavior when downloading files using the Android DownladManager API. If you don't want this to happen you can change the property IsVisibleInDownloadsUi of the DownloadManagerImplementation
 
 ```
-	(CrossDownloadManager.Current as DownloadManagerImplementation).IsVisibleInDownloadsUi = true;
+	(CrossDownloadManager.Current as DownloadManagerImplementation).IsVisibleInDownloadsUi = false;
 ```
 
 ### Contribute / Bugs / Features
