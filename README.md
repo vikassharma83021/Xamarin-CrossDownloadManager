@@ -98,6 +98,14 @@ Just register the instance in `CrossDownloadManager.Current` in the library. Her
 
 I've created a quite basic implementation for UWP, iOS and Android which you can find [here](https://github.com/SimonSimCity/Xamarin-CrossDownloadManager/tree/develop/Sample). Feel free to fork this repository and play around with it. It's right within the `Sample` folder.
 
+### Why do the files show up in the native Android Download Manager?
+
+That is the default behavior when downloading files using the Android DownladManager API. If you don't want this to happen you can change the property IsVisibleInDownloadsUi of the DownloadManagerImplementation
+
+```
+	(CrossDownloadManager.Current as DownloadManagerImplementation).IsVisibleInDownloadsUi = true;
+```
+
 ### Contribute / Bugs / Features
 
 Everything you tell me is contributing to this project and helps me improving it. If you found a bug or want a feature, please file an issue to let me know. For bugs, please include as much information as you know. If you can, please fork this repository, reproduce the bug in the sample projects and include a link in the issue. For features, feel free to start developing them. I'm always willing to contribute, help and give advice.

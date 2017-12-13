@@ -10,7 +10,7 @@ using System.IO;
 
 namespace DownloadExample.Droid
 {
-    [Activity (Label = "Download Example", MainLauncher = true, Icon = "@mipmap/icon")]
+    [Activity (Label = "Download Example", Name = "com.example.download_example.MainActivity", MainLauncher = true, Icon = "@mipmap/icon")]
     public class MainActivity : Activity
     {
         void InitDownloadManager ()
@@ -24,6 +24,9 @@ namespace DownloadExample.Droid
 
             // In case you want to create your own notification :)
             //(CrossDownloadManager.Current as DownloadManagerImplementation).NotificationVisibility = DownloadVisibility.Hidden;
+
+            // Prevents the file from appearing in the android download manager
+            (CrossDownloadManager.Current as DownloadManagerImplementation).IsVisibleInDownloadsUi = true;
         }
 
         NotificationClickedBroadcastReceiver _receiverNotificationClicked;
@@ -105,8 +108,6 @@ namespace DownloadExample.Droid
                             var nativeDownloadManager = (DownloadManager)ApplicationContext.GetSystemService (DownloadService);
                             System.Diagnostics.Debug.WriteLine (nativeDownloadManager.GetUriForDownloadedFile (((DownloadFileImplementation)sender).Id));
 
-                            // If you don't want your download to be listed in the native "Download" app after the download is finished
-                            //nativeDownloadManager.Remove(((DownloadFileImplementation)sender).Id);
                             break;
                         }
                     }
