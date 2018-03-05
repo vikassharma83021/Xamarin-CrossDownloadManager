@@ -127,19 +127,24 @@ namespace Plugin.DownloadManager
             // Create a runnable, restarting itself to update every file in the queue
             _downloadWatcherHandlerRunnable = new Java.Lang.Runnable (() => {
                 var downloads = Queue.Cast<DownloadFileImplementation>().ToList();
-                LoopOnDownloads (cursor => {
-                    int id = cursor.GetInt(cursor.GetColumnIndex(Android.App.DownloadManager.ColumnId));
-                    var downloadFile = downloads.FirstOrDefault(f => f.Id == id);
 
-                    if (downloadFile != null) {
-                        downloads.Remove(downloadFile);
-                        UpdateFileProperties(cursor, downloadFile);
-                    }
-                });
-
-                // All downloads still in this list are not listed in the native donload-manager of Android. Mark them as canceled.
                 foreach (var file in downloads) {
-                    Abort(file);
+                    var query = new Android.App.DownloadManager.Query();
+                    query.SetFilterById(file.Id);
+
+                    try {
+                        using (var cursor = _downloadManager.InvokeQuery(query)) {
+                            if (cursor != null && cursor.MoveToNext()) {
+                                UpdateFileProperties(cursor, file);
+                            } else {
+                                // This file is not listed in the native download manager anymore. Let's mark it as canceled.
+                                Abort(file);
+                            }
+                            cursor?.Close();
+                        }
+                    } catch (Android.Database.Sqlite.SQLiteException) {
+                        // I lately got an exception that the database was unaccessible ...
+                    }
                 }
 
                 _downloadWatcherHandler.PostDelayed (_downloadWatcherHandlerRunnable, 1000);
