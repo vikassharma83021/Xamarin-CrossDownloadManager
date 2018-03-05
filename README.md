@@ -2,7 +2,7 @@
 
 The CrossDownloadManager is a plugin that helps you downloading files in the background.
 
-### Build Status: 
+### Build Status:
 ![GitHub tag](https://img.shields.io/github/tag/SimonSimCity/xamarin-crossdownloadmanager.svg)
 [![NuGet](https://img.shields.io/nuget/v/Xam.Plugins.DownloadManager.svg?label=NuGet)](https://www.nuget.org/packages/Xam.Plugins.DownloadManager/)
 
@@ -102,7 +102,7 @@ I've created a quite basic implementation for UWP, iOS and Android which you can
 
 ### Why do the files show up in the native Android Download Manager?
 
-That is the default behavior when downloading files using the Android DownladManager API. If you don't want this to happen you can change the property IsVisibleInDownloadsUi of the DownloadManagerImplementation
+This is the default of the native download manager on Android. You can change this behavior by setting the property `IsVisibleInDownloadsUi` of the Android implementation of the download manager to `false`. Here's an example which you can copy into your Android application:
 
 ```csharp
 (CrossDownloadManager.Current as DownloadManagerImplementation).IsVisibleInDownloadsUi = false;

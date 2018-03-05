@@ -1,8 +1,20 @@
 ## Changes
 
-### 1.3.3
+### 1.3.6
+
+  * Fixed bug [#77](https://github.com/SimonSimCity/Xamarin-CrossDownloadManager/issues/77): [Android] Download are cancelled with no reason
+
+### 1.3.5
+
+  * *changes in documentation*
+
+### 1.3.4
 
   * Add possibility to prevent files from showing up in download manager
+
+### 1.3.3
+
+  * *no changes*
 
 ### 1.3.2
 
