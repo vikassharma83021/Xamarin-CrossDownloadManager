@@ -149,7 +149,7 @@ namespace Plugin.DownloadManager
         }
 
         private NSUrlSession createSession(NSUrlSessionConfiguration configuration, UrlSessionDownloadDelegate sessionDownloadDelegate) {
-            configuration.HttpMaximumConnectionsPerHost = 1;
+            configuration.HttpMaximumConnectionsPerHost = 3;
 
             return NSUrlSession.FromConfiguration(configuration, sessionDownloadDelegate, null);
         }
